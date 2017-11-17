@@ -1,0 +1,340 @@
+package com.example.gabriela.firecastcommunity;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.example.gabriela.firecastcommunity.drawer.RegisterUserActivity;
+import com.example.gabriela.firecastcommunity.fragment.MapFragment;
+import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
+import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
+import java.io.InputStream;
+
+
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    private BottomNavigationView navigation;
+    Drawer drawer;
+    AccountHeader headerResult;
+    private static final long ID_ABOUT_US = 100;
+    private static final long ID_OCCURRENCE_TYPE = 200;
+    private static final long ID_DISTANCE = 300;
+    private static final long ID_NOTIFICATION = 400;
+    private static final long ID_SHARE_APP = 500;
+    private static final long ID_REPORT_ERROR = 600;
+    private static final int ID_MANAGE_PROFILE = 100000;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //navigation view drawer
+        final PrimaryDrawerItem itemTypeOccurrence = new PrimaryDrawerItem()
+                .withName("Tipo de ocorrência")
+                .withIdentifier(ID_OCCURRENCE_TYPE)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemDistance = new PrimaryDrawerItem()
+                .withName("Fixar abrangência")
+                .withIdentifier(ID_DISTANCE)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemNotification = new PrimaryDrawerItem()
+                .withName("Notificações")
+                //.withBadge("2")
+                .withIdentifier(ID_NOTIFICATION)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemShareApp = new PrimaryDrawerItem()
+                .withName("Compartilhar APP")
+                .withIdentifier(ID_SHARE_APP)
+                .withIcon(R.drawable.ic_menu_share)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemReportError = new PrimaryDrawerItem()
+                .withName("Reportar erro")
+                .withIdentifier(ID_REPORT_ERROR)
+                .withIcon(R.drawable.ic_menu_manage)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemAboutUs = new PrimaryDrawerItem()
+                .withName("Sobre nós")
+                .withIcon(R.drawable.ic_info_black_24dp)
+                .withIdentifier(ID_ABOUT_US);
+
+        final ProfileSettingDrawerItem manageAccount = new ProfileSettingDrawerItem()
+                .withName("Editar cadastro")
+                .withIdentifier(ID_MANAGE_PROFILE);
+/*
+        Bundle inBundle = getIntent().getExtras();
+
+        if(inBundle!=null) {
+            String name = inBundle.get("name").toString();
+            String surname = inBundle.get("surname").toString();
+
+            //TODO email e picture facebook
+            String imageUrl = inBundle.get("imageUrl").toString();
+            //  new MapActivity.DownloadImage((ImageView)findViewById(R.id.profileImage)).execute(imageUrl);
+
+            final IProfile profile = new ProfileDrawerItem()
+                    .withName(name + " " + surname)
+                    //.withEmail(email)
+                    .withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460")
+                    .withIdentifier(100);
+
+            headerResult = new AccountHeaderBuilder()
+                    .withActivity(this)
+                    .withTranslucentStatusBar(true)
+                    .withHeaderBackground(R.color.colorPrimary)
+                    .addProfiles(
+                            profile,
+                            manageAccount,
+                            new ProfileSettingDrawerItem()
+                                    .withName("Logout")
+                                    //.withIcon(R.drawable.logo)
+                                    .withIdentifier(ID_LOGOUT)
+
+                    )
+                    .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                        @Override
+                        public boolean onProfileChanged(View view, IProfile profile, boolean current) {
+                            if (profile instanceof IDrawerItem && profile.getIdentifier() == ID_MANAGE_PROFILE) {
+                                configuraItensHeaderDrawer();
+                            }
+                            if (profile instanceof IDrawerItem && profile.getIdentifier() == ID_LOGOUT) {
+                                configuraItensLogoutDrawer();
+                            }
+                            return false;
+                        }
+                    })
+                    .withSavedInstance(savedInstanceState)
+                    .build();
+             }
+*/
+
+            drawer = new DrawerBuilder()
+                    .withAccountHeader(headerResult)
+                    .withActivity(this)
+                    .withToolbar(toolbar)
+                    .addDrawerItems(
+                            new SectionDrawerItem().withName("Ações do Usuário"),
+                            itemDistance,
+                            itemTypeOccurrence,
+                            itemNotification,
+                            new SectionDrawerItem().withName("Ações do Sistema"),
+                            itemAboutUs,
+                            itemShareApp,
+                            itemReportError
+                    )
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            configuraItensDrawer(position, drawerItem);
+                            return true;
+                        }
+                    })
+                    .build();
+
+
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.nav_camera) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void changeFragment(int position) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment newFragment = null;
+        if (position == 0) {
+            newFragment = new MapFragment();
+        } else if (position % 2== 0) {
+            newFragment = new OccurenceFragment();
+        } else {
+            newFragment = new RadioFragment();
+        }
+
+        fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
+        fragmentTransaction.commit();
+
+
+    }
+
+    //
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+
+                case R.id.navigation_map:
+                    // changeBottomBarColor(bottomNavigation, 0);
+                    changeFragment(0);
+                    break;
+                case R.id.navigation_radio_online:
+                    // changeBottomBarColor(bottomNavigation, 1);
+                    changeFragment(1);
+                    break;
+                case R.id.navigation_occurrence:
+                    // changeBottomBarColor(bottomNavigation, 2);
+                    changeFragment(2);
+                    break;
+
+            }
+            return false;
+        }
+
+
+    };
+
+    //Navigation Drawer.
+    private void configuraItensDrawer(int position, IDrawerItem drawerItem) {
+        try {
+            switch ((int) drawerItem.getIdentifier()) {
+
+                case (int) ID_ABOUT_US:
+                    Intent about_us_intent = new Intent(this, AboutUsActivity.class);
+                    startActivity(about_us_intent);
+                    finish();
+                    break;
+                case (int) ID_DISTANCE:
+                    Intent distance_intent = new Intent(this, RegisterUserActivity.class);
+                    startActivity(distance_intent);
+                    finish();
+                    break;
+                case (int) ID_NOTIFICATION:
+                    Intent notification_intent = new Intent(this, RegisterUserActivity.class);
+                    startActivity(notification_intent);
+                    finish();
+                    break;
+                case (int) ID_OCCURRENCE_TYPE:
+                    Intent occurrence_type_intent = new Intent(this, RegisterUserActivity.class);
+                    startActivity(occurrence_type_intent);
+                    finish();
+                    break;
+                case (int) ID_SHARE_APP:
+                    Intent share_app_intent = new Intent(this, RegisterUserActivity.class);
+                    startActivity(share_app_intent);
+                    finish();
+                    break;
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        drawer.closeDrawer();
+    }
+
+    private void configuraItensHeaderDrawer(){
+        Intent i = new Intent(this, RegisterUserActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    private void configuraItensLogoutDrawer(){
+        //LoginManager.getInstance().logOut();
+      //  Intent login = new Intent(MainActivity.this, LoginActivity.class);
+        //startActivity(login);
+      //  finish();
+    }
+
+    //TODO picture facebook
+    public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImage(ImageView bmImage){
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls){
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try{
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            }catch (Exception e){
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result){
+            bmImage.setImageBitmap(result);
+        }
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return true;
+    }
+}

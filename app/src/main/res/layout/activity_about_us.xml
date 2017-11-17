@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="30dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_gravity="center"
+    tools:context="com.example.gabriela.firecastcommunity.AboutUsActivity">
+
+    <LinearLayout
+        android:id="@+id/about_us_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <ImageView
+            android:id="@+id/image_firecast"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="100dp"
+            android:src="@drawable/firecast_orange" />
+
+        <ImageView
+            android:id="@+id/firecast_draw_line"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/line_draw1"/>
+
+        <TextView
+            android:id="@+id/firecast_description"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/about_firecast"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            />
+
+        <ImageView
+            android:id="@+id/image_firecast_community"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/firecast_community_orange" />
+
+        <ImageView
+            android:id="@+id/firecast_community_draw_line"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/line_draw1"/>
+        <TextView
+            android:id="@+id/firecast_community_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/about_firecast_community"
+            android:gravity="center"
+            />
+
+        <ImageView
+            android:id="@+id/image_team"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/team" />
+
+        <ImageView
+            android:id="@+id/team_draw_line"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/line_draw1"/>
+        <TextView
+            android:id="@+id/team_sspsc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/md_black_1000"
+            android:textStyle="bold"
+            android:text="SSPSC"
+            android:gravity="center"
+            />
+        <RelativeLayout
+            android:id="@+id/sspsc_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            >
+
+
+            <TextView
+                android:id="@+id/sspsc_alain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Alain Frantz"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:id="@+id/sspsc_juliana"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Juliana Kretzer"
+                android:gravity="right"
+                />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/team_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Desenvolvefores"
+            android:textColor="@color/md_black_1000"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
+        <RelativeLayout
+            android:id="@+id/codefloripa_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            >
+
+
+            <TextView
+                android:id="@+id/developer_gabriela"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gabriela Alice da Silva"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:id="@+id/developer_cassio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cássio Waltrick"
+                android:gravity="right"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

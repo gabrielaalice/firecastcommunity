@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">FirecastCommunity</string>
+
+
+    <!-- NavigationButtonView-->
+    <string name="title_occurrence">Ocorrências</string>
+    <string name="title_radio_online">Rádio</string>
+    <string name="title_map">Mapa</string>
+
+    <!-- aboutUsActivity-->
+    <string name="about_firecast">Descriçao Firecast</string>
+    <string name="about_firecast_community">Descriçao Firecast</string>
+
+    <plurals name="cars_dispatched">
+        <item quantity="zero">Nenhuma viatura a caminho</item>
+        <item quantity="one">Uma viatura a caminho</item>
+        <item quantity="many">%d viaturas a caminho</item>
+    </plurals>
+
+
+    <!-- TODO:Ver uso -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_register_user">RegisterUserActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+
+
+
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#de5347</color>
+    <color name="colorPrimaryDark">#E8862F</color>
+    <color name="colorAccent">#FFAA53</color>
+
+    <color name="spectrum_0">#C06158</color>
+    <color name="spectrum_1">#E77C71</color>
+    <color name="spectrum_2">#E8862F</color>
+    <color name="spectrum_3">#FFAA53</color>
+    <color name="spectrum_4">#FFD13E</color>
+    <color name="spectrum_5">#8EE67D</color>
+    <color name="spectrum_6">#49CE42</color>
+    <color name="spectrum_7">#2DC4AF</color>
+    <color name="spectrum_8">#55E5F2</color>
+    <color name="spectrum_9">#22B2E6</color>
+
+
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#F2F2F2</color>
+    <color name="background">#f5f5f7</color>
+    <color name="background_login">#f7f8f9</color>
+    <color name="grey_text">#E6E6E6</color>
+
+
+
+    <array name="occurence_colors">
+        <item>@color/spectrum_0</item>
+        <item>@color/spectrum_1</item>
+        <item>@color/spectrum_2</item>
+        <item>@color/spectrum_3</item>
+        <item>@color/spectrum_4</item>
+        <item>@color/spectrum_5</item>
+        <item>@color/spectrum_6</item>
+        <item>@color/spectrum_7</item>
+        <item>@color/spectrum_8</item>
+        <item>@color/spectrum_9</item>
+    </array>
+
+</resources>
