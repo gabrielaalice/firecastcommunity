@@ -13,8 +13,8 @@ import com.example.gabriela.firecastcommunity.data.FirecastApi;
 import com.example.gabriela.firecastcommunity.data.FirecastClient;
 import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
-import com.example.gabriela.firecastcommunity.validation.DistanceCalculator;
-import com.example.gabriela.firecastcommunity.validation.MetodsHelpers;
+import com.example.gabriela.firecastcommunity.helper.DistanceCalculator;
+import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class OccurenceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            LoadingOccurrence();
         }
     }
 

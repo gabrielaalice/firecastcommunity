@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:layout_gravity="center"
-    tools:context="com.example.gabriela.firecastcommunity.AboutUsActivity">
+    tools:context="com.example.gabriela.firecastcommunity.drawer.AboutUsActivity">
 
     <LinearLayout
         android:id="@+id/about_us_form"

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
-import com.example.gabriela.firecastcommunity.validation.MetodsHelpers;
+import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 
 import java.util.ArrayList;

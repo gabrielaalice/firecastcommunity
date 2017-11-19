@@ -7,6 +7,9 @@
     <string name="title_radio_online">Rádio</string>
     <string name="title_map">Mapa</string>
 
+    <!-- NavigationDrawer-->
+    <string name="action_filter">Filtro</string>
+
     <!-- aboutUsActivity-->
     <string name="about_firecast">Descriçao Firecast</string>
     <string name="about_firecast_community">Descriçao Firecast</string>
@@ -23,8 +26,6 @@
     <string name="title_activity_register_user">RegisterUserActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
-
 
 
 </resources>

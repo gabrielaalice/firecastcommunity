@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.gabriela.firecastcommunity.R;
-import com.example.gabriela.firecastcommunity.RadioOnlineStreamHelpers;
+import com.example.gabriela.firecastcommunity.helper.RadioOnlineStreamHelpers;
 
 
 public class RadioFragment extends Fragment {

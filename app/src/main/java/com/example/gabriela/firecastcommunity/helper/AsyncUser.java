@@ -1,4 +1,4 @@
-package com.example.gabriela.firecastcommunity.validation;
+package com.example.gabriela.firecastcommunity.helper;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,12 +1,10 @@
-package com.example.gabriela.firecastcommunity;
+package com.example.gabriela.firecastcommunity.helper;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
-
-import com.example.gabriela.firecastcommunity.validation.MetodsHelpers;
 
 import java.util.ArrayList;
 import java.util.List;

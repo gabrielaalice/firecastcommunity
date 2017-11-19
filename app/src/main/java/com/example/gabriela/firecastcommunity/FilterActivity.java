@@ -4,32 +4,30 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.Spinner;
 
-public class AboutUsActivity extends AppCompatActivity {
 
-    ImageView line_firecast, line_firecast_community;
+public class FilterActivity extends AppCompatActivity {
 
+    Spinner citySpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_us);
+        setContentView(R.layout.activity_filter);
 
+        //button back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        line_firecast = (ImageView) findViewById(R.id.firecast_draw_line);
-        line_firecast_community = (ImageView) findViewById(R.id.firecast_community_draw_line);
-
+        citySpinner = (Spinner) findViewById(R.id.city_spinner);
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed(){
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -43,8 +41,7 @@ public class AboutUsActivity extends AppCompatActivity {
 
                 break;
 
-            default:
-                break;
+            default:break;
         }
 
         return true;

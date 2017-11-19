@@ -1,4 +1,4 @@
-package com.example.gabriela.firecastcommunity.validation;
+package com.example.gabriela.firecastcommunity.helper;
 
 import java.text.Normalizer;
 import java.text.NumberFormat;

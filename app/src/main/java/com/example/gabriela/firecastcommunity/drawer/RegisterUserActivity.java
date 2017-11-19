@@ -12,7 +12,7 @@ import android.widget.EditText;
 import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.domain.User;
-import com.example.gabriela.firecastcommunity.validation.Constantes;
+import com.example.gabriela.firecastcommunity.helper.Constantes;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;

@@ -1,4 +1,4 @@
-package com.example.gabriela.firecastcommunity.validation;
+package com.example.gabriela.firecastcommunity.helper;
 
 import com.example.gabriela.firecastcommunity.domain.LoginValidation;
 

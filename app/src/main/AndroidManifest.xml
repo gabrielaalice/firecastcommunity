@@ -23,7 +23,8 @@
             android:name=".drawer.RegisterUserActivity"
             android:label="@string/title_activity_register_user"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AboutUsActivity"></activity>
+        <activity android:name=".drawer.AboutUsActivity" />
+        <activity android:name=".FilterActivity"></activity>
     </application>
 
 </manifest>

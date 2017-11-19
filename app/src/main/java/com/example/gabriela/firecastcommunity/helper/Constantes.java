@@ -1,4 +1,4 @@
-package com.example.gabriela.firecastcommunity.validation;
+package com.example.gabriela.firecastcommunity.helper;
 
 /**
  * Created by Diogo Souza on 12/11/2015.

@@ -8,19 +8,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
+import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterUserActivity;
 import com.example.gabriela.firecastcommunity.fragment.MapFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
@@ -35,6 +37,7 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private BottomNavigationView navigation;
     Drawer drawer;
     AccountHeader headerResult;
+    ImageButton filter;
     private static final long ID_ABOUT_US = 100;
     private static final long ID_OCCURRENCE_TYPE = 200;
     private static final long ID_DISTANCE = 300;
@@ -58,7 +62,6 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -185,27 +188,23 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
-        return true;
+    private ArrayList<OccurrenceType> ReturnListTypesOccurrences() {
+        ArrayList<OccurrenceType> al = new ArrayList<>();
+        al.add(new OccurrenceType(8, "ACIDENTE DE TRÂNSITO"));
+        al.add(new OccurrenceType(5, "ATENDIMENTO PRÉ-HOSPITALAR"));
+        al.add(new OccurrenceType(2, "AUXÍLIOS / APOIOS"));
+        al.add(new OccurrenceType(10, "AVERIGUAÇÃO / CORTE DE ÁRVORE"));
+        al.add(new OccurrenceType(11, "AVERIGUAÇÃO / MANEJO DE INSETO"));
+        al.add(new OccurrenceType(9, "AÇÕES PREVENTIVAS"));
+        al.add(new OccurrenceType(7, "DIVERSOS"));
+        al.add(new OccurrenceType(1, "INCÊNDIO"));
+        al.add(new OccurrenceType(6, "OCORRÊNCIA NÃO ATENDIDA"));
+        al.add(new OccurrenceType(3, "PRODUTOS PERIGOSOS"));
+        al.add(new OccurrenceType(4, "SALVAMENTO / BUSCA / RESGATE"));
+        return al;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.nav_camera) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void changeFragment(int position) {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -306,6 +305,11 @@ public class MainActivity extends AppCompatActivity
       //  finish();
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
+
     //TODO picture facebook
     public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -333,8 +337,26 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // menu filterActivity
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
         return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent i = new Intent(this, FilterActivity.class);
+            startActivity(i);
+            finish();
+            //return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
