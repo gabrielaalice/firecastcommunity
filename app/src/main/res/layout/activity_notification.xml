@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="12dp"
+    tools:context="com.example.gabriela.firecastcommunity.drawer.NotificationActivity">
+
+
+    <LinearLayout
+        android:id="@+id/email_login_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="5dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:id="@+id/or"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notificações"
+            android:gravity="start"
+            />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="@color/grey_text" />
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+            android:paddingTop="8dp"
+        tools:layout_editor_absoluteY="19dp"
+        tools:layout_editor_absoluteX="8dp">
+        <Switch
+            android:id="@+id/geralSwitch"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Ativar Notificações"
+            android:checked="true"
+            android:gravity="left"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            tools:layout_editor_absoluteY="19dp"
+            tools:layout_editor_absoluteX="8dp">
+            <Switch
+                android:id="@+id/pushSwitch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Push"
+                android:checked="true"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            tools:layout_editor_absoluteY="19dp"
+            tools:layout_editor_absoluteX="8dp">
+            <Switch
+                android:id="@+id/emailSwitch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="E-mail"
+                android:checked="true"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            tools:layout_editor_absoluteY="19dp"
+            tools:layout_editor_absoluteX="8dp">
+            <Switch
+                android:id="@+id/smsSwitch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="SMS"
+                android:checked="true"
+                android:gravity="left"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btnSave"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Salvar"
+            android:textStyle="bold" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

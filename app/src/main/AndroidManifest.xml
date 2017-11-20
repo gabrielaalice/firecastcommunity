@@ -52,11 +52,12 @@
         <activity
             android:name=".drawer.RegisterErrorActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Drawer"></activity>
-
-        <activity android:name=".drawer.OccurenceTypeUserActivity"
+            android:theme="@style/AppTheme.Drawer" />
+        <activity
+            android:name=".drawer.OccurenceTypeUserActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Drawer"></activity>
+            android:theme="@style/AppTheme.Drawer" />
+        <activity android:name=".drawer.NotificationActivity"></activity>
     </application>
 
 </manifest>

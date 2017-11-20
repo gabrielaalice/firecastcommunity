@@ -20,7 +20,6 @@ public class RegisterErrorActivity extends AppCompatActivity {
     EditText subject, description;
     Button startBtn;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

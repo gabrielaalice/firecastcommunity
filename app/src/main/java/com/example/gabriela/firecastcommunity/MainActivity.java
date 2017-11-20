@@ -23,6 +23,7 @@ import android.widget.ImageView;
 
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
+import com.example.gabriela.firecastcommunity.drawer.NotificationActivity;
 import com.example.gabriela.firecastcommunity.drawer.OccurenceTypeUserActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterErrorActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterUserActivity;
@@ -270,7 +271,7 @@ public class MainActivity extends AppCompatActivity
                     finish();
                     break;
                 case (int) ID_NOTIFICATION:
-                    Intent notification_intent = new Intent(this, RegisterUserActivity.class);
+                    Intent notification_intent = new Intent(this, NotificationActivity.class);
                     startActivity(notification_intent);
                     finish();
                     break;
