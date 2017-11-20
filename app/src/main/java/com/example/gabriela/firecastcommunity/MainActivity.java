@@ -23,6 +23,8 @@ import android.widget.ImageView;
 
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
+import com.example.gabriela.firecastcommunity.drawer.OccurenceTypeUserActivity;
+import com.example.gabriela.firecastcommunity.drawer.RegisterErrorActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterUserActivity;
 import com.example.gabriela.firecastcommunity.fragment.MapFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
@@ -273,13 +275,18 @@ public class MainActivity extends AppCompatActivity
                     finish();
                     break;
                 case (int) ID_OCCURRENCE_TYPE:
-                    Intent occurrence_type_intent = new Intent(this, RegisterUserActivity.class);
+                    Intent occurrence_type_intent = new Intent(this, OccurenceTypeUserActivity.class);
                     startActivity(occurrence_type_intent);
                     finish();
                     break;
                 case (int) ID_SHARE_APP:
                     Intent share_app_intent = new Intent(this, RegisterUserActivity.class);
                     startActivity(share_app_intent);
+                    finish();
+                    break;
+                case (int) ID_REPORT_ERROR:
+                    Intent report_error_intent = new Intent(this, RegisterErrorActivity.class);
+                    startActivity(report_error_intent);
                     finish();
                     break;
 

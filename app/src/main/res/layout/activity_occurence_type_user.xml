@@ -1,48 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ScrollView01"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="30dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:layout_gravity="center"
-    tools:context="com.example.gabriela.firecastcommunity.FilterActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp"
+    tools:context="com.example.gabriela.firecastcommunity.drawer.OccurenceTypeUserActivity">
 
     <LinearLayout
         android:id="@+id/filter_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp">
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Cidade:"
-            android:layout_marginBottom="5dp"/>
-
-        <Spinner
-            android:id="@+id/city_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Distância(KM)"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            />
-
-        <SeekBar
-            android:id="@+id/distance_seekbar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -276,5 +245,13 @@
                 android:button="@null"
                 android:drawableRight="?android:attr/listChoiceIndicatorMultiple"/>
         </RelativeLayout>
+        <Button
+            android:id="@+id/btnSave"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Salvar"
+            android:textStyle="bold" />
     </LinearLayout>
-</ScrollView>
+</android.support.constraint.ConstraintLayout>

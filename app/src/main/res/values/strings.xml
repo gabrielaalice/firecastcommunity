@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FirecastCommunity</string>
+    <string name="app_name">Firecast Comunidade</string>
 
 
     <!-- NavigationButtonView-->
@@ -23,7 +23,6 @@
 
     <!-- TODO:Ver uso -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_register_user">RegisterUserActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
