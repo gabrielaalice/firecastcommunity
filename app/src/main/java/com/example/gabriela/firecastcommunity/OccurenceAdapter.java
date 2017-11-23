@@ -123,7 +123,6 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             referenceTitle = (TextView) itemView.findViewById(R.id.cardoccurrencetitle__reference);
             underlineReference = itemView.findViewById(R.id.underline__reference);
             share = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__share);
-            details = (Button) itemView.findViewById(R.id.cardoccurrenceitem__details);
 
             share.setOnClickListener(new View.OnClickListener(){
 
@@ -145,13 +144,6 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
                 }
             });
 
-            details.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-//                    Intent intent = new Intent(MapActivity.class, OccurenceDetailsActivity.class);
-//                    startActivity(intent);
-                }
-            });
         }
 
         public void bind(int position) {
@@ -167,8 +159,9 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
                 referenceTitle.setVisibility(View.GONE);
                 underlineReference.setVisibility(View.GONE);
             }
+            cars.setText("Teste");
 
-            cars.setText(res.getQuantityString(R.plurals.cars_dispatched, occ.dispatchedCars.size(), occ.dispatchedCars.size()));
+           // cars.setText(res.getQuantityString(R.plurals.cars_dispatched, occ.dispatchedCars.size(), occ.dispatchedCars.size()));
             city.setText(occ.city.name);
 
 

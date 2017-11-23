@@ -136,24 +136,12 @@
 				android:layout_width="22dp"
 				android:layout_height="22dp"
 				android:id="@+id/cardoccurrenceitem__share"
+				android:src="@mipmap/share2"
 				android:layout_marginRight="3dp"
 				android:actionProviderClass="android.widget.ShareActionProvider" />
 
 		</LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:gravity="center"
-			>
-			<Button
-				android:layout_width="22dp"
-				android:layout_height="22dp"
-				android:id="@+id/cardoccurrenceitem__details"
-				android:text="detalhes"/>
-
-		</LinearLayout>
 
 
 	</RelativeLayout>
