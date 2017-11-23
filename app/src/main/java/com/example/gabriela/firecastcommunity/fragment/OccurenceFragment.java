@@ -97,7 +97,7 @@ public class OccurenceFragment extends Fragment {
             UpdateRecicleViewList(listFilter);
         }
 
-        return inflater.inflate(R.layout.fragment_occurence, container, false);
+        return view;
 
     }
     private Occurrence bindLatitudeLongitudeStreet(Occurrence occurrence) {
