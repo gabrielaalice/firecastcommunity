@@ -38,6 +38,7 @@ public class RadioFragment extends Fragment {
         play = (Button) view.findViewById(R.id.playRadio);
         play.setEnabled(false);
         play.setText("Carregando...");
+        LoadingRadio();
         return inflater.inflate(R.layout.fragment_radio, container, false);
     }
     private void LoadingRadio() {

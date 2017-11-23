@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -210,18 +212,20 @@ public class MainActivity extends AppCompatActivity
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment newFragment = null;
-        if (position == 0) {
-            newFragment = new MapFragment();
-        } else if (position % 2== 0) {
-            newFragment = new OccurenceFragment();
-        } else {
-            newFragment = new RadioFragment();
+        switch (position){
+            case 0:
+                newFragment = new MapFragment();
+                break;
+            case 1:
+                newFragment = new RadioFragment();
+                break;
+            case 2:
+                newFragment = new OccurenceFragment();
+                break;
         }
 
         fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
         fragmentTransaction.commit();
-
-
     }
 
     //

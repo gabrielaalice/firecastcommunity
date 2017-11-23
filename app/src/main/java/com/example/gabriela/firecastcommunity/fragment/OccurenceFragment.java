@@ -3,21 +3,27 @@ package com.example.gabriela.firecastcommunity.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.gabriela.firecastcommunity.OccurenceAdapter;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.FirecastApi;
 import com.example.gabriela.firecastcommunity.data.FirecastClient;
 import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
+import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.helper.DistanceCalculator;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 import com.google.android.gms.maps.model.LatLng;
+import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,11 +39,12 @@ public class OccurenceFragment extends Fragment {
     final List<Occurrence> result = new ArrayList<>();
     final List<String> cityNames = new ArrayList<>();
     TextView info_city;
+    private RecyclerView recycler;
+    private OccurenceAdapter adapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public OccurenceFragment() {
-        // Required empty public constructor
+    public OccurenceFragment(){
     }
 
     public static OccurenceFragment newInstance(String param1, String param2) {
@@ -61,6 +68,35 @@ public class OccurenceFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_occurence, container, false);
 
         info_city = (TextView) view.findViewById(R.id.info_city);
+        String teste = info_city.getText().toString();
+        info_city.setText("Teste de alteração do texto de cidade");
+        String a = info_city.getText().toString();
+
+        this.recycler = (RecyclerView) view.findViewById(R.id.recyclerViewOccurrence);
+        this.recycler.setLayoutManager(new LinearLayoutManager(recycler.getContext()));
+
+        try {
+            //LoadingOccurrence();
+            Occurrence o = new Occurrence();
+            o.addressComplement="Complemento";
+            o.addressNeighborhood="Bairro";
+            o.addressNumber=(float)222;
+            o.addressReferencePoint="Referência";
+            o.adressStreet="Rua";
+            o.city=new City(8105, "FLORIANOPOLIS");
+            o.date=new Date().toLocaleString();
+            o.description="descrição";
+            o.distance=(double)10;
+            o.id=1;
+            o.latitude=(double)10;
+            o.longitude=(double)10;
+            o.type = new OccurrenceType(1,"Teste");
+            result.add(o);
+        } finally {
+            List<Occurrence> listFilter = ExecuteFilter(result);
+            UpdateRecicleViewList(listFilter);
+        }
+
         return inflater.inflate(R.layout.fragment_occurence, container, false);
 
     }
@@ -99,7 +135,7 @@ public class OccurenceFragment extends Fragment {
 
     private void LoadingOccurrence() {
 
-        swipeRefreshLayout.setRefreshing(true);
+        //swipeRefreshLayout.setRefreshing(true);
         result.removeAll(result);
         cityNames.removeAll(cityNames);
         String city = MetodsHelpers.normalizeString(getCityLocation());
@@ -164,6 +200,45 @@ public class OccurenceFragment extends Fragment {
                     });
         }
     }
+
+    private List<Occurrence> ExecuteFilter(List<Occurrence> list) {
+        list = stream(list)
+                .distinct()
+                .orderBy(c -> c.distance == null ? 1000000 : c.distance)
+                .thenBy(x -> x.city.name)
+                .thenBy(x -> x.date)
+                .toList();
+
+        return stream(list)
+                .distinct()
+                //.where(x -> filterOccurrences.contains(x.type.id))
+
+//                .where(x-> checkBoxRadiusDistance.isChecked()?
+//                        (x.distance !=null ?
+//                                x.distance <= sb.getProgress()
+//                                : true)
+//                        : true)
+//
+//                .where(x-> checkBoxCidade.isChecked()?
+//                        (x.city !=null ?
+//                                x.city.id == ((City)spCities.getSelectedItem()).id
+//                                : true)
+//                        : true)
+
+                .orderBy(c -> c.distance == null ? 1000000 : c.distance)
+                .thenBy(x -> x.city.name)
+                .thenBy(x -> x.date)
+                .toList();
+    }
+
+    private void UpdateRecicleViewList(List<Occurrence> list){
+        adapter = new OccurenceAdapter(getContext(), list);
+        adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
+        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycler.setAdapter(adapter);
+    }
+
+
     private List<City> cities() {
         List<City> cities = new ArrayList<>();
         cities.add(new City(9939, "ABDON BATISTA"));
