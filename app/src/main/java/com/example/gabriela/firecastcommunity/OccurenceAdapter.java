@@ -3,6 +3,7 @@ package com.example.gabriela.firecastcommunity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 
 import java.util.ArrayList;

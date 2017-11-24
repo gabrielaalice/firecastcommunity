@@ -59,7 +59,10 @@ dependencies {
     compile 'com.thoughtbot:expandablecheckrecyclerview:1.4'
     compile 'com.github.cahemunoz:ExpandableRecyclerView:0.9.4'
     compile 'br.com.zbra:android-linq:1.0.1'
-    compile 'com.google.android.gms:play-services:9.0.0'
+    compile 'com.google.android.gms:play-services:11.0.4'
     compile 'com.google.maps.android:android-maps-utils:0.3.+'
+    compile 'com.facebook.android:facebook-share:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:4.28.0'
     testCompile 'junit:junit:4.12'
 }
+

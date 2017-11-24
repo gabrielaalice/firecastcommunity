@@ -187,11 +187,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .build();
-
-
     }
-
-
 
     private ArrayList<OccurrenceType> ReturnListTypesOccurrences() {
         ArrayList<OccurrenceType> al = new ArrayList<>();

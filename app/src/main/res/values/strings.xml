@@ -14,6 +14,10 @@
     <string name="about_firecast">Descriçao Firecast</string>
     <string name="about_firecast_community">Descriçao Firecast</string>
 
+    <!-- facebook-->
+    <string name="facebook_app_id">204358900107603</string>
+    <string name="fb_login_protocol_scheme">fb204358900107603</string>
+
     <plurals name="cars_dispatched">
         <item quantity="zero">Nenhuma viatura a caminho</item>
         <item quantity="one">Uma viatura a caminho</item>
