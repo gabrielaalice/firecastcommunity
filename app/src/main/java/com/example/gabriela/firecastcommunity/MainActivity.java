@@ -6,20 +6,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -44,7 +41,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,10 +56,55 @@ public class MainActivity extends AppCompatActivity
     private static final long ID_REPORT_ERROR = 600;
     private static final int ID_MANAGE_PROFILE = 100000;
 
+    private void changeFragment(int position) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment newFragment = null;
+        switch (position){
+            case 0:
+                newFragment = new MapFragment();
+                break;
+            case 1:
+                newFragment = new RadioFragment();
+                break;
+            case 2:
+                newFragment = new OccurenceFragment();
+                break;
+        }
+
+        fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
+        fragmentTransaction.commit();
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    changeFragment(0);
+                   break;
+                case R.id.navigation_dashboard:
+                    changeFragment(1);
+                    break;
+                case R.id.navigation_notifications:
+                    changeFragment(2);
+                    break;
+            }
+            return true;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //navigation view drawer
+        //aa view drawer
         final PrimaryDrawerItem itemTypeOccurrence = new PrimaryDrawerItem()
                 .withName("Tipo de ocorrência")
                 .withIdentifier(ID_OCCURRENCE_TYPE)
@@ -165,28 +206,28 @@ public class MainActivity extends AppCompatActivity
              }
 */
 
-            drawer = new DrawerBuilder()
-                    .withAccountHeader(headerResult)
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .addDrawerItems(
-                            new SectionDrawerItem().withName("Ações do Usuário"),
-                            itemDistance,
-                            itemTypeOccurrence,
-                            itemNotification,
-                            new SectionDrawerItem().withName("Ações do Sistema"),
-                            itemAboutUs,
-                            itemShareApp,
-                            itemReportError
-                    )
-                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                        @Override
-                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            configuraItensDrawer(position, drawerItem);
-                            return true;
-                        }
-                    })
-                    .build();
+        drawer = new DrawerBuilder()
+                .withAccountHeader(headerResult)
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        new SectionDrawerItem().withName("Ações do Usuário"),
+                        itemDistance,
+                        itemTypeOccurrence,
+                        itemNotification,
+                        new SectionDrawerItem().withName("Ações do Sistema"),
+                        itemAboutUs,
+                        itemShareApp,
+                        itemReportError
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        configuraItensDrawer(position, drawerItem);
+                        return true;
+                    }
+                })
+                .build();
     }
 
     private ArrayList<OccurrenceType> ReturnListTypesOccurrences() {
@@ -204,56 +245,6 @@ public class MainActivity extends AppCompatActivity
         al.add(new OccurrenceType(4, "SALVAMENTO / BUSCA / RESGATE"));
         return al;
     }
-
-
-
-    private void changeFragment(int position) {
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment newFragment = null;
-        switch (position){
-            case 0:
-                newFragment = new MapFragment();
-                break;
-            case 1:
-                newFragment = new RadioFragment();
-                break;
-            case 2:
-                newFragment = new OccurenceFragment();
-                break;
-        }
-
-        fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
-        fragmentTransaction.commit();
-    }
-
-    //
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-
-                case R.id.navigation_map:
-                    // changeBottomBarColor(bottomNavigation, 0);
-                    changeFragment(0);
-                    break;
-                case R.id.navigation_radio_online:
-                    // changeBottomBarColor(bottomNavigation, 1);
-                    changeFragment(1);
-                    break;
-                case R.id.navigation_occurrence:
-                    // changeBottomBarColor(bottomNavigation, 2);
-                    changeFragment(2);
-                    break;
-
-            }
-            return false;
-        }
-
-
-    };
 
     //Navigation Drawer.
     private void configuraItensDrawer(int position, IDrawerItem drawerItem) {
@@ -308,9 +299,9 @@ public class MainActivity extends AppCompatActivity
 
     private void configuraItensLogoutDrawer(){
         //LoginManager.getInstance().logOut();
-      //  Intent login = new Intent(MainActivity.this, LoginActivity.class);
+        //  Intent login = new Intent(MainActivity.this, LoginActivity.class);
         //startActivity(login);
-      //  finish();
+        //  finish();
     }
 
     @Override
