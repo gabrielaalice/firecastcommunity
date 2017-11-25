@@ -85,25 +85,31 @@
             android:padding="4dp"
             />
 
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="4dp">
+            android:padding="14dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_height="22dp"
+                android:orientation="horizontal"
+                android:gravity="end">
                 <TextView
                     android:id="@+id/cardoccurrenceitem__distance"
-                    android:layout_width="match_parent"
+                    android:layout_width="239dp"
                     android:layout_height="wrap_content"
-                    tools:text="Em 1.4 km"
                     android:gravity="end"
-                    android:padding="6dp"
+                    android:layout_marginRight="7dp"
+                    tools:text="Em 1.4 km"/>
 
-                    />
+                <ImageButton
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/navigation4"
+                    android:id="@+id/cardoccurrenceitem__navigate"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
