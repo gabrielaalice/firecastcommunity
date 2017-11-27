@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity
                     finish();
                     break;
                 case (int) ID_DISTANCE:
-                    Intent distance_intent = new Intent(this, RegisterUserActivity.class);
+                    Intent distance_intent = new Intent(this, DistanceRadiusMapsActivity.class);
                     startActivity(distance_intent);
                     finish();
                     break;

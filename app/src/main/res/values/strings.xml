@@ -7,6 +7,13 @@
     <string name="title_radio_online">Rádio</string>
     <string name="title_map">Mapa</string>
 
+    <!-- Map-->
+    <string name="google_maps_id">AIzaSyDyJwKZ0CI0vgKk4l08JY5ooOQI8ejX1rQ</string>
+    <string name="title_activity_distance_radius_maps">Map</string>
+    <string name="title_radius_map">Definir Abrangência</string>
+    <string name="distance_km_seek">Raio(KM)</string>
+    <string name="city_spinner">Cidade</string>
+
     <!-- NavigationDrawer-->
     <string name="action_filter">Filtro</string>
 
