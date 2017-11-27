@@ -22,6 +22,7 @@ import android.widget.ImageView;
 
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
+import com.example.gabriela.firecastcommunity.drawer.DistanceRadiusMapsActivity;
 import com.example.gabriela.firecastcommunity.drawer.NotificationActivity;
 import com.example.gabriela.firecastcommunity.drawer.OccurenceTypeUserActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterErrorActivity;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         Fragment newFragment = null;
         switch (position){
             case 0:
-                newFragment = new MapFragment();
+                newFragment = new MapsFragment();
                 break;
             case 1:
                 newFragment = new RadioFragment();

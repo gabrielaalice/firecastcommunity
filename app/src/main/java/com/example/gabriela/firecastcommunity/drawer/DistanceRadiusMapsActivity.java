@@ -1,8 +1,11 @@
-package com.example.gabriela.firecastcommunity;
+package com.example.gabriela.firecastcommunity.drawer;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+
+import com.example.gabriela.firecastcommunity.MainActivity;
+import com.example.gabriela.firecastcommunity.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCircleClickListener;
