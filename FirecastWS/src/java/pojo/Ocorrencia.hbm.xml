@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22/11/2017 02:11:50 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojo.Ocorrencia" table="ocorrencia" catalog="bd_firecast_community" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_ocorrencia" />
+        </id>
+        <property name="tsOcorrencia" type="timestamp">
+            <column name="ts_ocorrencia" />
+        </property>
+        <property name="descricao" type="string">
+            <column name="descricao" length="65535" />
+        </property>
+        <property name="logradouro" type="string">
+            <column name="logradouro" length="100" />
+        </property>
+        <property name="numero" type="java.lang.Long">
+            <column name="numero" />
+        </property>
+        <property name="bairro" type="string">
+            <column name="bairro" length="100" />
+        </property>
+        <property name="referencia" type="string">
+            <column name="referencia" length="100" />
+        </property>
+        <property name="latitude" type="java.lang.Double">
+            <column name="latitude" precision="22" scale="0" />
+        </property>
+        <property name="longitude" type="java.lang.Double">
+            <column name="longitude" precision="22" scale="0" />
+        </property>
+        <property name="ativa" type="boolean">
+            <column name="ativa" not-null="true" />
+        </property>
+        <property name="idCidade" type="int">
+            <column name="id_cidade" not-null="true" />
+        </property>
+        <property name="idTpEmergencia" type="int">
+            <column name="id_tp_emergencia" />
+        </property>
+    </class>
+</hibernate-mapping>

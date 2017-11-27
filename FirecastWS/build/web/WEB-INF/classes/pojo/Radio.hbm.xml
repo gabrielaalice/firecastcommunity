@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22/11/2017 02:11:50 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojo.Radio" table="radio" catalog="bd_firecast_community" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_radio" />
+            <generator class="identity" />
+        </id>
+        <property name="url" type="string">
+            <column name="url" length="65535" not-null="true" />
+        </property>
+        <property name="tpAmbienteInterno" type="boolean">
+            <column name="tp_ambiente_interno" not-null="true" />
+        </property>
+        <property name="idCidade" type="int">
+            <column name="id_cidade" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
