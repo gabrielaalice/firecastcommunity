@@ -1,6 +1,7 @@
 package com.example.gabriela.firecastcommunity.drawer;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -30,31 +31,35 @@ import java.util.List;
 public class DistanceRadiusMapsActivity extends FragmentActivity implements OnSeekBarChangeListener,
         OnItemSelectedListener, OnMapReadyCallback {
 
-    private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
+    private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
+
     private static final double DEFAULT_RADIUS_METERS = 1000000;
     private static final int MAX_HUE_DEGREES = 360;
-
+    LatLng actualPosition;
     private GoogleMap mMap;
-
+    private Circle mCircle;
     private List<DraggableCircle> mCircles = new ArrayList<>(1);
 
-    private SeekBar mFillHueBar;
-    private Spinner mStrokePatternSpinner;
+    private SeekBar radiusSeekbar;
+    private Spinner citySpinner;
+
 
     private class DraggableCircle {
         private final Marker mCenterMarker;
-        private final Circle mCircle;
+
         public DraggableCircle(LatLng center, double radiusMeters) {
             mCenterMarker = mMap.addMarker(new MarkerOptions()
                     .position(center)
                     .draggable(true));
+
             mCircle = mMap.addCircle(new CircleOptions()
                     .center(center)
-                    .radius(radiusMeters)
-                    .strokeWidth(10.2F)
-                    .strokeColor(R.color.colorPrimary)
-                    .fillColor(R.color.colorPrimaryDark)
+                    .radius(radiusSeekbar.getProgress() * 1000)
+                    .strokeWidth(5)
+                    .strokeColor(Color.RED)
+                    .fillColor(0x220000FF)
                     .clickable(false));
+
         }
 
     }
@@ -65,11 +70,25 @@ public class DistanceRadiusMapsActivity extends FragmentActivity implements OnSe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_distance_radius_maps);
 
-        mFillHueBar = (SeekBar) findViewById(R.id.fillHueSeekBar);
-        mFillHueBar.setMax(MAX_HUE_DEGREES);
-        mFillHueBar.setProgress(MAX_HUE_DEGREES / 2);
+        radiusSeekbar = (SeekBar) findViewById(R.id.radiusSeekbar);
+        radiusSeekbar.setMax(MAX_HUE_DEGREES);
+        radiusSeekbar.setProgress(MAX_HUE_DEGREES / 2);
 
-        mStrokePatternSpinner = (Spinner) findViewById(R.id.strokePatternSpinner);
+        radiusSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mCircle.setRadius(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(final SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(final SeekBar seekBar) {
+            }
+        });
+
+        citySpinner = (Spinner) findViewById(R.id.citySpinner);
         //LIST OF CITIES
         /*
         mStrokePatternSpinner.setAdapter(new ArrayAdapter<>(
@@ -88,15 +107,15 @@ public class DistanceRadiusMapsActivity extends FragmentActivity implements OnSe
         map.setContentDescription(getString(R.string.title_activity_distance_radius_maps));
 
         mMap = map;
-        mFillHueBar.setOnSeekBarChangeListener(this);
+        radiusSeekbar.setOnSeekBarChangeListener(this);
 
-        mStrokePatternSpinner.setOnItemSelectedListener(this);
+        citySpinner.setOnItemSelectedListener(this);
 
-        DraggableCircle circle = new DraggableCircle(SYDNEY, DEFAULT_RADIUS_METERS);
+        DraggableCircle circle = new DraggableCircle(positionGabriela, radiusSeekbar.getProgress() * 1000);
         mCircles.add(circle);
 
         // Move the map so that it is centered on the initial circle
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SYDNEY, 4.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionGabriela, 5.0f));
 
         // Set up the click listener for the circle.
         map.setOnCircleClickListener(new OnCircleClickListener() {
@@ -105,17 +124,20 @@ public class DistanceRadiusMapsActivity extends FragmentActivity implements OnSe
                 }
         });
 
+
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        if (parent.getId() == R.id.strokePatternSpinner) {
+        if (parent.getId() == R.id.city_spinner) {
             for (DraggableCircle draggableCircle : mCircles) {
                 //   draggableCircle.setStrokePattern(getSelectedPattern(pos));
             }
         }
     }
+
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

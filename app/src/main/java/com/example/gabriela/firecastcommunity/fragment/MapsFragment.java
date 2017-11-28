@@ -1,4 +1,4 @@
-package com.example.gabriela.firecastcommunity;
+package com.example.gabriela.firecastcommunity.fragment;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.gabriela.firecastcommunity.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
