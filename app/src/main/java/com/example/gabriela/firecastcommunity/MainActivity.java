@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ import com.example.gabriela.firecastcommunity.drawer.NotificationActivity;
 import com.example.gabriela.firecastcommunity.drawer.OccurenceTypeUserActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterErrorActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterUserActivity;
+import com.example.gabriela.firecastcommunity.drawer.ShareAppActivity;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
@@ -102,12 +104,19 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment newFragment = new MapsFragment();
+        fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
+        fragmentTransaction.commit();
+
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+       // getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -272,7 +281,7 @@ public class MainActivity extends AppCompatActivity
                     finish();
                     break;
                 case (int) ID_SHARE_APP:
-                    Intent share_app_intent = new Intent(this, RegisterUserActivity.class);
+                    Intent share_app_intent = new Intent(this, ShareAppActivity.class);
                     startActivity(share_app_intent);
                     finish();
                     break;

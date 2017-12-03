@@ -89,73 +89,242 @@
             android:layout_marginTop="20dp"
             android:textColor="@color/md_black_1000"
             android:textStyle="bold"
-            android:text="SSPSC"
+            android:text="@string/sspsc_group"
             android:gravity="center"
             />
         <RelativeLayout
-            android:id="@+id/sspsc_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp"
+            android:paddingTop="20dp"
             >
 
-
             <TextView
-                android:id="@+id/sspsc_alain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Alain Frantz"
+                android:textStyle="bold"
+                android:text="@string/team_alain"
+                android:paddingLeft="20dp"
                 android:gravity="left"
                 />
 
             <TextView
-                android:id="@+id/sspsc_juliana"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Juliana Kretzer"
+                android:text="@string/team_juliana"
+                android:textStyle="bold"
                 android:gravity="right"
+                android:paddingRight="20dp"
                 />
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/firefighter"
+                android:paddingLeft="20dp"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/firefighter"
+                android:gravity="right"
+                android:paddingRight="20dp"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/team_priscila"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:gravity="left"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/itdirector"
+                android:paddingLeft="20dp"
+                android:gravity="left"
+                />
+
+        </RelativeLayout>
         <TextView
             android:id="@+id/team_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Desenvolvefores"
+            android:text="@string/developer_group"
             android:textColor="@color/md_black_1000"
             android:textStyle="bold"
             android:gravity="center"
             />
         <RelativeLayout
-            android:id="@+id/codefloripa_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp"
+            android:paddingTop="20dp"
             >
 
-
             <TextView
-                android:id="@+id/developer_gabriela"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gabriela Alice da Silva"
+                android:textStyle="bold"
+                android:text="@string/team_ana"
+                android:paddingLeft="20dp"
                 android:gravity="left"
                 />
 
             <TextView
-                android:id="@+id/developer_cassio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cássio Waltrick"
+                android:text="@string/team_cassio"
+                android:textStyle="bold"
                 android:gravity="right"
+                android:paddingRight="20dp"
                 />
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/developer"
+                android:paddingLeft="20dp"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/developer"
+                android:gravity="right"
+                android:paddingRight="20dp"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/team_bonet"
+                android:paddingLeft="20dp"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/team_gabriela"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:paddingRight="20dp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/developer"
+                android:paddingLeft="20dp"
+                android:gravity="left"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/developer"
+                android:gravity="right"
+                android:paddingRight="20dp"
+                />
+
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/ux_group"
+            android:textColor="@color/md_black_1000"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/team_jean"
+                android:paddingLeft="20dp"
+                android:gravity="left"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/designer"
+                android:gravity="left"
+                android:paddingLeft="20dp" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>

@@ -34,11 +34,28 @@
     <string name="name">nome</string>
     <string name="confirm_password">confirma</string>
 
-    <!-- details-->
+    <!-- details occurence-->
     <string name="street">rua</string>
     <string name="reference">referência</string>
     <string name="city">cidade</string>
     <string name="situation">situação</string>
+
+    <!-- team-->
+    <string name="developer_group">Desenvolvedores</string>
+    <string name="sspsc_group">SSPSC</string>
+    <string name="ux_group">UX | UI | Visual Designer</string>
+    <string name="developer">Desenvolvedor</string>
+    <string name="firefighter">Bombeiro Militar</string>
+    <string name="itdirector">Diretora de TI</string>
+    <string name="designer">Designer and Illustrator</string>
+    <string name="team_ana">Ana Luiza Goes</string>
+    <string name="team_cassio">Cássio Waltrick</string>
+    <string name="team_gabriela">Gabriela Alice</string>
+    <string name="team_bonet">Eduardo Bonet</string>
+    <string name="team_alain">Alain Frantz</string>
+    <string name="team_juliana">Juliana Kretzer</string>
+    <string name="team_priscila">Priscila Mangaroni</string>
+    <string name="team_jean">Jean Menezes</string>
 
     <!-- butoon-->
     <string name="btn_save">Salvar</string>

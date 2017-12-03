@@ -47,6 +47,8 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
         private final Circle mCircle;
         private double mRadiusMeters;
 
+
+
         public DraggableCircle(LatLng center, double radiusMeters) {
             mRadiusMeters = radiusMeters;
             mCenterMarker = mMap.addMarker(new MarkerOptions()
