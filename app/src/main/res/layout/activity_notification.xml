@@ -9,7 +9,7 @@
 
 
     <LinearLayout
-        android:id="@+id/email_login_form"
+        android:id="@+id/notification_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -17,7 +17,6 @@
         tools:layout_editor_absoluteX="8dp">
 
         <TextView
-            android:id="@+id/or"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Notificações"
@@ -72,7 +71,7 @@
                 android:id="@+id/emailSwitch"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="E-mail"
+                android:text="@string/email"
                 android:checked="true"
                 android:gravity="left"/>
         </LinearLayout>
@@ -98,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Salvar"
+            android:text="@string/btn_save"
             android:textStyle="bold" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

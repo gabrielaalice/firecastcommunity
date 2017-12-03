@@ -31,7 +31,7 @@ public class RegisterErrorActivity extends AppCompatActivity {
 
         subject = (EditText) findViewById(R.id.edt_subject);
         description = (EditText) findViewById(R.id.edt_description);
-        startBtn = (Button) findViewById(R.id.sendEmail);
+        startBtn = (Button) findViewById(R.id.btn_send);
         startBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 sendEmail();

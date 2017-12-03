@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Firecast Comunidade</string>
 
-
     <!-- NavigationButtonView-->
     <string name="title_occurrence">Ocorrências</string>
     <string name="title_radio_online">Rádio</string>
@@ -17,13 +16,50 @@
     <!-- NavigationDrawer-->
     <string name="action_filter">Filtro</string>
 
-    <!-- aboutUsActivity-->
+    <!-- -->
     <string name="about_firecast">Descriçao Firecast</string>
     <string name="about_firecast_community">Descriçao Firecast</string>
+    <string name="description">Descrição</string>
+    <string name="subject">Assunto</string>
 
     <!-- facebook-->
     <string name="facebook_app_id">204358900107603</string>
     <string name="fb_login_protocol_scheme">fb204358900107603</string>
+
+    <!-- user-->
+    <string name="login">login</string>
+    <string name="password">senha</string>
+    <string name="email">E-mail</string>
+    <string name="forgot_password">Esqueci minha senha</string>
+    <string name="name">nome</string>
+    <string name="confirm_password">confirma</string>
+
+    <!-- details-->
+    <string name="street">rua</string>
+    <string name="reference">referência</string>
+    <string name="city">cidade</string>
+    <string name="situation">situação</string>
+
+    <!-- butoon-->
+    <string name="btn_save">Salvar</string>
+    <string name="btn_login">Entrar</string>
+    <string name="btn_send">Enviar</string>
+    <string name="btn_radio">Rádio</string>
+
+    <!-- Tipos de ocorrências-->
+    <string name="occurence_type">Tipos de Ocorrências</string>
+    <string name="oc_accident_car">Acidente de Trânsito</string>
+    <string name="oc_paramedics">Atendimento pré-hospitalar</string>
+    <string name="oc_support">Auxílios/Apoios</string>
+    <string name="oc_tree_cutting">Averiguação / Corte de árvore</string>
+    <string name="oc_insect">Averiguação / Manejo de Inseto</string>
+    <string name="oc_action_preventive">Ações Preventivas</string>
+    <string name="oc_other">Diversos</string>
+    <string name="oc_fire">Incêncio</string>
+    <string name="oc_nao_atendida">Ocorrência não Atendida</string>
+    <string name="oc_dangerous_product">Produtos Perigosos</string>
+    <string name="oc_search_rescue">Salvamento / Busca / Resgate</string>
+
 
     <plurals name="cars_dispatched">
         <item quantity="zero">Nenhuma viatura a caminho</item>

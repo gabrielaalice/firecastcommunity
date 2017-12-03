@@ -65,8 +65,8 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        edtLogin = (EditText) findViewById(R.id.edtLogin);
-        edtSenha = (EditText) findViewById(R.id.edtSenha);
+        edtLogin = (EditText) findViewById(R.id.edt_login);
+        edtSenha = (EditText) findViewById(R.id.edt_senha);
         txtRegisterUser = (TextView) findViewById(R.id.text_register);
         txtRegisterUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btnLogar = (Button) findViewById(R.id.btnLogar);
+        btnLogar = (Button) findViewById(R.id.btn_login);
 
         btnLogar.setOnClickListener(new View.OnClickListener() {
             @Override

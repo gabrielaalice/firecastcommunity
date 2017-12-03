@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <Spinner
-                android:id="@+id/citySpinner"
+                android:id="@+id/city_spinner"
                 android:spinnerMode="dropdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -34,10 +34,14 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
             <TextView android:text="@string/distance_km_seek" />
-            <SeekBar android:id="@+id/radiusSeekbar" />
+            <SeekBar android:id="@+id/distance_km_seek" />
         </TableRow>
 
-
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_save" />
 
     </TableLayout>
 

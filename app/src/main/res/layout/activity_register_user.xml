@@ -20,7 +20,7 @@
         android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/register_user_image"
         android:layout_width="wrap_content"
         android:layout_height="214dp"
         android:src="@drawable/logo_regiter_user" />
@@ -40,7 +40,7 @@
                 android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="nome"
+                android:hint="@string/name"
                 android:gravity="end"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -55,7 +55,7 @@
                 android:id="@+id/edt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="e-mail"
+                android:hint="@string/email"
                 android:gravity="end"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -70,7 +70,7 @@
                 android:id="@+id/edt_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="senha"
+                android:hint="@string/password"
                 android:gravity="end"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -85,7 +85,7 @@
                 android:id="@+id/edt_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="confirma"
+                android:hint="@string/confirm_password"
                 android:gravity="end"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -100,7 +100,7 @@
                 android:id="@+id/edt_max_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="distância máxima (km)"
+                android:hint="@string/distance_km_seek"
                 android:gravity="end"
                 android:digits="0123456789"
                 android:inputType="number"
@@ -109,12 +109,12 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_save"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Salvar"
+            android:text="@string/btn_save"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

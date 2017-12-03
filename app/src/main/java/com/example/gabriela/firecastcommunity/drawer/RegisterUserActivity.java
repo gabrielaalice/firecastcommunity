@@ -50,7 +50,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         lytTxtConfirmPassword = (TextInputLayout) findViewById(R.id.lyt_confirm_password);
         edtDistance = (EditText) findViewById(R.id.edt_max_distance);
 
-        btnRegister = (Button) findViewById(R.id.btn_register);
+        btnRegister = (Button) findViewById(R.id.btn_save);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override

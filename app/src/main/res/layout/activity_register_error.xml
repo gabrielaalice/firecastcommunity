@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:hint="Assunto"
+                android:hint="@string/subject"
                 android:maxLines="1"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:hint="Descrição"
+                android:hint="@string/description"
                 android:minLines="7"
                 android:scrollHorizontally="false"
 
@@ -50,10 +50,10 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/sendEmail"
+            android:id="@+id/btn_send"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Enviar" />
+            android:text="@string/btn_send" />
 
     </LinearLayout>
 

@@ -31,7 +31,7 @@
 
 			<TextView
 				android:id="@+id/cardoccurrencetitle__location"
-				android:text="rua"
+				android:text="@string/street"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:padding="2dp"
@@ -54,7 +54,7 @@
 
 			<TextView
 				android:id="@+id/cardoccurrencetitle__reference"
-				android:text="referência"
+				android:text="@string/reference"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:padding="2dp"
@@ -76,7 +76,7 @@
 
 			<TextView
 				android:id="@+id/cardoccurrencetitle__city"
-				android:text="cidade"
+				android:text="@string/city"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:padding="2dp"
@@ -97,7 +97,7 @@
 
 			<TextView
 				android:id="@+id/cardoccurrencetitle__cars"
-				android:text="situação"
+				android:text="@string/situation"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:padding="2dp"

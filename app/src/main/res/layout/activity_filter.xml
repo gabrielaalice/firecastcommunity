@@ -23,7 +23,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:text="Cidade:"
+            android:text="@string/city_spinner"
             android:layout_marginBottom="5dp"/>
 
         <Spinner
@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Distância(KM)"
+            android:text="@string/distance_km_seek"
             android:layout_marginTop="20dp"
             android:gravity="center"
             />
@@ -47,7 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Tipos de Ocorrências"
+            android:text="@string/occurence_type"
             android:layout_marginTop="20dp"
             android:gravity="center"
             />
@@ -62,8 +62,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/car_accident_icon" />
             <CheckBox
-                android:id="@+id/acidente_transito"
-                android:text="Acidente de Trânsito"
+                android:id="@+id/oc_accident_car"
+                android:text="@string/oc_accident_car"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -84,8 +84,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/paramedics_icon" />
             <CheckBox
-                android:id="@+id/atendimento_pre_hospitalar"
-                android:text="Atendimento pré-hospitalar"
+                android:id="@+id/oc_paramedics"
+                android:text="@string/oc_paramedics"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
@@ -104,8 +104,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/support_icon" />
             <CheckBox
-                android:id="@+id/auxilios_apoios"
-                android:text="Auxílios/Apoios"
+                android:id="@+id/oc_support"
+                android:text="@string/oc_support"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
@@ -125,8 +125,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/tree_cutting_icon" />
             <CheckBox
-                android:id="@+id/averiguacao_corte"
-                android:text="Averiguação / Corte de árvore"
+                android:id="@+id/oc_tree_cutting"
+                android:text="@string/oc_tree_cutting"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="25dp"
                 android:layout_height="match_parent"
@@ -145,8 +145,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/insect_control_icon" />
             <CheckBox
-                android:id="@+id/averiguacao_manejo_insect"
-                android:text="Averiguação / Manejo de Inseto"
+                android:id="@+id/oc_insect"
+                android:text="@string/oc_insect"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="25dp"
                 android:layout_height="match_parent"
@@ -166,8 +166,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/tree_cutting_icon" />
             <CheckBox
-                android:id="@+id/acoes_preventivas"
-                android:text="Ações Preventivas"
+                android:id="@+id/oc_action_preventive"
+                android:text="@string/oc_action_preventive"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
@@ -188,8 +188,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/other_icon" />
             <CheckBox
-                android:id="@+id/diversos"
-                android:text="Diversos"
+                android:id="@+id/oc_other"
+                android:text="@string/oc_other"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
@@ -208,8 +208,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/fire_icon" />
             <CheckBox
-                android:id="@+id/incendio"
-                android:text="Incêncio"
+                android:id="@+id/oc_fire"
+                android:text="oc_fire"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
@@ -228,8 +228,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/other_icon" />
             <CheckBox
-                android:id="@+id/ocorrencia_nao_atendida"
-                android:text="Ocorrência não Atendida"
+                android:id="@+id/oc_nao_atendida"
+                android:text="@string/oc_nao_atendida"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
@@ -248,8 +248,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/dangerous_product_icon" />
             <CheckBox
-                android:id="@+id/produtos_perigosos"
-                android:text="Produtos Perigosos"
+                android:id="@+id/oc_dangerous_product"
+                android:text="@string/oc_dangerous_product"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
@@ -268,8 +268,8 @@
                 android:layout_height="30dp"
                 android:src="@drawable/search_rescue_icon" />
             <CheckBox
-                android:id="@+id/salvamento"
-                android:text="Salvamento / Busca / Resgate"
+                android:id="@+id/oc_search_rescue"
+                android:text="@string/oc_search_rescue"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"

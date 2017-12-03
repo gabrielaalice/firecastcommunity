@@ -12,15 +12,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCircleClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
@@ -28,40 +27,54 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistanceRadiusMapsActivity extends FragmentActivity implements OnSeekBarChangeListener,
-        OnItemSelectedListener, OnMapReadyCallback {
+
+public class DistanceRadiusMapsActivity extends FragmentActivity
+        implements OnSeekBarChangeListener, GoogleMap.OnMarkerDragListener,
+        OnMapReadyCallback {
+
 
     private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
 
-    private static final double DEFAULT_RADIUS_METERS = 1000000;
-    private static final int MAX_HUE_DEGREES = 360;
-    LatLng actualPosition;
     private GoogleMap mMap;
-    private Circle mCircle;
+
     private List<DraggableCircle> mCircles = new ArrayList<>(1);
-
-    private SeekBar radiusSeekbar;
+    private SeekBar distanceSeekBar;
     private Spinner citySpinner;
-
+    private Button saveButton;
 
     private class DraggableCircle {
         private final Marker mCenterMarker;
+        private final Circle mCircle;
+        private double mRadiusMeters;
 
         public DraggableCircle(LatLng center, double radiusMeters) {
+            mRadiusMeters = radiusMeters;
             mCenterMarker = mMap.addMarker(new MarkerOptions()
                     .position(center)
                     .draggable(true));
-
+            ;
             mCircle = mMap.addCircle(new CircleOptions()
                     .center(center)
-                    .radius(radiusSeekbar.getProgress() * 1000)
-                    .strokeWidth(5)
+                    .radius(100000)
                     .strokeColor(Color.RED)
                     .fillColor(0x220000FF)
-                    .clickable(false));
-
+                    .clickable(true));
         }
 
+        public boolean onMarkerMoved(Marker marker) {
+            if (marker.equals(mCenterMarker)) {
+                mCircle.setCenter(marker.getPosition());
+                mCircle.setRadius(distanceSeekBar.getProgress() * 1000);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void onStyleChange() {
+          //  mCircle.setStrokeColor(R.color.colorPrimaryDark);
+            mCircle.setRadius(distanceSeekBar.getProgress() * 1000);
+        }
     }
 
 
@@ -70,78 +83,63 @@ public class DistanceRadiusMapsActivity extends FragmentActivity implements OnSe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_distance_radius_maps);
 
-        radiusSeekbar = (SeekBar) findViewById(R.id.radiusSeekbar);
-        radiusSeekbar.setMax(MAX_HUE_DEGREES);
-        radiusSeekbar.setProgress(MAX_HUE_DEGREES / 2);
+         distanceSeekBar = (SeekBar) findViewById(R.id.distance_km_seek);
+        citySpinner = (Spinner) findViewById(R.id.city_spinner);
+        saveButton = (Button) findViewById(R.id.btn_save);
 
-        radiusSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mCircle.setRadius(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(final SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(final SeekBar seekBar) {
-            }
-        });
-
-        citySpinner = (Spinner) findViewById(R.id.citySpinner);
-        //LIST OF CITIES
-        /*
-        mStrokePatternSpinner.setAdapter(new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item,
-                getResourceStrings(PATTERN_TYPE_NAME_RESOURCE_IDS)));
-*/
+        distanceSeekBar.setMax(100);
+        distanceSeekBar.setProgress(distanceSeekBar.getProgress() * 1000);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
+    public SeekBar.OnSeekBarChangeListener FilterDistance() {
+        return new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                distanceSeekBar = seekBar;
+
+                for (DraggableCircle draggableCircle : mCircles) {
+                    draggableCircle.onStyleChange();
+                }
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //tvSb.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //tvSb.setVisibility(View.GONE);
+            }
+        };
+    };
     @Override
     public void onMapReady(GoogleMap map) {
-        // Override the default content description on the view, for accessibility mode.
-        map.setContentDescription(getString(R.string.title_activity_distance_radius_maps));
+        map.setContentDescription(getString(R.string.app_name));
 
         mMap = map;
-        radiusSeekbar.setOnSeekBarChangeListener(this);
+        mMap.setOnMarkerDragListener(this);
 
-        citySpinner.setOnItemSelectedListener(this);
-
-        DraggableCircle circle = new DraggableCircle(positionGabriela, radiusSeekbar.getProgress() * 1000);
+        distanceSeekBar.setOnSeekBarChangeListener(FilterDistance());
+        DraggableCircle circle = new DraggableCircle(positionGabriela, distanceSeekBar.getProgress() * 1000);
         mCircles.add(circle);
 
-        // Move the map so that it is centered on the initial circle
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionGabriela, 5.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionGabriela, 4.0f));
 
-        // Set up the click listener for the circle.
         map.setOnCircleClickListener(new OnCircleClickListener() {
             @Override
             public void onCircleClick(Circle circle) {
-                }
+                circle.setStrokeColor(circle.getStrokeColor() ^ 0x00ffffff);
+            }
         });
 
-
-    }
-
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        if (parent.getId() == R.id.city_spinner) {
-            for (DraggableCircle draggableCircle : mCircles) {
-                //   draggableCircle.setStrokePattern(getSelectedPattern(pos));
-            }
-        }
-    }
-
-
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Don't do anything here.
     }
 
     @Override
@@ -158,10 +156,35 @@ public class DistanceRadiusMapsActivity extends FragmentActivity implements OnSe
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
     }
+
     @Override
-    public void onBackPressed() {
+    public void onMarkerDragStart(Marker marker) {
+        onMarkerMoved(marker);
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        onMarkerMoved(marker);
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+        onMarkerMoved(marker);
+    }
+
+    private void onMarkerMoved(Marker marker) {
+        for (DraggableCircle draggableCircle : mCircles) {
+            if (draggableCircle.onMarkerMoved(marker)) {
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
+
 }
