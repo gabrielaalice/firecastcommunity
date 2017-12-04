@@ -21,6 +21,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.gabriela.firecastcommunity.data.BancoDados;
+import com.example.gabriela.firecastcommunity.data.FirecastApi;
+import com.example.gabriela.firecastcommunity.data.FirecastClient;
+import com.example.gabriela.firecastcommunity.domain.City;
+import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
 import com.example.gabriela.firecastcommunity.drawer.DistanceRadiusMapsActivity;
@@ -32,6 +37,9 @@ import com.example.gabriela.firecastcommunity.drawer.ShareAppActivity;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
+import com.example.gabriela.firecastcommunity.helper.DistanceCalculator;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -41,8 +49,23 @@ import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static br.com.zbra.androidlinq.Linq.stream;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,19 +82,26 @@ public class MainActivity extends AppCompatActivity
     private static final long ID_REPORT_ERROR = 600;
     private static final int ID_MANAGE_PROFILE = 100000;
 
+    ScheduledExecutorService executor;
+    Runnable periodicTask;
+    final List<Occurrence> listOccurenceEnabled = new ArrayList<>();
+    private LatLng actualPosition;
+
+    private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
+
     private void changeFragment(int position) {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment newFragment = null;
         switch (position){
             case 0:
-                newFragment = new MapsFragment();
+                newFragment = new MapsFragment(10, listOccurenceEnabled);
                 break;
             case 1:
                 newFragment = new RadioFragment();
                 break;
             case 2:
-                newFragment = new OccurenceFragment();
+                newFragment = new OccurenceFragment(listOccurenceEnabled);
                 break;
         }
 
@@ -237,22 +267,68 @@ public class MainActivity extends AppCompatActivity
                     }
                 })
                 .build();
+
+        //executor = Executors.newSingleThreadScheduledExecutor();
+        //periodicTask = new Runnable() {
+            //public void run() {
+try {
+    buscarOcorrencias();
+    //}
+    //};
+}finally{    changeFragment(0);}
     }
 
-    private ArrayList<OccurrenceType> ReturnListTypesOccurrences() {
-        ArrayList<OccurrenceType> al = new ArrayList<>();
-        al.add(new OccurrenceType(8, "ACIDENTE DE TRÂNSITO"));
-        al.add(new OccurrenceType(5, "ATENDIMENTO PRÉ-HOSPITALAR"));
-        al.add(new OccurrenceType(2, "AUXÍLIOS / APOIOS"));
-        al.add(new OccurrenceType(10, "AVERIGUAÇÃO / CORTE DE ÁRVORE"));
-        al.add(new OccurrenceType(11, "AVERIGUAÇÃO / MANEJO DE INSETO"));
-        al.add(new OccurrenceType(9, "AÇÕES PREVENTIVAS"));
-        al.add(new OccurrenceType(7, "DIVERSOS"));
-        al.add(new OccurrenceType(1, "INCÊNDIO"));
-        al.add(new OccurrenceType(6, "OCORRÊNCIA NÃO ATENDIDA"));
-        al.add(new OccurrenceType(3, "PRODUTOS PERIGOSOS"));
-        al.add(new OccurrenceType(4, "SALVAMENTO / BUSCA / RESGATE"));
-        return al;
+    private void buscarOcorrencias() {
+        listOccurenceEnabled.removeAll(listOccurenceEnabled);
+        FirecastClient fire = new FirecastClient();
+        FirecastApi api = fire.retrofit.create(FirecastApi.class);
+        List<City> listCities = BancoDados.cities();
+
+        for (City cidade : listCities) {
+            api.getOccurrences(cidade.name)
+                    .enqueue(new Callback<List<Occurrence>>() {
+
+                        public void onResponse(Call<List<Occurrence>> call, Response<List<Occurrence>> response) {
+
+                                List<Occurrence> list = response.body();
+                                if (list != null) {
+                                    List<Integer> listIds = stream(listOccurenceEnabled).select(c -> c.id).toList();
+                                    List<Occurrence> listList = stream(list).where(c -> !listIds.contains(c.id)).toList();
+
+                                    for (Occurrence occ : listList) {
+                                        actualPosition = positionGabriela;
+                                            Double distance = new DistanceCalculator()
+                                                    .distancia(actualPosition, getLocation(occ));
+                                            if (distance == 0 || distance < 0) {
+                                                occ.distance = null;
+                                            } else {
+                                                occ.distance = distance / 1000;
+                                            }
+                                    }
+
+//                                    listList.forEach(occ->
+//                                            occ.distance = new DistanceCalculator()
+//                                                    .distance(actualPosition, getLocation(occ)));
+
+                                    listOccurenceEnabled.addAll(listList);
+                                }
+                            }
+
+                        @Override
+                        public void onFailure(Call<List<Occurrence>> call, Throwable t) {
+
+                        }
+                    });
+    }
+    }
+
+
+
+    private Occurrence getLocation(Occurrence occurrence) {
+        if (occurrence.latitude != null || occurrence.longitude != null) {
+            return occurrence;
+        }
+        return null;
     }
 
     //Navigation Drawer.

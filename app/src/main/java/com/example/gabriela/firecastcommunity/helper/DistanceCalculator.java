@@ -78,6 +78,7 @@ public class DistanceCalculator {
 //    }
 
     public double distancia(LatLng actualPosition, Occurrence occurrence) {
+        if(actualPosition!=null && occurrence!=null) {
             if (occurrence.latitude != null && occurrence.longitude != null) {
                 double lat1 = actualPosition.latitude;
                 double lon1 = actualPosition.longitude;
@@ -87,6 +88,7 @@ public class DistanceCalculator {
                 LatLng posicaiFinal = new LatLng(lat2, lon2);
                 return SphericalUtil.computeDistanceBetween(posicaoInicial, posicaiFinal);
             }
+        }
             return -1;
     }
 }

@@ -162,9 +162,9 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
                 referenceTitle.setVisibility(View.GONE);
                 underlineReference.setVisibility(View.GONE);
             }
-            cars.setText("Teste");
 
-           // cars.setText(res.getQuantityString(R.plurals.cars_dispatched, occ.dispatchedCars.size(), occ.dispatchedCars.size()));
+            cars.setText(res.getQuantityString(R.plurals.cars_dispatched, occ.dispatchedCars.size(), occ.dispatchedCars.size()));
+
             city.setText(occ.city.name);
 
 

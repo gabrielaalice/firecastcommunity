@@ -44,7 +44,7 @@
 
         <activity
             android:name=".SplashActivity"
-            android:label=""
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.SplshScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -76,7 +76,7 @@
         <activity android:name=".drawer.NotificationActivity" />
         <activity
             android:name=".MainActivity"
-            android:label=""
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".drawer.DistanceRadiusMapsActivity"
