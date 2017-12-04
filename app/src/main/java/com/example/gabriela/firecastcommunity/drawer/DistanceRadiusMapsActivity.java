@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,37 +37,27 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
     private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
 
     private GoogleMap mMap;
-
-    private List<DraggableCircle> mCircles = new ArrayList<>(1);
+    private TextView txtSeekBar;
     private SeekBar distanceSeekBar;
     private Spinner citySpinner;
     private Button saveButton;
+    private Circle circle;
 
     private class DraggableCircle {
         private final Marker mCenterMarker;
-        private final Circle mCircle;
-        private double mRadiusMeters;
-
-
 
         public DraggableCircle(LatLng center, double radiusMeters) {
-            mRadiusMeters = radiusMeters;
             mCenterMarker = mMap.addMarker(new MarkerOptions()
                     .position(center)
                     .draggable(true));
-            ;
-            mCircle = mMap.addCircle(new CircleOptions()
-                    .center(center)
-                    .radius(100000)
-                    .strokeColor(Color.RED)
-                    .fillColor(0x220000FF)
-                    .clickable(true));
+
+            UpdateCircleMap();
         }
 
         public boolean onMarkerMoved(Marker marker) {
             if (marker.equals(mCenterMarker)) {
-                mCircle.setCenter(marker.getPosition());
-                mCircle.setRadius(distanceSeekBar.getProgress() * 1000);
+                circle.setCenter(marker.getPosition());
+                circle.setRadius(distanceSeekBar.getProgress() * 1000);
                 return true;
             }
 
@@ -75,7 +66,7 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
 
         public void onStyleChange() {
           //  mCircle.setStrokeColor(R.color.colorPrimaryDark);
-            mCircle.setRadius(distanceSeekBar.getProgress() * 1000);
+            circle.setRadius(distanceSeekBar.getProgress() * 1000);
         }
     }
 
@@ -85,12 +76,14 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_distance_radius_maps);
 
-         distanceSeekBar = (SeekBar) findViewById(R.id.distance_km_seek);
+        distanceSeekBar = (SeekBar) findViewById(R.id.distance_km_seek);
         citySpinner = (Spinner) findViewById(R.id.city_spinner);
         saveButton = (Button) findViewById(R.id.btn_save);
+        txtSeekBar = (TextView) findViewById(R.id.txtSeekBar);
 
         distanceSeekBar.setMax(100);
         distanceSeekBar.setProgress(distanceSeekBar.getProgress() * 1000);
+        distanceSeekBar.setOnSeekBarChangeListener(FilterDistance());
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -102,12 +95,8 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                distanceSeekBar = seekBar;
-
-                for (DraggableCircle draggableCircle : mCircles) {
-                    draggableCircle.onStyleChange();
-                }
-
+                txtSeekBar.setText("Distância (Raio): " + String.valueOf(progress) +" km");
+                UpdateCircleMap();
             }
 
             @Override
@@ -121,7 +110,17 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
                 //tvSb.setVisibility(View.GONE);
             }
         };
-    };
+    }
+
+    private void UpdateCircleMap() {
+        circle = mMap.addCircle(new CircleOptions()
+                .radius(distanceSeekBar.getProgress() * 1000)
+                .strokeColor(Color.RED)
+                .fillColor(0x220000FF)
+                .clickable(true));
+    }
+
+    ;
     @Override
     public void onMapReady(GoogleMap map) {
         map.setContentDescription(getString(R.string.app_name));
@@ -131,7 +130,6 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
 
         distanceSeekBar.setOnSeekBarChangeListener(FilterDistance());
         DraggableCircle circle = new DraggableCircle(positionGabriela, distanceSeekBar.getProgress() * 1000);
-        mCircles.add(circle);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionGabriela, 4.0f));
 
@@ -175,11 +173,11 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
     }
 
     private void onMarkerMoved(Marker marker) {
-        for (DraggableCircle draggableCircle : mCircles) {
-            if (draggableCircle.onMarkerMoved(marker)) {
-                break;
-            }
-        }
+//        for (DraggableCircle draggableCircle : mCircles) {
+//            if (draggableCircle.onMarkerMoved(marker)) {
+//                break;
+//            }
+//        }
     }
 
     @Override

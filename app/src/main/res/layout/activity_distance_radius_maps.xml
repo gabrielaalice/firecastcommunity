@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
-            <TextView android:text="@string/distance_km_seek" />
+            <TextView android:text="@string/distance_km_seek" android:id="@+id/txtSeekBar" />
             <SeekBar android:id="@+id/distance_km_seek" />
         </TableRow>
 

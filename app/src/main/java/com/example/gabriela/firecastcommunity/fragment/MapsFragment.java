@@ -26,6 +26,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -46,8 +47,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static final int MAX_HUE_DEGREES = 360;
     LatLng actualPosition;
     private GoogleMap mMap;
-    private Circle mCircle;
-    private List<DraggableCircle> mCircles = new ArrayList<>(1);
     List<Occurrence> occurrences;
 
     public MapsFragment(){}
@@ -79,31 +78,62 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 
     private class DraggableCircle {
-        private final Marker mCenterMarker;
 
         public DraggableCircle(LatLng center, double radiusMeters) {
-            mCenterMarker = mMap.addMarker(new MarkerOptions()
-                    .position(center)
-                    .draggable(true));
 
-            for (Occurrence o: occurrences) {
-                if(o.latitude!=null && o.longitude!=null) {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(o.latitude, o.longitude)));
+            if(mMap!=null)
+            {
+                mMap.clear();
+
+                mMap.addMarker(new MarkerOptions().position(actualPosition)
+                        .title("Minha posição atual")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+
+                for (Occurrence occ : occurrences) {
+                    if (occ.latitude != null || occ.longitude != null) {
+                        LatLng positionOcc = new LatLng(occ.latitude, occ.longitude);
+                        mMap.addMarker(new MarkerOptions().position(positionOcc)
+                                .title(occ.city.name + " / " + occ.description)
+                                .icon(BitmapDescriptorFactory.defaultMarker(GetColorMarkerOccurrence(occ))));
+                    }
+                }
+
+                if (true) {//checkBoxRadiusDistance.isChecked()) {
+
+                    Circle circle = mMap.addCircle(new CircleOptions()
+                            .center(actualPosition)
+                            .radius(radiusUser * 1000)
+                            .strokeColor(Color.RED)
+                            .fillColor(0x220000FF)
+                            .strokeWidth(5));
                 }
             }
-
-            mCircle = mMap.addCircle(new CircleOptions()
-                    .center(center)
-                    .radius(radiusUser * 1000)
-                    .strokeWidth(5)
-                    .strokeColor(Color.RED)
-                    .fillColor(0x220000FF)
-                    .clickable(false));
-
         }
-
     }
+
+        private float GetColorMarkerOccurrence(Occurrence occurrence) {
+            switch (occurrence.type.id){
+                case 1:
+                    return BitmapDescriptorFactory.HUE_RED;
+                case 2:
+                    return BitmapDescriptorFactory.HUE_ORANGE;
+                case 3:
+                    return BitmapDescriptorFactory.HUE_YELLOW;
+                case 4:
+                    return BitmapDescriptorFactory.HUE_GREEN;
+                case 5:
+                    return BitmapDescriptorFactory.HUE_CYAN;
+                case 6:
+                    return BitmapDescriptorFactory.HUE_AZURE;
+                case 7:
+                    return BitmapDescriptorFactory.HUE_VIOLET;
+                case 8:
+                    return BitmapDescriptorFactory.HUE_MAGENTA;
+                case 9:
+                    return BitmapDescriptorFactory.HUE_ROSE;
+            }
+            return BitmapDescriptorFactory.HUE_RED;
+        }
 
     @Override
     public void onMapReady(GoogleMap map) {
@@ -114,9 +144,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         if(radiusUser!=null) {
             DraggableCircle circle = new DraggableCircle(positionGabriela, radiusUser * 1000);
-            mCircles.add(circle);
-        }else{
-
         }
 
         // Move the map so that it is centered on the initial circle
