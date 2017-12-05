@@ -45,7 +45,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private static final double DEFAULT_RADIUS_METERS = 1000000;
     private static final int MAX_HUE_DEGREES = 360;
-    LatLng actualPosition;
+    LatLng actualPosition = new LatLng(-27.6000907,-48.526813);
     private GoogleMap mMap;
     List<Occurrence> occurrences;
 
@@ -138,7 +138,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap map) {
         // Override the default content description on the view, for accessibility mode.
-        map.setContentDescription(getString(R.string.title_activity_distance_radius_maps));
+//        map.setContentDescription(getString(R.string.title_activity_distance_radius_maps));
 
         mMap = map;
 
