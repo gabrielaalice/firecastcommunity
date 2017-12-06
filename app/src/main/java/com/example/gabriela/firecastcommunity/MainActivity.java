@@ -29,6 +29,7 @@ import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
 import com.example.gabriela.firecastcommunity.drawer.DistanceRadiusMapsActivity;
+import com.example.gabriela.firecastcommunity.drawer.FilterOcActivity;
 import com.example.gabriela.firecastcommunity.drawer.NotificationActivity;
 import com.example.gabriela.firecastcommunity.drawer.OccurenceTypeUserActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterErrorActivity;
@@ -435,7 +436,7 @@ try {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent i = new Intent(this, FilterActivity.class);
+            Intent i = new Intent(this, FilterOcActivity.class);
             startActivity(i);
             finish();
             //return true;

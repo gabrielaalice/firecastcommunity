@@ -35,14 +35,14 @@ public class RadioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_radio, container, false);
-        play = (Button) view.findViewById(R.id.playRadio);
-        play.setEnabled(false);
-        play.setText("Carregando...");
+       // play = (Button) view.findViewById(R.id.playRadio);
+//        play.setEnabled(false);
+  //      play.setText("Carregando...");
         LoadingRadio();
         return inflater.inflate(R.layout.fragment_radio, container, false);
     }
     private void LoadingRadio() {
-        new RadioOnlineStreamHelpers(play, getCityLocation());
+       // new RadioOnlineStreamHelpers(play, getCityLocation());
     }
     private String getCityLocation() {
         return "Florianópolis";

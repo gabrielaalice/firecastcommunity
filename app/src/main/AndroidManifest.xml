@@ -9,10 +9,12 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <permission
         android:name="com.example.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.example.permission.MAPS_RECEIVE"/>
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.permission.MAPS_RECEIVE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -64,7 +66,6 @@
             android:name=".drawer.AboutUsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Drawer" />
-        <activity android:name=".FilterActivity" />
         <activity
             android:name=".drawer.RegisterErrorActivity"
             android:label="@string/app_name"
@@ -76,14 +77,14 @@
         <activity android:name=".drawer.NotificationActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".drawer.DistanceRadiusMapsActivity"
             android:label="@string/title_activity_distance_radius_maps" />
         <activity
             android:name=".fragment.MapsFragment"
-            android:label="@string/title_activity_maps_fragment"></activity>
+            android:label="@string/title_activity_maps_fragment" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -100,7 +101,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".drawer.FilterOcActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -3,16 +3,62 @@
     android:layout_width="match_parent"
     android:id="@+id/contentRadio"
     android:layout_height="match_parent"
+    android:background="@drawable/background_aboutus"
     tools:context="com.example.gabriela.firecastcommunity.fragment.RadioFragment">
 
-        <Button
-            android:id="@+id/playRadio"
+        <LinearLayout
+            android:id="@+id/filter_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/btn_radio" />
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="@string/city_spinner"
+            android:layout_marginBottom="5dp"/>
+
+        <Spinner
+            android:id="@+id/city_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip"
+                    android:text="@string/radio_type"
+                    android:layout_marginBottom="5dp"/>
+
+                <Spinner
+                    android:id="@+id/radio_type_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                <ImageButton
+                    android:id="@+id/pause_radio"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@mipmap/pause_radio" />
+
+                        <ImageButton
+                            android:id="@+id/play_radio"
+                            android:src="@mipmap/play_radio"
+
+                            android:layout_width="42dp"
+                            android:layout_height="42dp" />
+                </RelativeLayout>
+
+        </LinearLayout>
 
 </FrameLayout>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Firecast Comunidade</string>
+    <string name="title_activity_filter_oc">Filtrar Ocorrências</string>
 
     <!-- NavigationButtonView-->
     <string name="title_occurrence">Ocorrências</string>
@@ -13,8 +14,11 @@
     <string name="distance_km_seek">Raio(KM)</string>
     <string name="city_spinner">Cidade</string>
 
+    <string name="radio_type">Tipo</string>
+
     <!-- NavigationDrawer-->
     <string name="action_filter">Filtro</string>
+    <string name="action_done">Filtrar</string>
 
     <!-- -->
     <string name="about_firecast">Descriçao Firecast</string>
@@ -93,6 +97,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_maps_fragment">Map</string>
+
 
 
 </resources>

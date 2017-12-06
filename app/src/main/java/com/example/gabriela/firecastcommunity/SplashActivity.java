@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.gabriela.firecastcommunity.drawer.FilterOcActivity;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
