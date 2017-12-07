@@ -33,17 +33,19 @@ import com.google.maps.android.SphericalUtil;
 
 public class DistanceCalculator {
     public static Double distance(LatLng actualPosition, Occurrence occurrence) {
-        if (occurrence.latitude != null && occurrence.longitude != null) {
-            double lat1 = actualPosition.latitude;
-            double lon1 = actualPosition.longitude;
-            double lat2 = occurrence.latitude;
-            double lon2 = occurrence.longitude;
-            double theta = lon1 - lon2;
-            double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-            dist = Math.acos(dist);
-            dist = rad2deg(dist);
-            dist = dist * 60 * 1.1515 * 1.609344;
-            return (dist);
+        if(actualPosition!=null) {
+            if (occurrence.latitude != null && occurrence.longitude != null) {
+                double lat1 = actualPosition.latitude;
+                double lon1 = actualPosition.longitude;
+                double lat2 = occurrence.latitude;
+                double lon2 = occurrence.longitude;
+                double theta = lon1 - lon2;
+                double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+                dist = Math.acos(dist);
+                dist = rad2deg(dist);
+                dist = dist * 60 * 1.1515 * 1.609344;
+                return (dist);
+            }
         }
         return null;
     }

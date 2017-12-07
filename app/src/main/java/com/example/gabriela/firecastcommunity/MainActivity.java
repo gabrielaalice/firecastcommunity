@@ -93,26 +93,28 @@ public class MainActivity extends AppCompatActivity
     final List<Occurrence> listOccurenceEnabled = new ArrayList<>();
     private LatLng actualPosition;
 
-    private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
+    //private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
 
-    private void changeFragment(int position) {
+    private Fragment changeFragment(int position) {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment newFragment = null;
         switch (position){
             case 0:
-                newFragment = new MapsFragment(10, listOccurenceEnabled);
+                newFragment = new MapsFragment();
                 break;
             case 1:
                 newFragment = new RadioFragment();
                 break;
             case 2:
-                newFragment = new OccurenceFragment(listOccurenceEnabled);
+                newFragment = new OccurenceFragment();
                 break;
         }
 
         fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
         fragmentTransaction.commit();
+
+        return newFragment;
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       // getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        // getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -164,52 +166,7 @@ public class MainActivity extends AppCompatActivity
         isFirstTime();
 
         //aa view drawer
-        final PrimaryDrawerItem itemTypeOccurrence = new PrimaryDrawerItem()
-                .withName("Tipo de ocorrência")
-                .withIdentifier(ID_OCCURRENCE_TYPE)
-                .withBadgeStyle(new BadgeStyle()
-                        .withTextColor(Color.WHITE)
-                        .withColorRes(R.color.md_orange_700));
-
-        final PrimaryDrawerItem itemDistance = new PrimaryDrawerItem()
-                .withName("Fixar abrangência")
-                .withIdentifier(ID_DISTANCE)
-                .withBadgeStyle(new BadgeStyle()
-                        .withTextColor(Color.WHITE)
-                        .withColorRes(R.color.md_orange_700));
-
-        final PrimaryDrawerItem itemNotification = new PrimaryDrawerItem()
-                .withName("Notificações")
-                //.withBadge("2")
-                .withIdentifier(ID_NOTIFICATION)
-                .withBadgeStyle(new BadgeStyle()
-                        .withTextColor(Color.WHITE)
-                        .withColorRes(R.color.md_orange_700));
-
-        final PrimaryDrawerItem itemShareApp = new PrimaryDrawerItem()
-                .withName("Compartilhar APP")
-                .withIdentifier(ID_SHARE_APP)
-                .withIcon(R.drawable.ic_menu_share)
-                .withBadgeStyle(new BadgeStyle()
-                        .withTextColor(Color.WHITE)
-                        .withColorRes(R.color.md_orange_700));
-
-        final PrimaryDrawerItem itemReportError = new PrimaryDrawerItem()
-                .withName("Reportar erro")
-                .withIdentifier(ID_REPORT_ERROR)
-                .withIcon(R.drawable.ic_menu_manage)
-                .withBadgeStyle(new BadgeStyle()
-                        .withTextColor(Color.WHITE)
-                        .withColorRes(R.color.md_orange_700));
-
-        final PrimaryDrawerItem itemAboutUs = new PrimaryDrawerItem()
-                .withName("Sobre nós")
-                .withIcon(R.drawable.ic_info_black_24dp)
-                .withIdentifier(ID_ABOUT_US);
-
-        final ProfileSettingDrawerItem manageAccount = new ProfileSettingDrawerItem()
-                .withName("Editar cadastro")
-                .withIdentifier(ID_MANAGE_PROFILE);
+        CreateViewDrawer(toolbar);
 /*
         Bundle inBundle = getIntent().getExtras();
 
@@ -257,6 +214,70 @@ public class MainActivity extends AppCompatActivity
              }
 */
 
+
+        //executor = Executors.newSingleThreadScheduledExecutor();
+        //periodicTask = new Runnable() {
+        //public void run() {
+        MapsFragment mapFragment = null;
+        try {
+            mapFragment = (MapsFragment)changeFragment(0);
+        } finally {
+            try {
+                OccurenceFragment.buscarOcorrencias(mapFragment.getMyLocation());
+            } finally {
+                mapFragment.UpdateMapMarkersRadius();
+            }
+        }
+    }
+
+    private void CreateViewDrawer(Toolbar toolbar) {
+        final PrimaryDrawerItem itemTypeOccurrence = new PrimaryDrawerItem()
+                .withName("Tipo de ocorrência")
+                .withIdentifier(ID_OCCURRENCE_TYPE)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemDistance = new PrimaryDrawerItem()
+                .withName("Fixar abrangência")
+                .withIdentifier(ID_DISTANCE)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemNotification = new PrimaryDrawerItem()
+                .withName("Notificações")
+                //.withBadge("2")
+                .withIdentifier(ID_NOTIFICATION)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemShareApp = new PrimaryDrawerItem()
+                .withName("Compartilhar APP")
+                .withIdentifier(ID_SHARE_APP)
+                .withIcon(R.drawable.ic_menu_share)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemReportError = new PrimaryDrawerItem()
+                .withName("Reportar erro")
+                .withIdentifier(ID_REPORT_ERROR)
+                .withIcon(R.drawable.ic_menu_manage)
+                .withBadgeStyle(new BadgeStyle()
+                        .withTextColor(Color.WHITE)
+                        .withColorRes(R.color.md_orange_700));
+
+        final PrimaryDrawerItem itemAboutUs = new PrimaryDrawerItem()
+                .withName("Sobre nós")
+                .withIcon(R.drawable.ic_info_black_24dp)
+                .withIdentifier(ID_ABOUT_US);
+
+        final ProfileSettingDrawerItem manageAccount = new ProfileSettingDrawerItem()
+                .withName("Editar cadastro")
+                .withIdentifier(ID_MANAGE_PROFILE);
+
         drawer = new DrawerBuilder()
                 .withAccountHeader(headerResult)
                 .withActivity(this)
@@ -281,62 +302,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 })
                 .build();
-
-        //executor = Executors.newSingleThreadScheduledExecutor();
-        //periodicTask = new Runnable() {
-            //public void run() {
-try {
-    buscarOcorrencias();
-    //}
-    //};
-}finally{    changeFragment(0);}
     }
-
-    private void buscarOcorrencias() {
-        listOccurenceEnabled.removeAll(listOccurenceEnabled);
-        FirecastClient fire = new FirecastClient();
-        FirecastApi api = fire.retrofit.create(FirecastApi.class);
-        List<City> listCities = BancoDados.cities();
-
-        for (City cidade : listCities) {
-            api.getOccurrences(cidade.name)
-                    .enqueue(new Callback<List<Occurrence>>() {
-
-                        public void onResponse(Call<List<Occurrence>> call, Response<List<Occurrence>> response) {
-
-                                List<Occurrence> list = response.body();
-                                if (list != null) {
-                                    List<Integer> listIds = stream(listOccurenceEnabled).select(c -> c.id).toList();
-                                    List<Occurrence> listList = stream(list).where(c -> !listIds.contains(c.id)).toList();
-
-                                    for (Occurrence occ : listList) {
-                                        actualPosition = positionGabriela;
-                                            Double distance = new DistanceCalculator()
-                                                    .distancia(actualPosition, getLocation(occ));
-                                            if (distance == 0 || distance < 0) {
-                                                occ.distance = null;
-                                            } else {
-                                                occ.distance = distance / 1000;
-                                            }
-                                    }
-
-//                                    listList.forEach(occ->
-//                                            occ.distance = new DistanceCalculator()
-//                                                    .distance(actualPosition, getLocation(occ)));
-
-                                    listOccurenceEnabled.addAll(listList);
-                                }
-                            }
-
-                        @Override
-                        public void onFailure(Call<List<Occurrence>> call, Throwable t) {
-
-                        }
-                    });
-    }
-    }
-
-
 
     private Occurrence getLocation(Occurrence occurrence) {
         if (occurrence.latitude != null || occurrence.longitude != null) {
