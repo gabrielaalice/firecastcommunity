@@ -3,6 +3,8 @@ package com.example.gabriela.firecastcommunity.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +19,7 @@ import android.widget.Spinner;
 import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
+import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.drawer.DistanceRadiusMapsActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdate;
@@ -80,21 +83,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private class DraggableCircle {
 
         public DraggableCircle(LatLng center, double radiusMeters) {
-
             if(mMap!=null)
             {
                 mMap.clear();
+                Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.user_pin);
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
 
                 mMap.addMarker(new MarkerOptions().position(actualPosition)
                         .title("Minha posição atual")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
+
 
                 for (Occurrence occ : occurrences) {
                     if (occ.latitude != null || occ.longitude != null) {
                         LatLng positionOcc = new LatLng(occ.latitude, occ.longitude);
                         mMap.addMarker(new MarkerOptions().position(positionOcc)
                                 .title(occ.city.name + " / " + occ.description)
-                                .icon(BitmapDescriptorFactory.defaultMarker(GetColorMarkerOccurrence(occ))));
+                                .icon(BitmapDescriptorFactory.fromBitmap(GetColorMarkerOccurrence(occ))));
+
                     }
                 }
 
@@ -111,28 +117,59 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-        private float GetColorMarkerOccurrence(Occurrence occurrence) {
+        private Bitmap GetColorMarkerOccurrence(Occurrence occurrence) {
+            
+            Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.other_pin);
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+
             switch (occurrence.type.id){
                 case 1:
-                    return BitmapDescriptorFactory.HUE_RED;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.fire_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 2:
-                    return BitmapDescriptorFactory.HUE_ORANGE;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.search_rescue_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 3:
-                    return BitmapDescriptorFactory.HUE_YELLOW;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.dangerous_product_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 4:
-                    return BitmapDescriptorFactory.HUE_GREEN;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.fire_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 5:
-                    return BitmapDescriptorFactory.HUE_CYAN;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.paramedics_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 6:
-                    return BitmapDescriptorFactory.HUE_AZURE;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.other_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 7:
-                    return BitmapDescriptorFactory.HUE_VIOLET;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.other_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 8:
-                    return BitmapDescriptorFactory.HUE_MAGENTA;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.car_accident_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
                 case 9:
-                    return BitmapDescriptorFactory.HUE_ROSE;
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.other_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
+                case 10:
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.tree_cutting_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
+                case 11:
+                    icon = BitmapFactory.decodeResource(getResources(),R.drawable.insect_control_pin);
+                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                    return resizedBitmap;
             }
-            return BitmapDescriptorFactory.HUE_RED;
+            return resizedBitmap;
+
         }
 
     @Override

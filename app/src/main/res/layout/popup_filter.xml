@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/rounded_box"
     android:padding="10dp">
     <LinearLayout
         android:layout_width="fill_parent"
