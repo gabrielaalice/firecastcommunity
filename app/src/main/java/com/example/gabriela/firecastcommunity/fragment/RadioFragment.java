@@ -5,14 +5,30 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.gabriela.firecastcommunity.R;
-import com.example.gabriela.firecastcommunity.helper.RadioOnlineStreamHelpers;
+import com.example.gabriela.firecastcommunity.data.BancoDados;
+import com.example.gabriela.firecastcommunity.domain.City;
+import static br.com.zbra.androidlinq.Linq.stream;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RadioFragment extends Fragment {
     private Button play;
+    private Spinner citySpinner, typeRadioSpinner;
+    ArrayAdapter adapterCities;
+    BancoDados bd;
+    private List<String> types = new ArrayList<String>();
+    private String type;
+
+
     public RadioFragment() {
         // Required empty public constructor
     }
@@ -39,6 +55,15 @@ public class RadioFragment extends Fragment {
 //        play.setEnabled(false);
   //      play.setText("Carregando...");
         LoadingRadio();
+        bd = new BancoDados();
+        citySpinner = view.findViewById(R.id.city_spinner);
+        List<City> cities = stream(bd.cities()).orderBy(x->x.name).toList();
+        adapterCities = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item, cities);
+        citySpinner.setAdapter(adapterCities);
+        citySpinner.setVisibility(View.VISIBLE);
+       // citySpinner.setOnItemSelectedListener(onListenerSpinnerCities());
+      //  citySpinner.setSelection(RetornaPosicaoElementoNoSpinner(cities,preferencesFilterUser.citys.get(0)));
+
         return inflater.inflate(R.layout.fragment_radio, container, false);
     }
     private void LoadingRadio() {

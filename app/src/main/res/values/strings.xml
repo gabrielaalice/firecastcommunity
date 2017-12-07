@@ -15,6 +15,9 @@
     <string name="city_spinner">Cidade</string>
 
     <string name="radio_type">Tipo</string>
+    <string name="radio_title">Rádio Firecast</string>
+    <string name="radio_description">O Rádio Firecast permite que você acompanhe a comunidade dos bombeiros da sua cidade
+    Para isso, selecione a sua cidade, e (explicar o interno e externo)</string>
 
     <!-- NavigationDrawer-->
     <string name="action_filter">Filtro</string>

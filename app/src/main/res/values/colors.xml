@@ -3,6 +3,7 @@
     <color name="colorPrimary">#de5347</color>
     <color name="colorPrimaryDark">#E8862F</color>
     <color name="colorAccent">#FFAA53</color>
+    <color name="grey_radio">#d6d7d7</color>
 
     <color name="spectrum_0">#C06158</color>
     <color name="spectrum_1">#E77C71</color>
