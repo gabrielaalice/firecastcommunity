@@ -1,6 +1,8 @@
 package com.example.gabriela.firecastcommunity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity
     Drawer drawer;
     AccountHeader headerResult;
     ImageButton filter;
+    Dialog dialog;
     private static final long ID_ABOUT_US = 100;
     private static final long ID_OCCURRENCE_TYPE = 200;
     private static final long ID_DISTANCE = 300;
@@ -151,6 +154,12 @@ public class MainActivity extends AppCompatActivity
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //Create Dialog
+        dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.popup_filter);
+        //method call
+        isFirstTime();
 
         //aa view drawer
         final PrimaryDrawerItem itemTypeOccurrence = new PrimaryDrawerItem()
@@ -445,5 +454,18 @@ try {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isFirstTime() {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("RanBefore", false);
+        if (!ranBefore) {
+            //show dialog if app never launch
+            dialog.show();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("RanBefore", true);
+            editor.commit();
+        }
+        return !ranBefore;
     }
 }

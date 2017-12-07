@@ -7,6 +7,9 @@
     <string name="title_radio_online">Rádio</string>
     <string name="title_map">Mapa</string>
 
+    <!-- Pop-up-->
+    <string name="popup">Defina a cidade ou raio de abrangência</string>
+
     <!-- Map-->
     <string name="google_maps_id">AIzaSyDyJwKZ0CI0vgKk4l08JY5ooOQI8ejX1rQ</string>
     <string name="title_activity_distance_radius_maps">Map</string>
@@ -14,9 +17,10 @@
     <string name="distance_km_seek">Raio(KM)</string>
     <string name="city_spinner">Cidade</string>
 
+    <!-- Radio-->
     <string name="radio_type">Tipo</string>
     <string name="radio_title">Rádio Firecast</string>
-    <string name="radio_description">O Rádio Firecast permite que você acompanhe a comunidade dos bombeiros da sua cidade
+    <string name="radio_description">O Rádio Firecast permite que você acompanhe a comunicação dos bombeiros da sua cidade
     Para isso, selecione a sua cidade, e (explicar o interno e externo)</string>
 
     <!-- NavigationDrawer-->
