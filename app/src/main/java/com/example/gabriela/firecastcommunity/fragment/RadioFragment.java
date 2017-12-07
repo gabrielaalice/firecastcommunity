@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,10 +22,11 @@ import java.util.List;
 
 
 public class RadioFragment extends Fragment {
-    private Button play;
+    private ImageButton play_pause_btn;
     private Spinner citySpinner, typeRadioSpinner;
     ArrayAdapter adapterCities;
     BancoDados bd;
+    boolean paused = true;
     private List<String> types = new ArrayList<String>();
     private String type;
 
@@ -51,7 +53,6 @@ public class RadioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_radio, container, false);
-       // play = (Button) view.findViewById(R.id.playRadio);
 //        play.setEnabled(false);
   //      play.setText("Carregando...");
         LoadingRadio();
@@ -63,6 +64,22 @@ public class RadioFragment extends Fragment {
         citySpinner.setVisibility(View.VISIBLE);
        // citySpinner.setOnItemSelectedListener(onListenerSpinnerCities());
       //  citySpinner.setSelection(RetornaPosicaoElementoNoSpinner(cities,preferencesFilterUser.citys.get(0)));
+        play_pause_btn= (ImageButton) view.findViewById(R.id.play_pause_btn);
+        play_pause_btn.setImageResource(R.drawable.play_btn);
+        play_pause_btn.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                paused = !paused;
+                if(paused){
+                    play_pause_btn.setImageResource(R.drawable.pause_btn);
+                }
+                else{
+                    play_pause_btn.setImageResource(R.drawable.play_btn);
+                }
+            }
+        });
+
+
 
         return inflater.inflate(R.layout.fragment_radio, container, false);
     }
@@ -72,4 +89,7 @@ public class RadioFragment extends Fragment {
     private String getCityLocation() {
         return "Florianópolis";
     }
-}
+
+
+
+ }
