@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
@@ -53,14 +54,14 @@ public class RadioFragment extends Fragment {
 //        play.setEnabled(false);
   //      play.setText("Carregando...");
         LoadingRadio();
-        bd = new DataBaseTemp();
+       // bd = new DataBaseTemp();
+        List<City> cities = DataBaseTemp.cities();
+        ArrayAdapter adapterCities = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item, cities);
+
         citySpinner = view.findViewById(R.id.city_spinner);
-        List<City> cities = stream(bd.cities()).orderBy(x->x.name).toList();
-        adapterCities = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item, cities);
         citySpinner.setAdapter(adapterCities);
         citySpinner.setVisibility(View.VISIBLE);
-       // citySpinner.setOnItemSelectedListener(onListenerSpinnerCities());
-      //  citySpinner.setSelection(RetornaPosicaoElementoNoSpinner(cities,preferencesFilterUser.citys.get(0)));
+
         play_pause_btn= (ImageButton) view.findViewById(R.id.play_pause_btn);
         play_pause_btn.setImageResource(R.drawable.play_btn);
         play_pause_btn.setOnClickListener(new View.OnClickListener() {
