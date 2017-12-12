@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import android.text.Html;
 import android.util.Log;
 
 import android.view.Menu;
@@ -35,7 +36,6 @@ import com.example.gabriela.firecastcommunity.drawer.NotificationActivity;
 import com.example.gabriela.firecastcommunity.drawer.OccurenceTypeUserActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterErrorActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterUserActivity;
-import com.example.gabriela.firecastcommunity.drawer.ShareAppActivity;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
@@ -274,12 +274,12 @@ public class MainActivity extends AppCompatActivity
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .addDrawerItems(
-                        /*
+                        
                         new SectionDrawerItem().withName("Ações do Usuário"),
                         itemDistance,
                         itemTypeOccurrence,
                         itemNotification,
-                        */
+
                         new SectionDrawerItem().withName("Ações do Sistema"),
                         itemAboutUs,
                         itemShareApp,
@@ -328,9 +328,15 @@ public class MainActivity extends AppCompatActivity
                     finish();
                     break;
                 case (int) ID_SHARE_APP:
-                    Intent share_app_intent = new Intent(this, ShareAppActivity.class);
-                    startActivity(share_app_intent);
-                    finish();
+                    String textToShare = "Acesse o link do aplicativo <a href=\"http://www.google.com\">Firecast</a> " +
+                            "para realizar o download e visualizar as ocorrências da sua cidade disponibilizada " +
+                            "pelo corpo de bombeiros.";
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Firecast Download");
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(textToShare));
+                    sendIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_using)));
                     break;
                 case (int) ID_REPORT_ERROR:
                     Intent report_error_intent = new Intent(this, RegisterErrorActivity.class);

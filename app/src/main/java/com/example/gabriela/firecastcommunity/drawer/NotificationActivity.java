@@ -1,8 +1,10 @@
 package com.example.gabriela.firecastcommunity.drawer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.gabriela.firecastcommunity.MainActivity;
@@ -26,21 +28,26 @@ public class NotificationActivity extends AppCompatActivity {
         finish();
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.save_preference_user, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
+        int id = item.getItemId();
 
-            case android.R.id.home:
-
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
-                finish();
-
-                break;
-
-            default:break;
+        if (id == R.id.action_save) {
+            return true;
+        }
+        if( id == android.R.id.home){
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            finish();
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

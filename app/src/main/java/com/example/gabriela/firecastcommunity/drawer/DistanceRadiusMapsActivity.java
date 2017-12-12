@@ -19,6 +19,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -181,10 +183,27 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
     }
 
     @Override
-    public void onBackPressed(){
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-        finish();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.save_preference_user, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_save) {
+            return true;
+        }
+        if( id == android.R.id.home){
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

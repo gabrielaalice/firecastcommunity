@@ -250,13 +250,5 @@
                 android:button="@null"
                 android:drawableRight="?android:attr/listChoiceIndicatorMultiple"/>
         </RelativeLayout>
-        <Button
-            android:id="@+id/btn_save"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/btn_save"
-            android:textStyle="bold" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
