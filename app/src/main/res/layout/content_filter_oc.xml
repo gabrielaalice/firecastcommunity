@@ -9,7 +9,6 @@
     tools:context="com.example.gabriela.firecastcommunity.drawer.FilterOcActivity"
     tools:showIn="@layout/activity_filter_oc">
 
-
     <LinearLayout
         android:id="@+id/filter_layout"
         android:layout_width="match_parent"
@@ -35,6 +34,7 @@
             android:layout_height="match_parent"
             android:text="@string/distance_km_seek"
             android:layout_marginTop="20dp"
+            android:id="@+id/txtSeekBar"
             android:gravity="center"
             />
 
@@ -208,7 +208,7 @@
                 android:src="@drawable/fire_icon" />
             <CheckBox
                 android:id="@+id/oc_fire"
-                android:text="oc_fire"
+                android:text="@string/oc_fire"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"

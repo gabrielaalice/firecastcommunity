@@ -6,10 +6,9 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.gabriela.firecastcommunity.data.BancoDados;
+import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
 import com.example.gabriela.firecastcommunity.domain.RadioCity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static br.com.zbra.androidlinq.Linq.stream;
@@ -27,7 +26,7 @@ public class RadioOnlineStreamHelpers {
 
     public RadioOnlineStreamHelpers(Button play, String city) {
 
-        List<RadioCity> radios = BancoDados.radios();
+        List<RadioCity> radios = DataBaseTemp.radios();
         RadioCity cityRadio = LoadRadioCityLocation(city,radios);
 
         mediaPlayer = new MediaPlayer();

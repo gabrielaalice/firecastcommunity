@@ -7,7 +7,7 @@ import com.example.gabriela.firecastcommunity.domain.RadioCity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BancoDados {
+public class DataBaseTemp {
     
     public static List<City> cities(){
         List<City> cities = new ArrayList<>();

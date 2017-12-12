@@ -1,6 +1,7 @@
 package com.example.gabriela.firecastcommunity.fragment;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,38 +10,35 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.gabriela.firecastcommunity.OccurenceAdapter;
 import com.example.gabriela.firecastcommunity.R;
-import com.example.gabriela.firecastcommunity.data.BancoDados;
+import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
 import com.example.gabriela.firecastcommunity.data.FirecastApi;
 import com.example.gabriela.firecastcommunity.data.FirecastClient;
 import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
-import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.helper.DistanceCalculator;
-import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 import com.google.android.gms.maps.model.LatLng;
 import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
 import static br.com.zbra.androidlinq.Linq.stream;
 
 
 public class OccurenceFragment extends Fragment {
 
     static final List<Occurrence> result = new ArrayList<>();
-    private RecyclerView recycler;
-    private OccurenceAdapter adapter;
-
+    private static RecyclerView recycler;
+    private static OccurenceAdapter adapter;
+    private SharedPreferences preferences;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public OccurenceFragment(){}
@@ -67,11 +65,13 @@ public class OccurenceFragment extends Fragment {
         this.recycler = (RecyclerView) view.findViewById(R.id.recyclerViewOccurrence);
         this.recycler.setLayoutManager(new LinearLayoutManager(recycler.getContext()));
         this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayoutOccurrence);
+        this.swipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        preferences = getActivity().getPreferences(MODE_PRIVATE);
+
         try {
             LoadingOccurrence();
         } finally {
-            List<Occurrence> listFilter = ExecuteFilter(result);
-            UpdateRecicleViewList(listFilter);
+            UpdateRecicleViewList(getActivity().getApplicationContext(), this.preferences);
         }
 
         return view;
@@ -114,49 +114,69 @@ public class OccurenceFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
 
         try{
-            UpdateRecicleViewList(ExecuteFilter(this.result));
+            UpdateRecicleViewList(getActivity().getApplicationContext(), this.preferences);
         }finally {
+            MapsFragment.UpdateMapMarkersRadius(this.preferences);
             swipeRefreshLayout.setRefreshing(false);
         }
     }
 
-    private List<Occurrence> ExecuteFilter(List<Occurrence> list) {
-        return stream(list)
-                .distinct()
-                //.where(x -> filterOccurrences.contains(x.type.id))
+    private static List<Occurrence> ExecuteFilter(SharedPreferences preferences) {
+        List<Integer> filterOccurrences = LoadingTypeOccurrence(preferences);
+        List<Occurrence> list;
 
-//                .where(x-> checkBoxRadiusDistance.isChecked()?
-//                        (x.distance !=null ?
-//                                x.distance <= sb.getProgress()
-//                                : true)
-//                        : true)
-//
-//                .where(x-> checkBoxCidade.isChecked()?
-//                        (x.city !=null ?
-//                                x.city.id == ((City)spCities.getSelectedItem()).id
-//                                : true)
-//                        : true)
+        int radius = preferences.getInt("RadiusDefault", 10);
 
-                .orderBy(c -> c.distance == null ? 1000000 : c.distance)
-                .thenBy(x -> x.city.name)
-                .thenBy(x -> x.date)
+        if(filterOccurrences.size()>0){
+            list = stream(result)
+                    .distinct()
+                    .where(x -> filterOccurrences.contains(x.type.id) &&
+                            (x.distance !=null ?
+                                    x.distance <= radius
+                                    : true))
+                    .orderBy(c -> c.distance == null ? 1000000 : c.distance)
+                    .thenBy(x -> x.city.name)
+                    .thenBy(x -> x.date)
+                    .toList();
+        }else{
+            list = stream(result)
+                    .distinct()
+                    .where(x -> (x.distance !=null ?
+                                    x.distance <= radius
+                                    : true))
+                    .orderBy(c -> c.distance == null ? 1000000 : c.distance)
+                    .thenBy(x -> x.city.name)
+                    .thenBy(x -> x.date)
+                    .toList();
+        }
+        return list;
+    }
+
+    private static List<Integer> LoadingTypeOccurrence(SharedPreferences preferences) {
+        return stream(DataBaseTemp.typesOccurrences())
+                .where(x->preferences.getBoolean(x.name, true))
+                .select(x->x.id)
                 .toList();
     }
 
-    private void UpdateRecicleViewList(List<Occurrence> list){
-        adapter = new OccurenceAdapter(getContext(), list);
+    public static void UpdateRecicleViewList(Context context, SharedPreferences preferences){
+        adapter = new OccurenceAdapter(context, ExecuteFilter(preferences));
         adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
-        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycler.setLayoutManager(new LinearLayoutManager(context));
         recycler.setAdapter(adapter);
     }
 
 
 
-    public static void buscarOcorrencias(LatLng actualPosition) {
+    public static void callApiGetAllOccurrence(LatLng actualPosition) {
         result.removeAll(result);
         FirecastClient fire = new FirecastClient();
         FirecastApi api = fire.retrofit.create(FirecastApi.class);
-        List<City> listCities = BancoDados.cities();
+        List<City> listCities = DataBaseTemp.cities();
+
+//        int id_city = preferences.getInt("CityDefault", 0);
+//        String city_name = id_city>0? stream(DataBaseTemp.cities()).first(x->x.id==id_city).name : "";
+//        api.getOccurrences(city_name)
 
         for (City cidade : listCities) {
             api.getOccurrences(cidade.name)
@@ -195,7 +215,17 @@ public class OccurenceFragment extends Fragment {
         }
     }
 
-    public static List<Occurrence> getListOccurrence(){
-        return result;
+    public static List<Occurrence> getListOccurrence(SharedPreferences preferences){
+        if(preferences==null){
+            return result;
+        }
+        return ExecuteFilter(preferences);
     }
+
+    private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            LoadingOccurrence();
+        }
+    };
 }

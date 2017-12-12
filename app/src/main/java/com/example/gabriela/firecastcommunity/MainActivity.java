@@ -1,36 +1,33 @@
 package com.example.gabriela.firecastcommunity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Icon;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.example.gabriela.firecastcommunity.data.BancoDados;
-import com.example.gabriela.firecastcommunity.data.FirecastApi;
-import com.example.gabriela.firecastcommunity.data.FirecastClient;
-import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
-import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
 import com.example.gabriela.firecastcommunity.drawer.DistanceRadiusMapsActivity;
 import com.example.gabriela.firecastcommunity.drawer.FilterOcActivity;
@@ -42,9 +39,7 @@ import com.example.gabriela.firecastcommunity.drawer.ShareAppActivity;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
-import com.example.gabriela.firecastcommunity.helper.DistanceCalculator;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
+
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -54,23 +49,11 @@ import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static br.com.zbra.androidlinq.Linq.stream;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -79,7 +62,6 @@ public class MainActivity extends AppCompatActivity
     Drawer drawer;
     AccountHeader headerResult;
     ImageButton filter;
-    Dialog dialog;
     private static final long ID_ABOUT_US = 100;
     private static final long ID_OCCURRENCE_TYPE = 200;
     private static final long ID_DISTANCE = 300;
@@ -88,10 +70,8 @@ public class MainActivity extends AppCompatActivity
     private static final long ID_REPORT_ERROR = 600;
     private static final int ID_MANAGE_PROFILE = 100000;
 
-    ScheduledExecutorService executor;
-    Runnable periodicTask;
-    final List<Occurrence> listOccurenceEnabled = new ArrayList<>();
-    private LatLng actualPosition;
+    private ScheduledExecutorService executor;
+    private SharedPreferences preferences;
 
     //private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
 
@@ -144,10 +124,12 @@ public class MainActivity extends AppCompatActivity
 
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         Fragment newFragment = new MapsFragment();
         fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
         fragmentTransaction.commit();
 
+        preferences = getPreferences(MODE_PRIVATE);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -158,15 +140,13 @@ public class MainActivity extends AppCompatActivity
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        
 
-        //Create Dialog
-        dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.popup_filter);
-        //method call
-        isFirstTime();
 
         //aa view drawer
         CreateViewDrawer(toolbar);
+
+
 /*
         Bundle inBundle = getIntent().getExtras();
 
@@ -215,19 +195,30 @@ public class MainActivity extends AppCompatActivity
 */
 
 
-        //executor = Executors.newSingleThreadScheduledExecutor();
-        //periodicTask = new Runnable() {
-        //public void run() {
-        MapsFragment mapFragment = null;
-        try {
-            mapFragment = (MapsFragment)changeFragment(0);
-        } finally {
-            try {
-                OccurenceFragment.buscarOcorrencias(mapFragment.getMyLocation());
-            } finally {
-                mapFragment.UpdateMapMarkersRadius();
+        MapsFragment mapFragment = (MapsFragment)newFragment;
+
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OccurenceFragment.callApiGetAllOccurrence(mapFragment.getMyLocation());
+                } finally {
+                    mapFragment.UpdateMapMarkersRadius(preferences);
+                }
             }
-        }
+        }, 0, 5, TimeUnit.MINUTES);
+
+//        executor = Executors.newSingleThreadScheduledExecutor();
+//        periodicTask = new Runnable() {
+//        public void run() {
+//            try {
+//                OccurenceFragment.buscarOcorrencias(mapFragment.getMyLocation());
+//            } finally {
+//                mapFragment.UpdateMapMarkersRadius();
+//            }
+//        }
+//    };
     }
 
     private void CreateViewDrawer(Toolbar toolbar) {
@@ -410,30 +401,22 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, FilterOcActivity.class);
-            startActivity(i);
-            finish();
-            //return true;
+            startActivityForResult(i, 1);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean isFirstTime() {
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        boolean ranBefore = preferences.getBoolean("RanBefore", false);
-        if (!ranBefore) {
-            //show dialog if app never launch
-            dialog.show();
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("RanBefore", true);
-            editor.commit();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                OccurenceFragment.UpdateRecicleViewList(getApplicationContext(),preferences);
+                MapsFragment.UpdateMapMarkersRadius(preferences);
+            }
         }
-        return !ranBefore;
     }
 }

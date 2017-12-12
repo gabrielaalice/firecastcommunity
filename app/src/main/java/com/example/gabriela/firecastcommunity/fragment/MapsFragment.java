@@ -1,6 +1,7 @@
 package com.example.gabriela.firecastcommunity.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,7 @@ import java.util.Locale;
 import android.Manifest;
 import android.widget.Toast;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MapsFragment extends Fragment  implements OnMapReadyCallback,
@@ -149,7 +151,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getContext(),
+            if (ContextCompat.checkSelfPermission(getApplicationContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
@@ -161,7 +163,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
         }
     }
 
-    public static void UpdateMapMarkersRadius() {
+    public static void UpdateMapMarkersRadius(SharedPreferences preferences) {
         LatLng actualPosition = arrayMyLocation.get(0);
 
         if(gMap!=null) {
@@ -171,7 +173,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                     .title("Minha posição atual")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
-            List<Occurrence> occurrences = OccurenceFragment.getListOccurrence();
+            List<Occurrence> occurrences = OccurenceFragment.getListOccurrence(preferences);
 
             for (Occurrence occ : occurrences) {
                 if (occ.latitude != null || occ.longitude != null) {
@@ -183,21 +185,19 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                 }
             }
 
-            if (true){
-                //checkBoxRadiusDistance.isChecked()) {
+            int radius = preferences.getInt("RadiusDefault", 10);
 
-                Circle circle = gMap.addCircle(new CircleOptions()
+            Circle circle = gMap.addCircle(new CircleOptions()
                         .center(actualPosition)
-                        .radius(10 * 1000)
+                        .radius(radius * 1000)
                         .strokeColor(Color.RED)
                         .fillColor(0x220000FF)
                         .strokeWidth(5));
-            }
         }
     }
 
     protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -212,7 +212,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ContextCompat.checkSelfPermission(getContext(),
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             try {
@@ -249,8 +249,8 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         String provider = locationManager.getBestProvider(new Criteria(), true);
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -294,19 +294,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
-//        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-//        exec.scheduleAtFixedRate(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    LoadingOccurrence();
-//                } finally {
-//                    List<Occurrence> listFilter = ExecuteFilter(result);
-//                    UpdateRecicleViewList(listFilter);
-//                }
-//            }
-//        }, 0, 5, TimeUnit.MINUTES);
-
+        UpdateMapMarkersRadius(getActivity().getPreferences(MODE_PRIVATE));
     }
 
     @Override
@@ -315,7 +303,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
     }
 
     public boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(),
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -355,7 +343,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
 
                     // permission was granted. Do the
                     // contacts-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(getContext(),
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
 
@@ -365,7 +353,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                         gMap.setMyLocationEnabled(true);
                     }
                 } else {
-                    Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "permission denied", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
