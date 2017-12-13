@@ -19,6 +19,9 @@ package com.example.gabriela.firecastcommunity.drawer;
         import com.google.android.gms.maps.model.Marker;
         import com.google.android.gms.maps.model.MarkerOptions;
 
+        import android.support.v7.app.AppCompatActivity;
+        import android.view.Menu;
+        import android.view.MenuItem;
         import android.widget.Button;
         import android.widget.SeekBar;
         import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -28,7 +31,7 @@ package com.example.gabriela.firecastcommunity.drawer;
         import java.util.List;
 
 
-public class DistanceRadiusMapsActivity extends FragmentActivity
+public class DistanceRadiusMapsActivity extends AppCompatActivity
         implements OnSeekBarChangeListener, GoogleMap.OnMarkerDragListener,
         OnMapReadyCallback {
 
@@ -88,7 +91,11 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
         saveButton = (Button) findViewById(R.id.btn_save);
 
         distanceSeekBar.setMax(100);
-        distanceSeekBar.setProgress(distanceSeekBar.getProgress() * 1000);
+        distanceSeekBar.setProgress(10);
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -185,6 +192,29 @@ public class DistanceRadiusMapsActivity extends FragmentActivity
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.save_preference_user, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_save) {
+            return true;
+        }
+        if( id == android.R.id.home){
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

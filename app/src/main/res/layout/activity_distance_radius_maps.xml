@@ -1,22 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingTop="10dp"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:textStyle="bold"
         android:text="@string/title_radius_map" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:stretchColumns="1">
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:gravity="center_vertical">
             <TextView
                 android:text="@string/city_spinner"
@@ -32,16 +35,11 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:gravity="center_vertical">
             <TextView android:text="@string/distance_km_seek" />
             <SeekBar android:id="@+id/distance_km_seek" />
         </TableRow>
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_save" />
 
     </TableLayout>
 

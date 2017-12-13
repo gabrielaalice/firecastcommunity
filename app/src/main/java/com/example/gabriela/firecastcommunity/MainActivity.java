@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity
                 .withToolbar(toolbar)
                 .addDrawerItems(
 
-                        new SectionDrawerItem().withName("Ações do Usuário"),
+                        new SectionDrawerItem().withName("Preferências do Usuário"),
                         itemDistance,
                         itemTypeOccurrence,
                         itemNotification,

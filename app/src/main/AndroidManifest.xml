@@ -81,10 +81,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".drawer.DistanceRadiusMapsActivity"
-            android:label="@string/title_activity_distance_radius_maps" />
+            android:label="@string/app_name" />
         <activity
             android:name=".fragment.MapsFragment"
-            android:label="@string/title_activity_maps_fragment" />
+            android:label="@string/app_name" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

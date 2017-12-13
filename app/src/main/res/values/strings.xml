@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Firecast Comunidade</string>
+    <string name="app_name">Firecast</string>
     <string name="title_activity_filter_oc">Filtrar Ocorrências</string>
 
     <!-- NavigationButtonView-->
