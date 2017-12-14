@@ -2,6 +2,8 @@ package com.example.gabriela.firecastcommunity.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,6 +33,7 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static br.com.zbra.androidlinq.Linq.stream;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class OccurenceFragment extends Fragment {
@@ -228,4 +231,5 @@ public class OccurenceFragment extends Fragment {
             LoadingOccurrence();
         }
     };
+
 }

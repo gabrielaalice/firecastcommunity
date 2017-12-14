@@ -41,10 +41,12 @@ import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
 
 import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -68,7 +70,6 @@ public class MainActivity extends AppCompatActivity
     private static final long ID_NOTIFICATION = 400;
     private static final long ID_SHARE_APP = 500;
     private static final long ID_REPORT_ERROR = 600;
-    private static final int ID_MANAGE_PROFILE = 100000;
 
     private ScheduledExecutorService executor;
     private SharedPreferences preferences;
@@ -146,55 +147,6 @@ public class MainActivity extends AppCompatActivity
         //aa view drawer
         CreateViewDrawer(toolbar);
 
-
-/*
-        Bundle inBundle = getIntent().getExtras();
-
-        if(inBundle!=null) {
-            String name = inBundle.get("name").toString();
-            String surname = inBundle.get("surname").toString();
-
-            //TODO email e picture facebook
-            String imageUrl = inBundle.get("imageUrl").toString();
-            //  new MapActivity.DownloadImage((ImageView)findViewById(R.id.profileImage)).execute(imageUrl);
-
-            final IProfile profile = new ProfileDrawerItem()
-                    .withName(name + " " + surname)
-                    //.withEmail(email)
-                    .withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460")
-                    .withIdentifier(100);
-
-            headerResult = new AccountHeaderBuilder()
-                    .withActivity(this)
-                    .withTranslucentStatusBar(true)
-                    .withHeaderBackground(R.color.colorPrimary)
-                    .addProfiles(
-                            profile,
-                            manageAccount,
-                            new ProfileSettingDrawerItem()
-                                    .withName("Logout")
-                                    //.withIcon(R.drawable.logo)
-                                    .withIdentifier(ID_LOGOUT)
-
-                    )
-                    .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                        @Override
-                        public boolean onProfileChanged(View view, IProfile profile, boolean current) {
-                            if (profile instanceof IDrawerItem && profile.getIdentifier() == ID_MANAGE_PROFILE) {
-                                configuraItensHeaderDrawer();
-                            }
-                            if (profile instanceof IDrawerItem && profile.getIdentifier() == ID_LOGOUT) {
-                                configuraItensLogoutDrawer();
-                            }
-                            return false;
-                        }
-                    })
-                    .withSavedInstance(savedInstanceState)
-                    .build();
-             }
-*/
-
-
         MapsFragment mapFragment = (MapsFragment)newFragment;
 
         executor = Executors.newSingleThreadScheduledExecutor();
@@ -225,6 +177,7 @@ public class MainActivity extends AppCompatActivity
         final PrimaryDrawerItem itemTypeOccurrence = new PrimaryDrawerItem()
                 .withName("Tipo de ocorrência")
                 .withIdentifier(ID_OCCURRENCE_TYPE)
+                .withIcon(R.drawable.ic_list_black_24dp)
                 .withBadgeStyle(new BadgeStyle()
                         .withTextColor(Color.WHITE)
                         .withColorRes(R.color.md_orange_700));
@@ -232,6 +185,7 @@ public class MainActivity extends AppCompatActivity
         final PrimaryDrawerItem itemDistance = new PrimaryDrawerItem()
                 .withName("Fixar abrangência")
                 .withIdentifier(ID_DISTANCE)
+                .withIcon(R.drawable.ic_my_location_black_24dp)
                 .withBadgeStyle(new BadgeStyle()
                         .withTextColor(Color.WHITE)
                         .withColorRes(R.color.md_orange_700));
@@ -240,6 +194,7 @@ public class MainActivity extends AppCompatActivity
                 .withName("Notificações")
                 //.withBadge("2")
                 .withIdentifier(ID_NOTIFICATION)
+                .withIcon(R.drawable.ic_music_note_black_24dp)
                 .withBadgeStyle(new BadgeStyle()
                         .withTextColor(Color.WHITE)
                         .withColorRes(R.color.md_orange_700));
@@ -265,9 +220,16 @@ public class MainActivity extends AppCompatActivity
                 .withIcon(R.drawable.ic_info_black_24dp)
                 .withIdentifier(ID_ABOUT_US);
 
-        final ProfileSettingDrawerItem manageAccount = new ProfileSettingDrawerItem()
-                .withName("Editar cadastro")
-                .withIdentifier(ID_MANAGE_PROFILE);
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.color.primary)
+                .withSelectionListEnabledForSingleProfile(false)
+                .addProfiles(
+                        new ProfileDrawerItem()
+                                .withName("Firecast Comunidade")
+                                .withIcon(getResources().getDrawable(R.mipmap.logo_icon))
+                )
+                .build();
 
         drawer = new DrawerBuilder()
                 .withAccountHeader(headerResult)

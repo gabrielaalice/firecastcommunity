@@ -3,6 +3,7 @@ package com.example.gabriela.firecastcommunity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.Image;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
     public static final int TYPE_PERSON = 1001;
     Context context;
+    Image iconOcc;
 
     public OccurenceAdapter(Context context, List<Occurrence> orderList) {
         super(context);
@@ -65,6 +67,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
         TextView type,description, distance, hour;
         Resources res;
 
+
         public HeaderViewHolder(View view) {
             super(view, (ImageView) view.findViewById(R.id.item_arrow));
             res = view.getContext().getResources();
@@ -85,6 +88,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
             // Seta a cor a partir do tipo de ocorrência
             type.setBackgroundColor(res.getIntArray(R.array.occurence_colors)[occ.type.id- ((occ.type.id>=6)?2:1)]);
+
             hour.setTextColor(res.getIntArray(R.array.occurence_colors)[occ.type.id- ((occ.type.id>=6)?2:1)]);
             description.setText(occ.description);
 
