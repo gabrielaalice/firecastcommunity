@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity
     private static final long ID_REPORT_ERROR = 600;
 
     private ScheduledExecutorService executor;
-    private SharedPreferences preferences;
 
     //private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
 
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragmentContainer, newFragment);
         fragmentTransaction.commit();
 
-        preferences = getPreferences(MODE_PRIVATE);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -156,21 +154,10 @@ public class MainActivity extends AppCompatActivity
                 try {
                     OccurenceFragment.callApiGetAllOccurrence(mapFragment.getMyLocation());
                 } finally {
-                    mapFragment.UpdateMapMarkersRadius(preferences);
+                    mapFragment.UpdateMapMarkersRadius();
                 }
             }
         }, 0, 5, TimeUnit.MINUTES);
-
-//        executor = Executors.newSingleThreadScheduledExecutor();
-//        periodicTask = new Runnable() {
-//        public void run() {
-//            try {
-//                OccurenceFragment.buscarOcorrencias(mapFragment.getMyLocation());
-//            } finally {
-//                mapFragment.UpdateMapMarkersRadius();
-//            }
-//        }
-//    };
     }
 
     private void CreateViewDrawer(Toolbar toolbar) {
@@ -382,8 +369,8 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                OccurenceFragment.UpdateRecicleViewList(getApplicationContext(),preferences);
-                MapsFragment.UpdateMapMarkersRadius(preferences);
+                //OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
+                MapsFragment.UpdateMapMarkersRadius();
             }
         }
     }

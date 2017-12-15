@@ -2,7 +2,6 @@ package com.example.gabriela.firecastcommunity.drawer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,16 +17,19 @@ import android.widget.TextView;
 import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
+import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.City;
+import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
+import com.example.gabriela.firecastcommunity.domain.User;
 
 import java.util.List;
+
+import static br.com.zbra.androidlinq.Linq.stream;
 
 public class FilterOcActivity extends AppCompatActivity {
 
     private SeekBar seekbar;
     private Spinner spinner;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
     private TextView txtSeekBarRadius;
     private CheckBox oc_accident_car;
     private CheckBox oc_paramedics;
@@ -40,6 +42,9 @@ public class FilterOcActivity extends AppCompatActivity {
     private CheckBox oc_nao_atendida;
     private CheckBox oc_dangerous_product;
     private CheckBox oc_search_rescue;
+    private User user;
+    private FirecastDB repository;
+    private List<Integer> typesSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +57,8 @@ public class FilterOcActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        preferences = getPreferences(MODE_PRIVATE);
-        editor = preferences.edit();
+        repository =new FirecastDB(this);
+        user = repository.ListAllUser().get(0);
 
         SetSeekBar();
         SetSpinnerCities();
@@ -77,12 +82,15 @@ public class FilterOcActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_filter) {
-            return true;
-        }
-        if( id == android.R.id.home){
             SaveChanges();
             Intent i = new Intent(this, MainActivity.class);
             setResult(Activity.RESULT_OK, i);
+            finish();
+            return true;
+        }
+        if( id == android.R.id.home){
+            Intent i = new Intent(this, MainActivity.class);
+            setResult(Activity.RESULT_CANCELED, i);
             finish();
         }
 
@@ -93,7 +101,7 @@ public class FilterOcActivity extends AppCompatActivity {
         seekbar = (SeekBar) findViewById(R.id.distance_seekbar);
         seekbar.setMax(100);
 
-        int radius = preferences.getInt("RadiusDefault", 10);
+        int radius = user.getRadiusKilometers();
 
         seekbar.setProgress(radius);
         seekbar.setOnSeekBarChangeListener(ChangeSeekBar());
@@ -109,43 +117,44 @@ public class FilterOcActivity extends AppCompatActivity {
         spinner.setAdapter(adapterCities);
         spinner.setVisibility(View.VISIBLE);
 
-        int city = preferences.getInt("CityDefault", 0);
+        int city = user.getId_city_occurrence();
         spinner.setSelection(ElementInPositionSpinner(cities, city));
     }
 
     private void SetCheckBoxesOccurrenceTypes() {
+        typesSave = stream(user.getOccurrenceTypes()).select(x->x.id).toList();
         oc_accident_car = findViewById(R.id.oc_accident_car);
-        oc_accident_car.setChecked(preferences.getBoolean("ACIDENTE DE TRÂNSITO", true));
+        oc_accident_car.setChecked(typesSave.contains(DataBaseTemp.ID_ACIDENT));
 
         oc_paramedics = findViewById(R.id.oc_paramedics);
-        oc_paramedics.setChecked(preferences.getBoolean("ATENDIMENTO PRÉ-HOSPITALAR", true));
+        oc_paramedics.setChecked(typesSave.contains(DataBaseTemp.ID_PARAMEDICS));
 
         oc_support = findViewById(R.id.oc_support);
-        oc_support.setChecked(preferences.getBoolean("AUXÍLIOS / APOIOS", true));
+        oc_support.setChecked(typesSave.contains(DataBaseTemp.ID_SUPORT));
 
         oc_tree_cutting = findViewById(R.id.oc_tree_cutting);
-        oc_tree_cutting.setChecked(preferences.getBoolean("AVERIGUAÇÃO / CORTE DE ÁRVORE", true));
+        oc_tree_cutting.setChecked(typesSave.contains(DataBaseTemp.ID_CUTTING_TREE));
 
         oc_insect = findViewById(R.id.oc_insect);
-        oc_insect.setChecked(preferences.getBoolean("AVERIGUAÇÃO / MANEJO DE INSETO", true));
+        oc_insect.setChecked(typesSave.contains(DataBaseTemp.ID_INSECT));
 
         oc_action_preventive = findViewById(R.id.oc_action_preventive);
-        oc_action_preventive.setChecked(preferences.getBoolean("AÇÕES PREVENTIVAS", true));
+        oc_action_preventive.setChecked(typesSave.contains(DataBaseTemp.ID_PREVENTIVE));
 
         oc_other = findViewById(R.id.oc_other);
-        oc_other.setChecked(preferences.getBoolean("DIVERSOS", true));
+        oc_other.setChecked(typesSave.contains(DataBaseTemp.ID_OTHERS));
 
         oc_fire = findViewById(R.id.oc_fire);
-        oc_fire.setChecked(preferences.getBoolean("INCÊNDIO", true));
+        oc_fire.setChecked(typesSave.contains(DataBaseTemp.ID_FIRE));
 
         oc_nao_atendida = findViewById(R.id.oc_nao_atendida);
-        oc_nao_atendida.setChecked(preferences.getBoolean("OCORRÊNCIA NÃO ATENDIDA", true));
+        oc_nao_atendida.setChecked(typesSave.contains(DataBaseTemp.ID_NOT_SERVICE));
 
         oc_dangerous_product = findViewById(R.id.oc_dangerous_product);
-        oc_dangerous_product.setChecked(preferences.getBoolean("PRODUTOS PERIGOSOS", true));
+        oc_dangerous_product.setChecked(typesSave.contains(DataBaseTemp.ID_DANGEROUS));
 
         oc_search_rescue = findViewById(R.id.oc_search_rescue);
-        oc_search_rescue.setChecked(preferences.getBoolean("SALVAMENTO / BUSCA / RESGATE", true));
+        oc_search_rescue.setChecked(typesSave.contains(DataBaseTemp.ID_RESCUES));
     }
 
     public static int ElementInPositionSpinner(List<City> list, int city_id) {
@@ -180,21 +189,33 @@ public class FilterOcActivity extends AppCompatActivity {
 
 
     private void SaveChanges() {
-        editor.putInt("CityDefault", ((City)spinner.getSelectedItem()).id);
-        editor.putInt("RadiusDefault", seekbar.getProgress());
+        user.setId_city_occurrence(((City)spinner.getSelectedItem()).id);
+        user.setRadiusKilometers(seekbar.getProgress());
 
-        editor.putBoolean("ACIDENTE DE TRÂNSITO",oc_accident_car.isChecked());
-        editor.putBoolean("ATENDIMENTO PRÉ-HOSPITALAR",oc_paramedics.isChecked());
-        editor.putBoolean("AUXÍLIOS / APOIOS",oc_support.isChecked());
-        editor.putBoolean("AVERIGUAÇÃO / CORTE DE ÁRVORE",oc_tree_cutting.isChecked());
-        editor.putBoolean("AVERIGUAÇÃO / MANEJO DE INSETO",oc_insect.isChecked());
-        editor.putBoolean("AÇÕES PREVENTIVAS",oc_action_preventive.isChecked());
-        editor.putBoolean("DIVERSOS",oc_other.isChecked());
-        editor.putBoolean("INCÊNDIO",oc_fire.isChecked());
-        editor.putBoolean("OCORRÊNCIA NÃO ATENDIDA",oc_nao_atendida.isChecked());
-        editor.putBoolean("PRODUTOS PERIGOSOS",oc_dangerous_product.isChecked());
-        editor.putBoolean("SALVAMENTO / BUSCA / RESGATE",oc_search_rescue.isChecked());
+        List<OccurrenceType> types = DataBaseTemp.typesOccurrences();
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_ACIDENT,oc_accident_car.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_PARAMEDICS,oc_paramedics.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_SUPORT,oc_support.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_CUTTING_TREE,oc_tree_cutting.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_INSECT,oc_insect.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_PREVENTIVE,oc_action_preventive.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_OTHERS,oc_other.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_FIRE,oc_fire.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_NOT_SERVICE,oc_nao_atendida.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_DANGEROUS,oc_dangerous_product.isChecked());
+        types = DeleteTypeOnList(types,DataBaseTemp.ID_RESCUES,oc_search_rescue.isChecked());
 
-        editor.commit();
+        repository.Delete_List_User_OccurrenceType(user);
+
+        user.setOccurrenceTypes(types);
+
+        repository.UpdateUser(user);
+    }
+
+    private List<OccurrenceType> DeleteTypeOnList(List<OccurrenceType> types, int id_type, boolean condition) {
+        if(!condition) {
+            return stream(types).where(x -> x.id != id_type).toList();
+        }
+        return types;
     }
 }

@@ -20,7 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.gabriela.firecastcommunity.R;
+import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
+import com.example.gabriela.firecastcommunity.domain.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -163,7 +165,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
         }
     }
 
-    public static void UpdateMapMarkersRadius(SharedPreferences preferences) {
+    public static void UpdateMapMarkersRadius() {
         LatLng actualPosition = arrayMyLocation.get(0);
 
         if(gMap!=null) {
@@ -173,7 +175,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                     .title("Minha posição atual")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
-            List<Occurrence> occurrences = OccurenceFragment.getListOccurrence(preferences);
+            List<Occurrence> occurrences = OccurenceFragment.getListOccurrence();
 
             for (Occurrence occ : occurrences) {
                 if (occ.latitude != null || occ.longitude != null) {
@@ -185,7 +187,8 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                 }
             }
 
-            int radius = preferences.getInt("RadiusDefault", 10);
+            User user = new FirecastDB(getApplicationContext()).ListAllUser().get(0);
+            int radius = user.getRadiusKilometers();
 
             Circle circle = gMap.addCircle(new CircleOptions()
                         .center(actualPosition)
@@ -294,7 +297,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
-        UpdateMapMarkersRadius(getActivity().getPreferences(MODE_PRIVATE));
+        UpdateMapMarkersRadius();
     }
 
     @Override

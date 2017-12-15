@@ -111,7 +111,6 @@ public class RegisterUserActivity extends AppCompatActivity {
         user.setName(edtName.getText().toString());
         user.setEmail(edtEmail.getText().toString());
         user.setPassword(edtPassword.getText().toString());
-        user.setConfirmPassword(edtConfirmPassword.getText().toString());
 
         return user;
     }

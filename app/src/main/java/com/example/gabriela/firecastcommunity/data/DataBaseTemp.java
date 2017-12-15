@@ -8,7 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseTemp {
-    
+    public static final int ID_ACIDENT = 8;
+    public static final int ID_PARAMEDICS = 5;
+    public static final int ID_SUPORT = 2;
+    public static final int ID_CUTTING_TREE = 10;
+    public static final int ID_INSECT = 11;
+    public static final int ID_PREVENTIVE = 9;
+    public static final int ID_OTHERS = 7;
+    public static final int ID_FIRE = 1;
+    public static final int ID_NOT_SERVICE = 6;
+    public static final int ID_DANGEROUS = 3;
+    public static final int ID_RESCUES = 4;
+
     public static List<City> cities(){
         List<City> cities = new ArrayList<>();
         cities.add(new City(9939, "ABDON BATISTA"));
@@ -366,17 +377,17 @@ public class DataBaseTemp {
 
     public static List<OccurrenceType> typesOccurrences(){
         ArrayList<OccurrenceType> al = new ArrayList<>();
-        al.add(new OccurrenceType(8, "ACIDENTE DE TRÂNSITO"));
-        al.add(new OccurrenceType(5, "ATENDIMENTO PRÉ-HOSPITALAR"));
-        al.add(new OccurrenceType(2, "AUXÍLIOS / APOIOS"));
-        al.add(new OccurrenceType(10, "AVERIGUAÇÃO / CORTE DE ÁRVORE"));
-        al.add(new OccurrenceType(11, "AVERIGUAÇÃO / MANEJO DE INSETO"));
-        al.add(new OccurrenceType(9, "AÇÕES PREVENTIVAS"));
-        al.add(new OccurrenceType(7, "DIVERSOS"));
-        al.add(new OccurrenceType(1, "INCÊNDIO"));
-        al.add(new OccurrenceType(6, "OCORRÊNCIA NÃO ATENDIDA"));
-        al.add(new OccurrenceType(3, "PRODUTOS PERIGOSOS"));
-        al.add(new OccurrenceType(4, "SALVAMENTO / BUSCA / RESGATE"));
+        al.add(new OccurrenceType(ID_ACIDENT, "ACIDENTE DE TRÂNSITO"));
+        al.add(new OccurrenceType(ID_PARAMEDICS, "ATENDIMENTO PRÉ-HOSPITALAR"));
+        al.add(new OccurrenceType(ID_SUPORT, "AUXÍLIOS / APOIOS"));
+        al.add(new OccurrenceType(ID_CUTTING_TREE, "AVERIGUAÇÃO / CORTE DE ÁRVORE"));
+        al.add(new OccurrenceType(ID_INSECT, "AVERIGUAÇÃO / MANEJO DE INSETO"));
+        al.add(new OccurrenceType(ID_PREVENTIVE, "AÇÕES PREVENTIVAS"));
+        al.add(new OccurrenceType(ID_OTHERS, "DIVERSOS"));
+        al.add(new OccurrenceType(ID_FIRE, "INCÊNDIO"));
+        al.add(new OccurrenceType(ID_NOT_SERVICE, "OCORRÊNCIA NÃO ATENDIDA"));
+        al.add(new OccurrenceType(ID_DANGEROUS, "PRODUTOS PERIGOSOS"));
+        al.add(new OccurrenceType(ID_RESCUES, "SALVAMENTO / BUSCA / RESGATE"));
         return al;
     }
 }
