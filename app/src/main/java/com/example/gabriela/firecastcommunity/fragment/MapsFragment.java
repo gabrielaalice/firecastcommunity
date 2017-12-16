@@ -187,7 +187,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                 }
             }
 
-            User user = new FirecastDB(getApplicationContext()).ListAllUser().get(0);
+            User user = new FirecastDB(getApplicationContext()).getUser();
             int radius = user.getRadiusKilometers();
 
             Circle circle = gMap.addCircle(new CircleOptions()

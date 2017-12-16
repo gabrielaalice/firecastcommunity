@@ -29,67 +29,68 @@
             android:background="@color/grey_text" />
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingTop="8dp"
-        tools:layout_editor_absoluteY="19dp"
-        tools:layout_editor_absoluteX="8dp">
-        <Switch
-            android:id="@+id/geralSwitch"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Ativar Notificações"
-            android:checked="true"
-            android:gravity="left"/>
-    </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
             tools:layout_editor_absoluteY="19dp"
             tools:layout_editor_absoluteX="8dp">
-            <Switch
-                android:id="@+id/pushSwitch"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Push"
-                android:checked="true"
-                android:gravity="left"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            tools:layout_editor_absoluteY="19dp"
-            tools:layout_editor_absoluteX="8dp">
             <Switch
-                android:id="@+id/emailSwitch"
+                android:id="@+id/geralSwitch"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/email"
+                android:text="Ativar Notificações"
                 android:checked="true"
                 android:gravity="left"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            tools:layout_editor_absoluteY="19dp"
-            tools:layout_editor_absoluteX="8dp">
-            <Switch
-                android:id="@+id/smsSwitch"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="SMS"
-                android:checked="true"
-                android:gravity="left"/>
         </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--tools:layout_editor_absoluteY="19dp"-->
+        <!--tools:layout_editor_absoluteX="8dp">-->
+        <!--<Switch-->
+        <!--android:id="@+id/pushSwitch"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Push"-->
+        <!--android:checked="true"-->
+        <!--android:gravity="left"/>-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--tools:layout_editor_absoluteY="19dp"-->
+        <!--tools:layout_editor_absoluteX="8dp">-->
+        <!--<Switch-->
+        <!--android:id="@+id/emailSwitch"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/email"-->
+        <!--android:checked="true"-->
+        <!--android:gravity="left"/>-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--tools:layout_editor_absoluteY="19dp"-->
+        <!--tools:layout_editor_absoluteX="8dp">-->
+        <!--<Switch-->
+        <!--android:id="@+id/smsSwitch"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="SMS"-->
+        <!--android:checked="true"-->
+        <!--android:gravity="left"/>-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

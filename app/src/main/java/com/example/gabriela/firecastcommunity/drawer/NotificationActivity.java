@@ -6,27 +6,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 
 import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
+import com.example.gabriela.firecastcommunity.data.FirecastDB;
+import com.example.gabriela.firecastcommunity.domain.User;
 
 public class NotificationActivity extends AppCompatActivity {
+
+    Switch notifyGeral;
+    User user;
+    FirecastDB repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        repository = new FirecastDB(this);
+        user = repository.getUser();
+
+        notifyGeral = findViewById(R.id.geralSwitch);
+        notifyGeral.setChecked(user.isNotify());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    @Override
-    public void onBackPressed(){
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-        finish();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -40,14 +46,25 @@ public class NotificationActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            return true;
+            if(SaveChanges()) {
+                Intent i = new Intent(this, MainActivity.class);
+                setResult(Activity.RESULT_OK, i);
+                finish();
+                return true;
+            }
+            return false;
         }
         if( id == android.R.id.home){
             Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+            setResult(Activity.RESULT_CANCELED, i);
             finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean SaveChanges() {
+        user.setNotify(notifyGeral.isChecked());
+        return repository.UpdateUser(user);
     }
 }

@@ -133,7 +133,7 @@ public class OccurenceFragment extends Fragment {
             repository = new FirecastDB(getApplicationContext());
         }
 
-        User user = repository.ListAllUser().get(0);
+        User user = repository.getUser();
         List<Integer> typesOccurrences =stream(user.getOccurrenceTypes()).select(y->y.id).toList();
         int radius = user.getRadiusKilometers();
         int id_city = user.getId_city_occurrence();
@@ -166,10 +166,12 @@ public class OccurenceFragment extends Fragment {
     }
 
     public static void UpdateRecicleViewList(Context context){
-        adapter = new OccurenceAdapter(context, ExecuteFilter());
-        adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
-        recycler.setLayoutManager(new LinearLayoutManager(context));
-        recycler.setAdapter(adapter);
+        if(recycler!=null) {
+            adapter = new OccurenceAdapter(context, ExecuteFilter());
+            adapter.setMode(ExpandableRecyclerAdapter.MODE_ACCORDION);
+            recycler.setLayoutManager(new LinearLayoutManager(context));
+            recycler.setAdapter(adapter);
+        }
     }
 
 

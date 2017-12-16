@@ -1,21 +1,23 @@
 package com.example.gabriela.firecastcommunity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
 import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.City;
-import com.example.gabriela.firecastcommunity.domain.RadioCity;
 import com.example.gabriela.firecastcommunity.domain.User;
+import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 
 import java.util.List;
 import java.util.Timer;
@@ -26,7 +28,7 @@ import static br.com.zbra.androidlinq.Linq.stream;
 public class SplashActivity extends AppCompatActivity{
 
     private SeekBar seekbar;
-    private Spinner spinner;
+    private AutoCompleteTextView cityAutoComplete;
     private TextView txtSeekBarRadius;
     private Dialog dialog;
     private FirecastDB repository;
@@ -68,7 +70,7 @@ public class SplashActivity extends AppCompatActivity{
             SetSeekBar();
 
             cities = DataBaseTemp.cities();
-            SetSpinnerCities(cities);
+            SetAutoCompleteCities(cities);
 
             //show dialog if app never launch
             dialog.show();
@@ -92,23 +94,45 @@ public class SplashActivity extends AppCompatActivity{
         seekbar.setOnSeekBarChangeListener(ChangeSeekBar());
     }
 
-    public void SetSpinnerCities(List<City> cities){
-        spinner = dialog.findViewById(R.id.city_spinner);
-        ArrayAdapter adapterCities = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item, cities);
-        spinner.setAdapter(adapterCities);
-        spinner.setVisibility(View.VISIBLE);
+    public void SetAutoCompleteCities(List<City> cities){
+        cityAutoComplete = dialog.findViewById(R.id.cityAutoComplete);
+        ArrayAdapter adapterCities = new AutoCompleteTextViewAdapter(this,android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, stream(cities).select(x->x.name).toList());
+        cityAutoComplete.setAdapter(adapterCities);
+        cityAutoComplete.setVisibility(View.VISIBLE);
+        cityAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
+                cityAutoComplete.showDropDown();
+                cityAutoComplete.requestFocus();
+
+                return false;
+            }
+        });
     }
 
     public void setInitialPreferences(View v){
-        //user.setId(1);
-        user.setId_city_occurrence(((City)spinner.getSelectedItem()).id);
-        //user.setRadio_city(getCityFromId(user.getCity_occurrence().getId()));
-        user.setRadiusKilometers(seekbar.getProgress());
-        user.setOccurrenceTypes(DataBaseTemp.typesOccurrences());
 
-        repository.InsertUser(user);
+        String cityName = cityAutoComplete.getText().toString();
+        City city = getCityFromName(cityName);
 
-        FinishSplash();
+        if(city == null){
+            Toast.makeText(this,"Cidade inválida", Toast.LENGTH_LONG).show();
+        }else {
+
+            user.setId_city_occurrence(city.id);
+
+            //user.setRadio_city(getCityFromId(user.getCity_occurrence().getId()));
+            user.setRadiusKilometers(seekbar.getProgress());
+            user.setOccurrenceTypes(DataBaseTemp.typesOccurrences());
+
+            user.setNotify(true);
+
+            repository.SaveOrUpdate(user);
+
+            FinishSplash();
+        }
     }
 
     public SeekBar.OnSeekBarChangeListener ChangeSeekBar() {
@@ -152,6 +176,7 @@ public class SplashActivity extends AppCompatActivity{
 //    }
 
     private City getCityFromName(String name) {
-        return stream(cities).first(x->x.name == name);
+        return stream(cities).firstOrNull(x-> MetodsHelpers.normalizeString(x.name)
+                            .equalsIgnoreCase(MetodsHelpers.normalizeString(name)));
     }
 }

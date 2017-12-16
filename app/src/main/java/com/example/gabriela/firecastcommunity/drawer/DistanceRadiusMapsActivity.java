@@ -1,97 +1,91 @@
 package com.example.gabriela.firecastcommunity.drawer;
 
-        import android.content.Intent;
-        import android.graphics.Color;
-        import android.support.v4.app.FragmentActivity;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
         import android.os.Bundle;
 
-        import com.example.gabriela.firecastcommunity.MainActivity;
+import com.example.gabriela.firecastcommunity.AutoCompleteTextViewAdapter;
+import com.example.gabriela.firecastcommunity.MainActivity;
         import com.example.gabriela.firecastcommunity.R;
-        import com.google.android.gms.maps.CameraUpdateFactory;
+import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
+import com.example.gabriela.firecastcommunity.data.FirecastDB;
+import com.example.gabriela.firecastcommunity.domain.City;
+import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
+import com.example.gabriela.firecastcommunity.domain.User;
+import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
+import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
         import com.google.android.gms.maps.GoogleMap;
         import com.google.android.gms.maps.GoogleMap.OnCircleClickListener;
         import com.google.android.gms.maps.OnMapReadyCallback;
         import com.google.android.gms.maps.SupportMapFragment;
         import com.google.android.gms.maps.UiSettings;
-        import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
         import com.google.android.gms.maps.model.CircleOptions;
         import com.google.android.gms.maps.model.LatLng;
         import com.google.android.gms.maps.model.Marker;
         import com.google.android.gms.maps.model.MarkerOptions;
 
-        import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
         import android.view.Menu;
         import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
         import android.widget.Button;
         import android.widget.SeekBar;
         import android.widget.SeekBar.OnSeekBarChangeListener;
         import android.widget.Spinner;
+        import android.widget.TextView;
+import android.widget.Toast;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
         import java.util.List;
 
+import static br.com.zbra.androidlinq.Linq.stream;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class DistanceRadiusMapsActivity extends AppCompatActivity
-        implements OnSeekBarChangeListener, GoogleMap.OnMarkerDragListener,
-        OnMapReadyCallback {
-
-
-    private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
+        implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
     private GoogleMap mMap;
-
-    private List<DraggableCircle> mCircles = new ArrayList<>(1);
-    private SeekBar distanceSeekBar;
-    private Spinner citySpinner;
-    private Button saveButton;
-
-    private class DraggableCircle {
-        private final Marker mCenterMarker;
-        private final Circle mCircle;
-        private double mRadiusMeters;
-
-        public DraggableCircle(LatLng center, double radiusMeters) {
-            mRadiusMeters = radiusMeters;
-            mCenterMarker = mMap.addMarker(new MarkerOptions()
-                    .position(center)
-                    .draggable(true));
-            ;
-            mCircle = mMap.addCircle(new CircleOptions()
-                    .center(center)
-                    .radius(100000)
-                    .strokeColor(Color.RED)
-                    .fillColor(0x220000FF)
-                    .clickable(true));
-        }
-
-        public boolean onMarkerMoved(Marker marker) {
-            if (marker.equals(mCenterMarker)) {
-                mCircle.setCenter(marker.getPosition());
-                mCircle.setRadius(distanceSeekBar.getProgress() * 1000);
-                return true;
-            }
-
-            return false;
-        }
-
-        public void onStyleChange() {
-            //  mCircle.setStrokeColor(R.color.colorPrimaryDark);
-            mCircle.setRadius(distanceSeekBar.getProgress() * 1000);
-        }
-    }
-
+    private SeekBar seekbar;
+    private AutoCompleteTextView cityAutoComplete;
+    private TextView txtSeekBarRadius;
+    private User user;
+    private FirecastDB repository;
+    private List<City> cities;
+    private LatLng actualPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_distance_radius_maps);
 
-        distanceSeekBar = (SeekBar) findViewById(R.id.distance_km_seek);
-        citySpinner = (Spinner) findViewById(R.id.city_spinner);
-        saveButton = (Button) findViewById(R.id.btn_save);
+        repository =new FirecastDB(this);
+        user = repository.getUser();
+        actualPosition = MapsFragment.getMyLocation();
 
-        distanceSeekBar.setMax(100);
-        distanceSeekBar.setProgress(10);
+        SetSeekBar();
+        SetAutoCompleteCities();
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,97 +96,90 @@ public class DistanceRadiusMapsActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
     }
 
-    public SeekBar.OnSeekBarChangeListener FilterDistance() {
+    public void SetAutoCompleteCities() {
+        cities = DataBaseTemp.cities();
+        cityAutoComplete = findViewById(R.id.cityAutoComplete);
+
+        City city = getCityFromId(user.getId_city_occurrence());
+
+        if (city != null){
+            cityAutoComplete.setText(city.name);
+        }
+
+        ArrayAdapter adapterCities = new AutoCompleteTextViewAdapter(this,android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, stream(cities).select(x->x.name).toList());
+        cityAutoComplete.setAdapter(adapterCities);
+        cityAutoComplete.setVisibility(View.VISIBLE);
+        cityAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
+                cityAutoComplete.showDropDown();
+                cityAutoComplete.requestFocus();
+
+                return false;
+            }
+        });
+    }
+
+    public void SetSeekBar(){
+        seekbar = findViewById(R.id.distance_km_seek);
+        seekbar.setMax(100);
+
+        int radius = user.getRadiusKilometers();
+
+        seekbar.setProgress(radius);
+        seekbar.setOnSeekBarChangeListener(ChangeSeekBar());
+
+        txtSeekBarRadius = (TextView) findViewById(R.id.txtSeekBar);
+        txtSeekBarRadius.setText("Distância (Raio): " + String.valueOf(seekbar.getProgress()) +" km");
+    }
+
+    public SeekBar.OnSeekBarChangeListener ChangeSeekBar() {
         return new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                distanceSeekBar = seekBar;
-
-                for (DraggableCircle draggableCircle : mCircles) {
-                    draggableCircle.onStyleChange();
-                }
-
+                txtSeekBarRadius.setText("Distância (Raio): " + String.valueOf(progress) +" km");
+                UpdateCircleRadiusKM();
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                //tvSb.setVisibility(View.VISIBLE);
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                //tvSb.setVisibility(View.GONE);
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         };
-    };
-    @Override
-    public void onMapReady(GoogleMap map) {
-        map.setContentDescription(getString(R.string.app_name));
-
-        mMap = map;
-        mMap.setOnMarkerDragListener(this);
-
-        distanceSeekBar.setOnSeekBarChangeListener(FilterDistance());
-        DraggableCircle circle = new DraggableCircle(positionGabriela, distanceSeekBar.getProgress() * 1000);
-        mCircles.add(circle);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionGabriela, 4.0f));
-
-        map.setOnCircleClickListener(new OnCircleClickListener() {
-            @Override
-            public void onCircleClick(Circle circle) {
-                circle.setStrokeColor(circle.getStrokeColor() ^ 0x00ffffff);
-            }
-        });
-
     }
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // Don't do anything here.
-    }
+    private void UpdateCircleRadiusKM() {
+        if(mMap!=null) {
+            mMap.clear();
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // Don't do anything here.
-    }
+            mMap.addMarker(new MarkerOptions().position(actualPosition)
+                    .title("Minha posição atual")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            int radius = seekbar!=null ? seekbar.getProgress() : user.getRadiusKilometers();
 
-    }
-
-    @Override
-    public void onMarkerDragStart(Marker marker) {
-        onMarkerMoved(marker);
-    }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-        onMarkerMoved(marker);
-    }
-
-    @Override
-    public void onMarkerDrag(Marker marker) {
-        onMarkerMoved(marker);
-    }
-
-    private void onMarkerMoved(Marker marker) {
-        for (DraggableCircle draggableCircle : mCircles) {
-            if (draggableCircle.onMarkerMoved(marker)) {
-                break;
-            }
+            Circle circle = mMap.addCircle(new CircleOptions()
+                    .center(actualPosition)
+                    .radius(radius * 1000)
+                    .strokeColor(Color.RED)
+                    .fillColor(0x220000FF)
+                    .strokeWidth(5));
         }
     }
 
     @Override
-    public void onBackPressed(){
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-        finish();
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(actualPosition,10));
+
+        UpdateCircleRadiusKM();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -206,15 +193,64 @@ public class DistanceRadiusMapsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            return true;
+            if(SaveChanges()) {
+                Intent i = new Intent(this, MainActivity.class);
+                setResult(Activity.RESULT_OK, i);
+                finish();
+                return true;
+            }
+            return false;
         }
         if( id == android.R.id.home){
             Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+            setResult(Activity.RESULT_CANCELED, i);
             finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean SaveChanges() {
+        String cityName = cityAutoComplete.getText().toString();
+        City city = getCityFromName(cityName);
+
+        if(city == null){
+            Toast.makeText(this,"Cidade inválida", Toast.LENGTH_LONG).show();
+            return false;
+        }else {
+            user.setId_city_occurrence(city.id);
+            user.setRadiusKilometers(seekbar.getProgress());
+
+            return repository.UpdateUser(user);
+        }
+    }
+
+    private City getCityFromName(String name) {
+        return stream(cities).firstOrNull(x-> MetodsHelpers.normalizeString(x.name)
+                .equalsIgnoreCase(MetodsHelpers.normalizeString(name)));
+    }
+
+    private City getCityFromId(int id_city) {
+        return stream(cities).firstOrNull(x-> x.id == id_city);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
 }

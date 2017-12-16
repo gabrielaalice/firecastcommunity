@@ -99,7 +99,7 @@
                 android:layout_height="30dp"
                 android:src="@drawable/tree_cutting_icon" />
             <CheckBox
-                android:id="@+id/averiguacao_corte"
+                android:id="@+id/oc_tree_cutting"
                 android:text="@string/oc_tree_cutting"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="25dp"

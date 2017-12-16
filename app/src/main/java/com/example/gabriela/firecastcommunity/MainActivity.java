@@ -28,7 +28,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
+import com.example.gabriela.firecastcommunity.domain.User;
 import com.example.gabriela.firecastcommunity.drawer.AboutUsActivity;
 import com.example.gabriela.firecastcommunity.drawer.DistanceRadiusMapsActivity;
 import com.example.gabriela.firecastcommunity.drawer.FilterOcActivity;
@@ -60,6 +62,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static User user;
     private BottomNavigationView navigation;
     Drawer drawer;
     AccountHeader headerResult;
@@ -72,8 +75,6 @@ public class MainActivity extends AppCompatActivity
     private static final long ID_REPORT_ERROR = 600;
 
     private ScheduledExecutorService executor;
-
-    //private static final LatLng positionGabriela = new LatLng(-27.6000907,-48.526813);
 
     private Fragment changeFragment(int position) {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -122,6 +123,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SetUser(null);
+
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -155,6 +158,7 @@ public class MainActivity extends AppCompatActivity
                     OccurenceFragment.callApiGetAllOccurrence(mapFragment.getMyLocation());
                 } finally {
                     mapFragment.UpdateMapMarkersRadius();
+                    OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
                 }
             }
         }, 0, 5, TimeUnit.MINUTES);
@@ -254,27 +258,24 @@ public class MainActivity extends AppCompatActivity
     //Navigation Drawer.
     private void configuraItensDrawer(int position, IDrawerItem drawerItem) {
         try {
+            Intent intent;
             switch ((int) drawerItem.getIdentifier()) {
 
                 case (int) ID_ABOUT_US:
-                    Intent about_us_intent = new Intent(this, AboutUsActivity.class);
-                    startActivity(about_us_intent);
-                    finish();
+                    intent = new Intent(this, AboutUsActivity.class);
+                    startActivityForResult(intent, 1);
                     break;
                 case (int) ID_DISTANCE:
-                    Intent distance_intent = new Intent(this, DistanceRadiusMapsActivity.class);
-                    startActivity(distance_intent);
-                    finish();
+                    intent = new Intent(this, DistanceRadiusMapsActivity.class);
+                    startActivityForResult(intent, 1);
                     break;
                 case (int) ID_NOTIFICATION:
-                    Intent notification_intent = new Intent(this, NotificationActivity.class);
-                    startActivity(notification_intent);
-                    finish();
+                    intent = new Intent(this, NotificationActivity.class);
+                    startActivityForResult(intent, 1);
                     break;
                 case (int) ID_OCCURRENCE_TYPE:
-                    Intent occurrence_type_intent = new Intent(this, OccurenceTypeUserActivity.class);
-                    startActivity(occurrence_type_intent);
-                    finish();
+                    intent = new Intent(this, OccurenceTypeUserActivity.class);
+                    startActivityForResult(intent, 1);
                     break;
                 case (int) ID_SHARE_APP:
                     String textToShare = "Acesse o link do aplicativo <a href=\"http://www.google.com\">Firecast</a> " +
@@ -288,9 +289,8 @@ public class MainActivity extends AppCompatActivity
                     startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_using)));
                     break;
                 case (int) ID_REPORT_ERROR:
-                    Intent report_error_intent = new Intent(this, RegisterErrorActivity.class);
-                    startActivity(report_error_intent);
-                    finish();
+                    intent = new Intent(this, RegisterErrorActivity.class);
+                    startActivityForResult(intent, 1);
                     break;
 
 
@@ -369,9 +369,19 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                //OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
+                OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
                 MapsFragment.UpdateMapMarkersRadius();
             }
         }
     }
+
+    private void SetUser(User user) {
+        if(user == null){
+            this.user = new FirecastDB(this).getUser();
+        }
+
+        this.user = user;
+    }
+
+    public User getUser(){return this.user;}
 }

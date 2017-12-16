@@ -1,5 +1,6 @@
 package com.example.gabriela.firecastcommunity.drawer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.gabriela.firecastcommunity.AutoCompleteTextViewAdapter;
 import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
@@ -21,6 +25,7 @@ import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.domain.User;
+import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 
 import java.util.List;
 
@@ -29,7 +34,7 @@ import static br.com.zbra.androidlinq.Linq.stream;
 public class FilterOcActivity extends AppCompatActivity {
 
     private SeekBar seekbar;
-    private Spinner spinner;
+    private AutoCompleteTextView cityAutoComplete;
     private TextView txtSeekBarRadius;
     private CheckBox oc_accident_car;
     private CheckBox oc_paramedics;
@@ -45,23 +50,24 @@ public class FilterOcActivity extends AppCompatActivity {
     private User user;
     private FirecastDB repository;
     private List<Integer> typesSave;
+    private List<City> cities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_oc);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //button back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         repository =new FirecastDB(this);
-        user = repository.ListAllUser().get(0);
+        user = repository.getUser();
 
         SetSeekBar();
-        SetSpinnerCities();
+        SetAutoCompleteCities();
         SetCheckBoxesOccurrenceTypes();
     }
 
@@ -82,12 +88,15 @@ public class FilterOcActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_filter) {
-            SaveChanges();
-            Intent i = new Intent(this, MainActivity.class);
-            setResult(Activity.RESULT_OK, i);
-            finish();
-            return true;
+            if(SaveChanges()) {
+                Intent i = new Intent(this, MainActivity.class);
+                setResult(Activity.RESULT_OK, i);
+                finish();
+                return true;
+            }
+            return false;
         }
+
         if( id == android.R.id.home){
             Intent i = new Intent(this, MainActivity.class);
             setResult(Activity.RESULT_CANCELED, i);
@@ -110,15 +119,30 @@ public class FilterOcActivity extends AppCompatActivity {
         txtSeekBarRadius.setText("Distância (Raio): " + String.valueOf(seekbar.getProgress()) +" km");
     }
 
-    public void SetSpinnerCities(){
-        spinner = (Spinner) findViewById(R.id.city_spinner);
-        List<City> cities = DataBaseTemp.cities();
-        ArrayAdapter adapterCities = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item, cities);
-        spinner.setAdapter(adapterCities);
-        spinner.setVisibility(View.VISIBLE);
+    public void SetAutoCompleteCities() {
+        cities = DataBaseTemp.cities();
+        cityAutoComplete = findViewById(R.id.cityAutoComplete);
 
-        int city = user.getId_city_occurrence();
-        spinner.setSelection(ElementInPositionSpinner(cities, city));
+        City city = getCityFromId(user.getId_city_occurrence());
+
+        if (city != null){
+            cityAutoComplete.setText(city.name);
+        }
+
+        ArrayAdapter adapterCities = new AutoCompleteTextViewAdapter(this,android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, stream(cities).select(x->x.name).toList());
+        cityAutoComplete.setAdapter(adapterCities);
+        cityAutoComplete.setVisibility(View.VISIBLE);
+        cityAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
+                cityAutoComplete.showDropDown();
+                cityAutoComplete.requestFocus();
+
+                return false;
+            }
+        });
     }
 
     private void SetCheckBoxesOccurrenceTypes() {
@@ -157,19 +181,6 @@ public class FilterOcActivity extends AppCompatActivity {
         oc_search_rescue.setChecked(typesSave.contains(DataBaseTemp.ID_RESCUES));
     }
 
-    public static int ElementInPositionSpinner(List<City> list, int city_id) {
-        int position = -1;
-        int i = 0;
-        for (City obj : list) {
-            if (obj.id == city_id) {
-                position = i;
-                break;
-            }
-            i++;
-        }
-        return position;
-    }
-
     public SeekBar.OnSeekBarChangeListener ChangeSeekBar() {
         return new SeekBar.OnSeekBarChangeListener() {
 
@@ -188,28 +199,36 @@ public class FilterOcActivity extends AppCompatActivity {
 
 
 
-    private void SaveChanges() {
-        user.setId_city_occurrence(((City)spinner.getSelectedItem()).id);
-        user.setRadiusKilometers(seekbar.getProgress());
+    private boolean SaveChanges() {
+        String cityName = cityAutoComplete.getText().toString();
+        City city = getCityFromName(cityName);
 
-        List<OccurrenceType> types = DataBaseTemp.typesOccurrences();
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_ACIDENT,oc_accident_car.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_PARAMEDICS,oc_paramedics.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_SUPORT,oc_support.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_CUTTING_TREE,oc_tree_cutting.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_INSECT,oc_insect.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_PREVENTIVE,oc_action_preventive.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_OTHERS,oc_other.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_FIRE,oc_fire.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_NOT_SERVICE,oc_nao_atendida.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_DANGEROUS,oc_dangerous_product.isChecked());
-        types = DeleteTypeOnList(types,DataBaseTemp.ID_RESCUES,oc_search_rescue.isChecked());
+        if(city == null){
+            Toast.makeText(this,"Cidade inválida", Toast.LENGTH_LONG).show();
+            return false;
+        }else {
+            user.setId_city_occurrence(city.id);
+            user.setRadiusKilometers(seekbar.getProgress());
 
-        repository.Delete_List_User_OccurrenceType(user);
+            List<OccurrenceType> types = DataBaseTemp.typesOccurrences();
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_ACIDENT, oc_accident_car.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_PARAMEDICS, oc_paramedics.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_SUPORT, oc_support.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_CUTTING_TREE, oc_tree_cutting.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_INSECT, oc_insect.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_PREVENTIVE, oc_action_preventive.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_OTHERS, oc_other.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_FIRE, oc_fire.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_NOT_SERVICE, oc_nao_atendida.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_DANGEROUS, oc_dangerous_product.isChecked());
+            types = DeleteTypeOnList(types, DataBaseTemp.ID_RESCUES, oc_search_rescue.isChecked());
 
-        user.setOccurrenceTypes(types);
+            repository.Delete_List_User_OccurrenceType(user);
 
-        repository.UpdateUser(user);
+            user.setOccurrenceTypes(types);
+
+            return repository.UpdateUser(user);
+        }
     }
 
     private List<OccurrenceType> DeleteTypeOnList(List<OccurrenceType> types, int id_type, boolean condition) {
@@ -217,5 +236,14 @@ public class FilterOcActivity extends AppCompatActivity {
             return stream(types).where(x -> x.id != id_type).toList();
         }
         return types;
+    }
+
+    private City getCityFromName(String name) {
+        return stream(cities).firstOrNull(x-> MetodsHelpers.normalizeString(x.name)
+                .equalsIgnoreCase(MetodsHelpers.normalizeString(name)));
+    }
+
+    private City getCityFromId(int id_city) {
+        return stream(cities).firstOrNull(x-> x.id == id_city);
     }
 }
