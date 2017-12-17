@@ -12,12 +12,13 @@ import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.User;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    Switch notifyGeral;
-    User user;
-    FirecastDB repository;
+    private Switch notifyGeral;
+    private User user;
+    private FirecastDB repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,8 @@ public class NotificationActivity extends AppCompatActivity {
         if (id == R.id.action_save) {
             if(SaveChanges()) {
                 Intent i = new Intent(this, MainActivity.class);
-                setResult(Activity.RESULT_OK, i);
+                i.putExtra("UserKey", user);
+                setResult(Constant.ACTIVITY_NOTIFICATION, i);
                 finish();
                 return true;
             }

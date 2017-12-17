@@ -23,6 +23,7 @@ import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.domain.User;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -195,7 +196,8 @@ public class DistanceRadiusMapsActivity extends AppCompatActivity
         if (id == R.id.action_save) {
             if(SaveChanges()) {
                 Intent i = new Intent(this, MainActivity.class);
-                setResult(Activity.RESULT_OK, i);
+                i.putExtra("UserKey", user);
+                setResult(Constant.ACTIVITY_DISTANCE_RADIUS_MAP, i);
                 finish();
                 return true;
             }

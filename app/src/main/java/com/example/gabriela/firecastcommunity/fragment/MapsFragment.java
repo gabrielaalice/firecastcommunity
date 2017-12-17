@@ -1,7 +1,6 @@
 package com.example.gabriela.firecastcommunity.fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +18,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
@@ -187,7 +188,8 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                 }
             }
 
-            User user = new FirecastDB(getApplicationContext()).getUser();
+            User user = MainActivity.getUser();
+
             int radius = user.getRadiusKilometers();
 
             Circle circle = gMap.addCircle(new CircleOptions()

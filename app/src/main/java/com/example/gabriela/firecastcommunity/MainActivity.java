@@ -42,6 +42,7 @@ import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
 
+import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -55,6 +56,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.InputStream;
 
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -62,7 +64,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static User user;
+    private static User user;
     private BottomNavigationView navigation;
     Drawer drawer;
     AccountHeader headerResult;
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     changeFragment(0);
-                   break;
+                    break;
                 case R.id.navigation_dashboard:
                     changeFragment(1);
                     break;
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        
+
 
 
         //aa view drawer
@@ -368,20 +370,43 @@ public class MainActivity extends AppCompatActivity
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
-                MapsFragment.UpdateMapMarkersRadius();
+            Bundle extras = data.getExtras();
+
+            if (extras != null) {
+                User userIntent = (User) extras.getSerializable("UserKey");
+                if(userIntent!=null) {
+                    switch (resultCode) {
+                        case Constant.ACTIVITY_DISTANCE_RADIUS_MAP:
+                            user.setId_city_occurrence(userIntent.getId_city_occurrence());
+                            user.setRadiusKilometers(userIntent.getRadiusKilometers());
+                            break;
+                        case Constant.ACTIVITY_OCCURRENCE_TYPES:
+                            user.setOccurrenceTypes(userIntent.getOccurrenceTypes());
+                            break;
+                        case Constant.ACTIVITY_NOTIFICATION:
+                            user.setNotify(userIntent.isNotify());
+                            break;
+                        case Constant.ACTIVITY_FILTER:
+                            SetUser(userIntent);
+                            break;
+                    }
+                }
             }
+
+            OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
+            MapsFragment.UpdateMapMarkersRadius();
         }
     }
 
     private void SetUser(User user) {
         if(user == null){
             this.user = new FirecastDB(this).getUser();
+        }else {
+            this.user = user;
         }
-
-        this.user = user;
     }
 
-    public User getUser(){return this.user;}
+    public static User getUser(){
+        return user;
+    }
 }

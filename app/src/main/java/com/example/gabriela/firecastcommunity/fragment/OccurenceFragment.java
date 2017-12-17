@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.OccurenceAdapter;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
@@ -44,7 +45,6 @@ public class OccurenceFragment extends Fragment {
     private static RecyclerView recycler;
     private static OccurenceAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private static FirecastDB repository;
 
     public OccurenceFragment(){}
 
@@ -71,7 +71,6 @@ public class OccurenceFragment extends Fragment {
         this.recycler.setLayoutManager(new LinearLayoutManager(recycler.getContext()));
         this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayoutOccurrence);
         this.swipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
-        this.repository = new FirecastDB(getContext());
 
         try {
             LoadingOccurrence();
@@ -128,13 +127,9 @@ public class OccurenceFragment extends Fragment {
 
     private static List<Occurrence> ExecuteFilter() {
         List<Occurrence> list;
+        User user = MainActivity.getUser();
 
-        if(repository==null){
-            repository = new FirecastDB(getApplicationContext());
-        }
-
-        User user = repository.getUser();
-        List<Integer> typesOccurrences =stream(user.getOccurrenceTypes()).select(y->y.id).toList();
+        List<Integer> typesOccurrences = stream(user.getOccurrenceTypes()).select(y->y.id).toList();
         int radius = user.getRadiusKilometers();
         int id_city = user.getId_city_occurrence();
 
@@ -182,10 +177,6 @@ public class OccurenceFragment extends Fragment {
         FirecastApi api = fire.retrofit.create(FirecastApi.class);
         List<City> listCities = DataBaseTemp.cities();
 
-//        int id_city = preferences.getInt("CityDefault", 0);
-//        String city_name = id_city>0? stream(DataBaseTemp.cities()).first(x->x.id==id_city).name : "";
-//        api.getOccurrences(city_name)
-
         for (City cidade : listCities) {
             api.getOccurrences(cidade.name)
                     .enqueue(new Callback<List<Occurrence>>() {
@@ -206,10 +197,6 @@ public class OccurenceFragment extends Fragment {
                                         occ.distance = distance / 1000;
                                     }
                                 }
-
-//                                    listList.forEach(occ->
-//                                            occ.distance = new DistanceCalculator()
-//                                                    .distance(actualPosition, getLocation(occ)));
 
                                 result.addAll(listList);
                             }

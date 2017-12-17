@@ -16,6 +16,7 @@ import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.domain.User;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 
 import java.util.List;
 
@@ -73,7 +74,8 @@ public class OccurenceTypeUserActivity extends AppCompatActivity {
         if (id == R.id.action_save) {
             if(SaveChanges()) {
                 Intent i = new Intent(this, MainActivity.class);
-                setResult(Activity.RESULT_OK, i);
+                i.putExtra("UserKey", user);
+                setResult(Constant.ACTIVITY_OCCURRENCE_TYPES, i);
                 finish();
                 return true;
             }

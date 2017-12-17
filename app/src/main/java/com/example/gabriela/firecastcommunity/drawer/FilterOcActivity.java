@@ -26,6 +26,7 @@ import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.OccurrenceType;
 import com.example.gabriela.firecastcommunity.domain.User;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 
 import java.util.List;
 
@@ -48,7 +49,6 @@ public class FilterOcActivity extends AppCompatActivity {
     private CheckBox oc_dangerous_product;
     private CheckBox oc_search_rescue;
     private User user;
-    private FirecastDB repository;
     private List<Integer> typesSave;
     private List<City> cities;
 
@@ -63,8 +63,7 @@ public class FilterOcActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        repository =new FirecastDB(this);
-        user = repository.getUser();
+        user = MainActivity.getUser();
 
         SetSeekBar();
         SetAutoCompleteCities();
@@ -90,7 +89,8 @@ public class FilterOcActivity extends AppCompatActivity {
         if (id == R.id.action_filter) {
             if(SaveChanges()) {
                 Intent i = new Intent(this, MainActivity.class);
-                setResult(Activity.RESULT_OK, i);
+                i.putExtra("UserKey", user);
+                setResult(Constant.ACTIVITY_FILTER, i);
                 finish();
                 return true;
             }
@@ -107,7 +107,7 @@ public class FilterOcActivity extends AppCompatActivity {
     }
 
     public void SetSeekBar(){
-        seekbar = (SeekBar) findViewById(R.id.distance_seekbar);
+        seekbar = findViewById(R.id.distance_seekbar);
         seekbar.setMax(100);
 
         int radius = user.getRadiusKilometers();
@@ -115,7 +115,7 @@ public class FilterOcActivity extends AppCompatActivity {
         seekbar.setProgress(radius);
         seekbar.setOnSeekBarChangeListener(ChangeSeekBar());
 
-        txtSeekBarRadius = (TextView) findViewById(R.id.txtSeekBar);
+        txtSeekBarRadius = findViewById(R.id.txtSeekBar);
         txtSeekBarRadius.setText("Distância (Raio): " + String.valueOf(seekbar.getProgress()) +" km");
     }
 
@@ -223,11 +223,9 @@ public class FilterOcActivity extends AppCompatActivity {
             types = DeleteTypeOnList(types, DataBaseTemp.ID_DANGEROUS, oc_dangerous_product.isChecked());
             types = DeleteTypeOnList(types, DataBaseTemp.ID_RESCUES, oc_search_rescue.isChecked());
 
-            repository.Delete_List_User_OccurrenceType(user);
-
             user.setOccurrenceTypes(types);
 
-            return repository.UpdateUser(user);
+            return true;
         }
     }
 

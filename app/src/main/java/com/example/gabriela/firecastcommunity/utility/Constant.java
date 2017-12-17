@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Constant {
+    public static final int ACTIVITY_OCCURRENCE_TYPES = 50;
+	public static final int ACTIVITY_DISTANCE_RADIUS_MAP = 51;
+	public static final int ACTIVITY_NOTIFICATION = 52;
+	public static final int ACTIVITY_FILTER = 53;
+
 	public static List<Class> TablesDB() {
 		List<Class> classesTabelas = new ArrayList<Class>();
 		classesTabelas.add(User.class);
