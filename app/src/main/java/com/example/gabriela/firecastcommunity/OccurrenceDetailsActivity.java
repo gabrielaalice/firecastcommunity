@@ -93,7 +93,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
 
             mMap.addMarker(new MarkerOptions().position(actualPosition)
                     .title("Minha posição atual")
-                    .icon(BitmapDescriptorFactory.defaultMarker(R.drawable.user_pin)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
             LatLng positionOcc = new LatLng(occurrence.latitude, occurrence.longitude);
             mMap.addMarker(new MarkerOptions().position(positionOcc)
