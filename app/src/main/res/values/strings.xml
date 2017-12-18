@@ -18,6 +18,7 @@
     <string name="distance_km_seek">Raio(KM)</string>
     <string name="city_spinner">Cidade</string>
     <string name="share_using">Compartilhar utilizando:</string>
+    <string name="title_details_map">Detalhes da Ocorrência </string>
 
 
     <!-- Radio-->
@@ -78,6 +79,7 @@
     <string name="btn_radio">Rádio</string>
 
     <!-- Tipos de ocorrências-->
+    <string name="occurence_type_single">Tipo de Ocorrência</string>
     <string name="occurence_type">Tipos de Ocorrências</string>
     <string name="oc_accident_car">Acidente de Trânsito</string>
     <string name="oc_paramedics">Atendimento pré-hospitalar</string>

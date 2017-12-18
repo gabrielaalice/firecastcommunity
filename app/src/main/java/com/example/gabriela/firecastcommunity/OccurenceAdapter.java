@@ -70,6 +70,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
     public class HeaderViewHolder extends ExpandableRecyclerAdapter.HeaderViewHolder {
         TextView type,description, distance, hour;
         Resources res;
+        ImageButton navigate;
 
 
         public HeaderViewHolder(View view) {
@@ -80,6 +81,8 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             description = (TextView) itemView.findViewById(R.id.cardoccurrenceitem__description);
             distance = (TextView) itemView.findViewById(R.id.cardoccurrenceitem__distance);
             hour = (TextView) itemView.findViewById(R.id.cardoccurrenceitem__hour);
+            navigate = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__navigate);
+
 
         }
 
@@ -110,6 +113,19 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
                 hour.setText(MetodsHelpers.convertDateTimeInString(occ.date));
                 hour.setVisibility(View.VISIBLE);
             }
+            navigate.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    if(occ.latitude!=null && occ.longitude!=null) {
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q="+occ.latitude+","+occ.longitude);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(mapIntent);
+                    }
+                }
+            });
 
         }
     }
@@ -117,7 +133,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
     public class OccurrenceViewHolder extends ExpandableRecyclerAdapter.ViewHolder {
         TextView cars,location, reference, city, referenceTitle;
         Resources res;
-        ImageButton navigate, share, details;
+        ImageButton share, details;
         View underlineReference;
 
 
@@ -129,7 +145,6 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             location = (TextView) itemView.findViewById(R.id.cardoccurrenceitem__location);
             reference = (TextView) itemView.findViewById(R.id.cardoccurrenceitem__reference);
             city = (TextView) itemView.findViewById(R.id.cardoccurrenceitem__city);
-            navigate = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__navigate);
             referenceTitle = (TextView) itemView.findViewById(R.id.cardoccurrencetitle__reference);
             underlineReference = itemView.findViewById(R.id.underline__reference);
             share = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__share);
@@ -175,19 +190,6 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
             city.setText(occ.city.name);
 
-            navigate.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View view) {
-                    if(occ.latitude!=null && occ.longitude!=null) {
-                        Uri gmmIntentUri = Uri.parse("google.navigation:q="+occ.latitude+","+occ.longitude);
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(mapIntent);
-                    }
-                }
-            });
 
             details.setOnClickListener(new View.OnClickListener(){
 

@@ -1,6 +1,9 @@
 package com.example.gabriela.firecastcommunity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -10,10 +13,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -34,22 +40,36 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
     private GoogleMap mMap;
     private LatLng actualPosition;
     Occurrence occurrence;
+    TextView cars,location, reference, city, referenceTitle, occurrence_type, description;
+    View underlineReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_occurrence_details);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
             Bundle extras = getIntent().getExtras();
 
             if (extras != null) {
                 occurrence = (Occurrence) extras.getSerializable("OccurrenceKey");
 
-                TextView occurrence_type = findViewById(R.id.occurence_type);
+                occurrence_type = findViewById(R.id.occurence_type);
                 occurrence_type.setText(occurrence.type.name);
 
-                TextView city = findViewById(R.id.city);
-                city.setText(occurrence.city.name);
+                cars = (TextView) findViewById(R.id.cardoccurrenceitem__cars);
+                location = (TextView) findViewById(R.id.cardoccurrenceitem__location);
+                location.setText(occurrence.adressStreet + ", " + occurrence.addressNumber);
+                reference = (TextView) findViewById(R.id.cardoccurrenceitem__reference);
+                reference.setText(occurrence.addressReferencePoint);
+                city = (TextView) findViewById(R.id.cardoccurrenceitem__city);
+                city.setText(occurrence.city.name + ", " + occurrence.addressNeighborhood);
+                referenceTitle = (TextView) findViewById(R.id.cardoccurrencetitle__reference);
+                underlineReference = findViewById(R.id.underline__reference);
+                description = (TextView) findViewById(R.id.cardoccurrenceitem__details);
+                description.setText(occurrence.description);
 
                 actualPosition = MapsFragment.getMyLocation();
 
@@ -60,28 +80,6 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
             }else{
                 finish();
             }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.filter_occurence, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if( id == android.R.id.home){
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -95,7 +93,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
 
             mMap.addMarker(new MarkerOptions().position(actualPosition)
                     .title("Minha posição atual")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(R.drawable.user_pin)));
 
             LatLng positionOcc = new LatLng(occurrence.latitude, occurrence.longitude);
             mMap.addMarker(new MarkerOptions().position(positionOcc)
@@ -178,4 +176,31 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
     public void onLocationChanged(Location location) {
 
     }
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+                finish();
+
+                break;
+
+            default:
+                break;
+        }
+
+        return true;
+    }
+
 }

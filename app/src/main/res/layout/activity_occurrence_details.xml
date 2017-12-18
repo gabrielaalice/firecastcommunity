@@ -1,33 +1,165 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.gabriela.firecastcommunity.OccurrenceDetailsActivity">
+    android:paddingTop="10dp"
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:text="@string/title_details_map" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
-            <ImageView
-                android:background="@drawable/logo"
-                android:id="@+id/imageView"
+            <TextView
+                android:id="@+id/occurence_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_text" />
+
+            <TextView
+                android:text="@string/occurence_type_single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textColor="@color/grey_text"
+                android:gravity="end"
+                />
+
+            <TextView
+                android:id="@+id/cardoccurrenceitem__location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_text" />
+
+            <TextView
+                android:id="@+id/cardoccurrencetitle__location"
+                android:text="@string/street"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textColor="@color/grey_text"
+                android:gravity="end"
+                />
+
+            <TextView
+                android:id="@+id/cardoccurrenceitem__reference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                />
+
+            <View
+                android:id="@+id/underline__reference"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_text" />
+
+            <TextView
+                android:id="@+id/cardoccurrencetitle__reference"
+                android:text="@string/reference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textColor="@color/grey_text"
+                android:gravity="end"
+                />
+
+            <TextView
+                android:id="@+id/cardoccurrenceitem__city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_text" />
+
+            <TextView
+                android:id="@+id/cardoccurrencetitle__city"
+                android:text="@string/city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textColor="@color/grey_text"
+                android:gravity="end"
+                />
+            <TextView
+                android:id="@+id/cardoccurrenceitem__cars"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_text" />
+
+            <TextView
+                android:id="@+id/cardoccurrencetitle__cars"
+                android:text="@string/situation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textColor="@color/grey_text"
+                android:gravity="end"
+                />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@drawable/details_occurence"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_height="37dp"
-                android:layout_width="37dp" />
-        </android.support.v7.widget.Toolbar>
+                android:text="Descrição"
+                android:textStyle="bold"
+                android:padding="4dp"
+                />
+            <TextView
+                android:id="@+id/cardoccurrenceitem__details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:singleLine="false"
+                android:maxLines="5"
+                android:padding="4dp"
+                />
+        </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.SupportMapFragment"/>
 
-    <include layout="@layout/content_occurrence_details" />
-
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
