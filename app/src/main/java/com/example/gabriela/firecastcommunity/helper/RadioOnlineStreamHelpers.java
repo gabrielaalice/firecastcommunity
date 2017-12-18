@@ -5,18 +5,17 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
 import com.example.gabriela.firecastcommunity.domain.RadioCity;
+import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
 
 import java.util.List;
 
 import static br.com.zbra.androidlinq.Linq.stream;
-
-
-/**
- * Created by user on 11/06/2017.
- */
 
 public class RadioOnlineStreamHelpers {
 
@@ -24,10 +23,7 @@ public class RadioOnlineStreamHelpers {
     boolean started = false;
     boolean prepared = false;
 
-    public RadioOnlineStreamHelpers(Button play, String city) {
-
-        List<RadioCity> radios = DataBaseTemp.radios();
-        RadioCity cityRadio = LoadRadioCityLocation(city,radios);
+    public RadioOnlineStreamHelpers(View view, ImageButton play, String city, String type_radio) {
 
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -39,40 +35,29 @@ public class RadioOnlineStreamHelpers {
                 if (started) {
                     mediaPlayer.pause();
                     started = false;
-                    play.setText("Play | Cidade: "+ cityRadio.cityName);
+                    play.setImageResource(R.drawable.pause_btn);
                 } else {
                     mediaPlayer.start();
                     started = true;
-                    play.setText("Pause | Cidade: "+ cityRadio.cityName);
-                }
+                    play.setImageResource(R.drawable.play_btn);
 
+//                    String url = RadioFragment.UpdateRadio(view);
+//                    if(url == null){
+//                        Toast.makeText(view.getContext(),"Cidade inválida", Toast.LENGTH_LONG).show();
+//                    }
+                }
             }
         });
 
-        new PlayTask().execute(cityRadio.urlRadio);
-
+        new PlayTask().execute("http://radio.cbm.sc.gov.br:8000/radio");
         play.setEnabled(true);
-        play.setText("Play | Cidade: "+ cityRadio.cityName);
     }
 
-    private RadioCity LoadRadioCityLocation(String city, List<RadioCity> radios) {
-
-        city = MetodsHelpers.normalizeString(city);
-
-        for (RadioCity radioCity:radios) {
-            String cityName = MetodsHelpers.normalizeString(radioCity.cityName);
-            if(city.equalsIgnoreCase(cityName)){
-                return radioCity;
-            }
-        }
-
-        RadioCity cityDefault = new RadioCity("http://radio.cbm.sc.gov.br:8000/radio", "Florianópolis");
-
-        RadioCity url = stream(radios)
-                .where(c->c.cityName.equalsIgnoreCase("florianópolis"))
-                .firstOrDefault(cityDefault);
-
-        return url;
+    private RadioCity LoadRadioCityLocation(String city, String typeCity) {
+        String cityName = MetodsHelpers.normalizeString(city);
+        return stream(DataBaseTemp.radios())
+                .firstOrNull(x->x.type_radio.equalsIgnoreCase(typeCity) &&
+                        MetodsHelpers.normalizeString(x.cityName).equalsIgnoreCase(cityName));
     }
 
     private class PlayTask extends AsyncTask<String, Void, Boolean> {

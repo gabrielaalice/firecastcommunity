@@ -79,7 +79,7 @@ public class DistanceCalculator {
 //        return String.format("%4.3f%s", distance, unit);
 //    }
 
-    public double distancia(LatLng actualPosition, Occurrence occurrence) {
+    public double distanceCalculator(LatLng actualPosition, Occurrence occurrence) {
         if(actualPosition!=null && occurrence!=null) {
             if (occurrence.latitude != null && occurrence.longitude != null) {
                 double lat1 = actualPosition.latitude;

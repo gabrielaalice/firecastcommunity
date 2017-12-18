@@ -1,7 +1,6 @@
 package com.example.gabriela.firecastcommunity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +27,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.gabriela.firecastcommunity.alarm.AlarmNotify;
 import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.domain.User;
@@ -50,13 +50,13 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.InputStream;
 
-import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -145,25 +145,36 @@ public class MainActivity extends AppCompatActivity
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
-
         //aa view drawer
         CreateViewDrawer(toolbar);
 
         MapsFragment mapFragment = (MapsFragment)newFragment;
 
-        executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    OccurenceFragment.callApiGetAllOccurrence(mapFragment.getMyLocation());
-                } finally {
-                    mapFragment.UpdateMapMarkersRadius();
-                    OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
-                }
+        try {
+            OccurenceFragment.callApiGetAllOccurrence();
+        } finally {
+            mapFragment.UpdateMapMarkersRadius();
+            OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
+
+            if (getUser().isNotify()) {
+                new AlarmNotify(getApplicationContext());
             }
-        }, 0, 5, TimeUnit.MINUTES);
+        }
+
+        final Timer timer = new Timer();
+        timer.schedule( new TimerTask()
+                        {
+                            public void run() {
+                                try {
+                                    OccurenceFragment.callApiGetAllOccurrence();
+                                } finally {
+                                    if (getUser().isNotify()) {
+                                        new AlarmNotify(getApplicationContext());
+                                    }
+                                }
+                            }
+                        }, 300000, 300000 //Note the second argument for repetition
+                );
     }
 
     private void CreateViewDrawer(Toolbar toolbar) {
@@ -370,25 +381,27 @@ public class MainActivity extends AppCompatActivity
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            Bundle extras = data.getExtras();
+            if(data!=null) {
+                Bundle extras = data.getExtras();
 
-            if (extras != null) {
-                User userIntent = (User) extras.getSerializable("UserKey");
-                if(userIntent!=null) {
-                    switch (resultCode) {
-                        case Constant.ACTIVITY_DISTANCE_RADIUS_MAP:
-                            user.setId_city_occurrence(userIntent.getId_city_occurrence());
-                            user.setRadiusKilometers(userIntent.getRadiusKilometers());
-                            break;
-                        case Constant.ACTIVITY_OCCURRENCE_TYPES:
-                            user.setOccurrenceTypes(userIntent.getOccurrenceTypes());
-                            break;
-                        case Constant.ACTIVITY_NOTIFICATION:
-                            user.setNotify(userIntent.isNotify());
-                            break;
-                        case Constant.ACTIVITY_FILTER:
-                            SetUser(userIntent);
-                            break;
+                if (extras != null) {
+                    User userIntent = (User) extras.getSerializable("UserKey");
+                    if (userIntent != null) {
+                        switch (resultCode) {
+                            case Constant.ACTIVITY_DISTANCE_RADIUS_MAP:
+                                user.setId_city_occurrence(userIntent.getId_city_occurrence());
+                                user.setRadiusKilometers(userIntent.getRadiusKilometers());
+                                break;
+                            case Constant.ACTIVITY_OCCURRENCE_TYPES:
+                                user.setOccurrenceTypes(userIntent.getOccurrenceTypes());
+                                break;
+                            case Constant.ACTIVITY_NOTIFICATION:
+                                user.setNotify(userIntent.isNotify());
+                                break;
+                            case Constant.ACTIVITY_FILTER:
+                                SetUser(userIntent);
+                                break;
+                        }
                     }
                 }
             }

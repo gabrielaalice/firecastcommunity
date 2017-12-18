@@ -1,9 +1,6 @@
 package com.example.gabriela.firecastcommunity.fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,7 +16,6 @@ import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
 import com.example.gabriela.firecastcommunity.data.FirecastApi;
 import com.example.gabriela.firecastcommunity.data.FirecastClient;
-import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.domain.User;
@@ -34,9 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.MODE_PRIVATE;
 import static br.com.zbra.androidlinq.Linq.stream;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class OccurenceFragment extends Fragment {
@@ -171,7 +165,7 @@ public class OccurenceFragment extends Fragment {
 
 
 
-    public static void callApiGetAllOccurrence(LatLng actualPosition) {
+    public static void callApiGetAllOccurrence() {
         result.removeAll(result);
         FirecastClient fire = new FirecastClient();
         FirecastApi api = fire.retrofit.create(FirecastApi.class);
@@ -190,7 +184,7 @@ public class OccurenceFragment extends Fragment {
 
                                 for (Occurrence occ : listList) {
                                     Double distance = new DistanceCalculator()
-                                            .distancia(actualPosition, getLocation(occ));
+                                            .distanceCalculator(MapsFragment.getMyLocation(), getLocation(occ));
                                     if (distance == 0 || distance < 0) {
                                         occ.distance = null;
                                     } else {

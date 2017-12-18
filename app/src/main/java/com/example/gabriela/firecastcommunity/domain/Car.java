@@ -2,11 +2,14 @@ package com.example.gabriela.firecastcommunity.domain;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by bonet on 9/21/16.
  */
 
-public class Car {
+public class Car  implements Serializable {
+    private static final long serialVersionUID = 1L;
 
 
     public final int id;

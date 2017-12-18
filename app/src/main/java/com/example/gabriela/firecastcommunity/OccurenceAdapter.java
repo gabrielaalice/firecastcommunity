@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
+import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -20,6 +22,8 @@ import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static br.com.zbra.androidlinq.Linq.stream;
 
 
 public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter.CardOccurenceListItem> {
@@ -113,8 +117,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
     public class OccurrenceViewHolder extends ExpandableRecyclerAdapter.ViewHolder {
         TextView cars,location, reference, city, referenceTitle;
         Resources res;
-        ImageButton navigate, share;
-        Button details;
+        ImageButton navigate, share, details;
         View underlineReference;
 
 
@@ -130,6 +133,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             referenceTitle = (TextView) itemView.findViewById(R.id.cardoccurrencetitle__reference);
             underlineReference = itemView.findViewById(R.id.underline__reference);
             share = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__share);
+            details  = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__details);
 
             share.setOnClickListener(new View.OnClickListener(){
 
@@ -171,6 +175,36 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
             city.setText(occ.city.name);
 
+            navigate.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    if(occ.latitude!=null && occ.longitude!=null) {
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q="+occ.latitude+","+occ.longitude);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(mapIntent);
+                    }
+                }
+            });
+
+            details.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    Occurrence occurrence = GetOcurrencceFromId(occ.id);
+                    if(occurrence!=null) {
+                        Intent intent = new Intent(context, OccurrenceDetailsActivity.class);
+                        intent.putExtra("OccurrenceKey", occurrence);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }else{
+                        Toast.makeText(context,"Ocorrência não está mais ativa", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
 
         }
     }
@@ -203,5 +237,9 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
     private String buildLocationString(Occurrence occ) {
         return occ.adressStreet+ ", "+occ.addressNeighborhood;
+    }
+
+    private Occurrence GetOcurrencceFromId(int id_occurrence) {
+        return stream(OccurenceFragment.getListOccurrence()).firstOrNull(x->x.id==id_occurrence);
     }
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Firecast</string>
     <string name="title_activity_filter_oc">Filtrar Ocorrências</string>
+    <string name="title_ocurrence_details">Ocorrência</string>
 
     <!-- NavigationButtonView-->
     <string name="title_occurrence">Ocorrências</string>

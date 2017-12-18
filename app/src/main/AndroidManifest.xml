@@ -105,6 +105,10 @@
             android:name=".drawer.FilterOcActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".OccurrenceDetailsActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
