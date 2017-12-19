@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,9 +30,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class OccurrenceDetailsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -71,6 +78,11 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 description.setText(occurrence.description);
                 date = (TextView) findViewById(R.id.cardoccurrenceitem__date);
                 date.setText(MetodsHelpers.convertDateTimeInString(occurrence.date));
+               // date.setTextColor(Color.parseColor(GetColorMarkerOccurrenceType(occurrence)));
+
+
+
+
 
                 if(occurrence.addressNumber != null) {
                     location.setText(occurrence.adressStreet + ", num:" + occurrence.addressNumber);
@@ -103,6 +115,9 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(actualPosition,10));
+        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.user_pin);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+
 
         if(mMap!=null) {
             mMap.clear();
@@ -111,19 +126,19 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
 
                 mMap.addMarker(new MarkerOptions().position(actualPosition)
                         .title("Minha posição atual")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                        .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
             }
 
             if(occurrence.latitude!=null && occurrence.longitude!=null) {
                 LatLng positionOcc = new LatLng(occurrence.latitude, occurrence.longitude);
                 mMap.addMarker(new MarkerOptions().position(positionOcc)
                         .title(occurrence.city.name + " / " + occurrence.description)
-                        .icon(BitmapDescriptorFactory.fromBitmap(GetColorMarkerOccurrence(this, occurrence))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(GetIconMarkerOccurrence(this, occurrence))));
             }
         }
     }
 
-    private static Bitmap GetColorMarkerOccurrence(Context context, Occurrence occurrence) {
+    private static Bitmap GetIconMarkerOccurrence(Context context, Occurrence occurrence) {
 
         Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.other_pin);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);

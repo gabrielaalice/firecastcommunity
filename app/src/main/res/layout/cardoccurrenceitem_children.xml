@@ -116,34 +116,16 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:gravity="center">
+			android:gravity="center_horizontal">
 
 			<ImageButton
 				android:layout_width="26dp"
 				android:layout_height="35dp"
 				android:id="@+id/cardoccurrenceitem__details"
-                android:src="@mipmap/pin_details_occ"
-				android:layout_marginRight="3dp"
-				android:actionProviderClass="android.widget.ShareActionProvider" />
+                android:src="@mipmap/pin_details_occ"/>
 
 		</LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:gravity="end">
-
-			<ImageButton
-				android:layout_width="22dp"
-				android:layout_height="22dp"
-				android:id="@+id/cardoccurrenceitem__share"
-				android:src="@mipmap/share2"
-				android:layout_marginRight="3dp"
-				android:actionProviderClass="android.widget.ShareActionProvider" />
-
-		</LinearLayout>
 	</RelativeLayout>
 
 </LinearLayout>

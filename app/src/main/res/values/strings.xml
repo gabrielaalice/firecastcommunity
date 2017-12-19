@@ -93,7 +93,7 @@
     <string name="oc_dangerous_product">Produtos Perigosos</string>
     <string name="oc_search_rescue">Salvamento / Busca / Resgate</string>
 
-
+    <string name="link_app_store"><a href="http://somesite.com/">Firecast Comunidade</a></string>
     <plurals name="cars_dispatched">
         <item quantity="zero">Nenhuma viatura a caminho</item>
         <item quantity="one">Uma viatura a caminho</item>

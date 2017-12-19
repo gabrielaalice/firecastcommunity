@@ -168,13 +168,16 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
 
     public static void UpdateMapMarkersRadius() {
         LatLng actualPosition = arrayMyLocation.get(0);
+        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.user_pin);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+
 
         if(gMap!=null) {
             gMap.clear();
 
             gMap.addMarker(new MarkerOptions().position(actualPosition)
                     .title("Minha posição atual")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
 
             List<Occurrence> occurrences = OccurenceFragment.getListOccurrence();
 

@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,6 +27,7 @@ import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.provider.Settings.Global.getString;
 import static br.com.zbra.androidlinq.Linq.stream;
 
 
@@ -70,7 +75,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
     public class HeaderViewHolder extends ExpandableRecyclerAdapter.HeaderViewHolder {
         TextView type,description, distance, hour;
         Resources res;
-        ImageButton navigate;
+        ImageButton navigate, share;
 
 
         public HeaderViewHolder(View view) {
@@ -93,9 +98,10 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
             type.setText(occ.type.name);
 
+
             // Seta a cor a partir do tipo de ocorrência
             type.setBackgroundColor(res.getIntArray(R.array.occurence_colors)[occ.type.id- ((occ.type.id>=6)?2:1)]);
-
+            share = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__share);
             hour.setTextColor(res.getIntArray(R.array.occurence_colors)[occ.type.id- ((occ.type.id>=6)?2:1)]);
             description.setText(occ.description);
 
@@ -126,6 +132,31 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
                     }
                 }
             });
+            share.setOnClickListener(new View.OnClickListener(){
+
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    // context = itemView.getContext();
+                    intent.setAction(Intent.ACTION_SEND);
+
+                    String shareBody = "Ocorrência Firecast ";
+                    String shareSub = "Ocorrência Firecast " + occ.type.name + "("+ occ.description+")" +
+                            "\n"+ "Ocorrendo no endereço:  " +
+                            (String)  occ.addressNeighborhood + " " +
+                            "\n"+"Referência:  " +
+                            (String) occ.addressReferencePoint + " " +
+                            "\n"+"Cidade:  " +
+                            (String) occ.city.name +
+                            "\n"+ "Mais informações em: Firecast Comunidade";
+                    intent.putExtra(Intent.EXTRA_SUBJECT,shareBody);
+                    intent.putExtra(Intent.EXTRA_TEXT,shareSub);
+                    intent.setType("text/html");
+                    context.startActivity(Intent.createChooser(intent, "Compartilhar usando:"));
+
+                }
+            });
 
         }
     }
@@ -133,7 +164,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
     public class OccurrenceViewHolder extends ExpandableRecyclerAdapter.ViewHolder {
         TextView cars,location, reference, city, referenceTitle;
         Resources res;
-        ImageButton share, details;
+        ImageButton details;
         View underlineReference;
 
 
@@ -147,28 +178,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             city = (TextView) itemView.findViewById(R.id.cardoccurrenceitem__city);
             referenceTitle = (TextView) itemView.findViewById(R.id.cardoccurrencetitle__reference);
             underlineReference = itemView.findViewById(R.id.underline__reference);
-            share = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__share);
             details  = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__details);
-
-            share.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                   // context = itemView.getContext();
-                    intent.setAction(Intent.ACTION_SEND);
-                    String shareBody = "Ocorrência Firecast";
-                    String shareSub = "Ocorrência ocorrendo no endereço:  " +
-                            (String) location.getText() + " " +
-                            (String) reference.getText() + " " + (String) city.getText() +
-                             "\n"+ "Mais informações em: Firecast Comunidade";
-                    intent.putExtra(Intent.EXTRA_SUBJECT,shareBody);
-                    intent.putExtra(Intent.EXTRA_TEXT,shareSub);
-                    intent.setType("text/plain");
-                    context.startActivity(Intent.createChooser(intent, "share using:"));
-
-                }
-            });
 
         }
 
