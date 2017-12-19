@@ -91,14 +91,19 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
         if(mMap!=null) {
             mMap.clear();
 
-            mMap.addMarker(new MarkerOptions().position(actualPosition)
-                    .title("Minha posição atual")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+            if(actualPosition!=null) {
 
-            LatLng positionOcc = new LatLng(occurrence.latitude, occurrence.longitude);
-            mMap.addMarker(new MarkerOptions().position(positionOcc)
-                    .title(occurrence.city.name + " / " + occurrence.description)
-                    .icon(BitmapDescriptorFactory.fromBitmap(GetColorMarkerOccurrence(this,occurrence))));
+                mMap.addMarker(new MarkerOptions().position(actualPosition)
+                        .title("Minha posição atual")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+            }
+
+            if(occurrence.latitude!=null && occurrence.longitude!=null) {
+                LatLng positionOcc = new LatLng(occurrence.latitude, occurrence.longitude);
+                mMap.addMarker(new MarkerOptions().position(positionOcc)
+                        .title(occurrence.city.name + " / " + occurrence.description)
+                        .icon(BitmapDescriptorFactory.fromBitmap(GetColorMarkerOccurrence(this, occurrence))));
+            }
         }
     }
 
