@@ -36,7 +36,7 @@
             android:id="@+id/firecast_description"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/about_firecast"
+            android:text="@string/about_firecast_community"
             android:layout_marginTop="20dp"
             android:gravity="center"
             />

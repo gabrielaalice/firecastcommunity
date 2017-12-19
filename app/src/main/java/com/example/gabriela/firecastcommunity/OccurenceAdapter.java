@@ -200,7 +200,6 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
             city.setText(occ.city.name);
 
-
             details.setOnClickListener(new View.OnClickListener(){
 
                 @Override

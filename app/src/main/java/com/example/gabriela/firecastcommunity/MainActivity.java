@@ -86,10 +86,10 @@ public class MainActivity extends AppCompatActivity
             case 0:
                 newFragment = new MapsFragment();
                 break;
+           // case 1:
+             //   newFragment = new RadioFragment();
+              //  break;
             case 1:
-                newFragment = new RadioFragment();
-                break;
-            case 2:
                 newFragment = new OccurenceFragment();
                 break;
         }
@@ -109,11 +109,11 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_home:
                     changeFragment(0);
                     break;
-                case R.id.navigation_dashboard:
-                    changeFragment(1);
-                    break;
+               // case R.id.navigation_dashboard:
+                 //   changeFragment(1);
+                   // break;
                 case R.id.navigation_notifications:
-                    changeFragment(2);
+                    changeFragment(1);
                     break;
             }
             return true;

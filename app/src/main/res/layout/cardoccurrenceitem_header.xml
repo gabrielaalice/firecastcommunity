@@ -99,7 +99,7 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:id="@+id/cardoccurrenceitem__share"
-                    android:src="@mipmap/share2"
+                    android:src="@mipmap/sharebtn"
                     android:layout_marginRight="3dp"
                     android:actionProviderClass="android.widget.ShareActionProvider" />
 
@@ -121,7 +121,7 @@
                 <ImageButton
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@mipmap/navigation4"
+                    android:src="@mipmap/navigationbtn"
                     android:id="@+id/cardoccurrenceitem__navigate"/>
             </LinearLayout>
         </RelativeLayout>

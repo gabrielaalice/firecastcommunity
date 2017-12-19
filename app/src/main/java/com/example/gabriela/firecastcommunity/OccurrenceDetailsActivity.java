@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -48,8 +50,9 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
     private GoogleMap mMap;
     private LatLng actualPosition;
     Occurrence occurrence;
-    TextView cars,location, reference, city, referenceTitle, occurrence_type, description, date;
+    TextView cars,location, reference, city, referenceTitle, occurrence_type, description, date, distance;
     View underlineReference;
+    ImageButton navigateBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,6 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 occurrence_type = findViewById(R.id.occurence_type);
                 occurrence_type.setText(occurrence.type.name);
 
-                cars = (TextView) findViewById(R.id.cardoccurrenceitem__cars);
                 location = (TextView) findViewById(R.id.cardoccurrenceitem__location);
                 reference = (TextView) findViewById(R.id.cardoccurrenceitem__reference);
                 city = (TextView) findViewById(R.id.cardoccurrenceitem__city);
@@ -78,11 +80,13 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 description.setText(occurrence.description);
                 date = (TextView) findViewById(R.id.cardoccurrenceitem__date);
                 date.setText(MetodsHelpers.convertDateTimeInString(occurrence.date));
-               // date.setTextColor(Color.parseColor(GetColorMarkerOccurrenceType(occurrence)));
-
-
-
-
+                distance = (TextView) findViewById(R.id.cardoccurrenceitem__distance);
+                navigateBtn = (ImageButton) findViewById(R.id.cardoccurrenceitem__navigate);
+                if(occurrence.distance!=null) {
+                    distance.setText(MetodsHelpers.convertNumberInText("pt","BR", occurrence.distance) + " km");
+                }else{
+                    distance.setText("Não foi possível calcular a distância (faltam informações)");
+                }
 
                 if(occurrence.addressNumber != null) {
                     location.setText(occurrence.adressStreet + ", num:" + occurrence.addressNumber);
@@ -98,6 +102,20 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                     referenceTitle.setVisibility(View.GONE);
                     underlineReference.setVisibility(View.GONE);
                 }
+
+                navigateBtn.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+                        if(occurrence.latitude!=null && occurrence.longitude!=null) {
+                            Uri gmmIntentUri = Uri.parse("google.navigation:q="+occurrence.latitude+","+occurrence.longitude);
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(mapIntent);
+                        }
+                    }
+                });
 
                 actualPosition = MapsFragment.getMyLocation();
 
@@ -190,6 +208,36 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 return resizedBitmap;
         }
         return resizedBitmap;
+
+    }
+
+    private static int GetColorMarkerOccurrence(Context context, Occurrence occurrence) {
+
+        switch (occurrence.type.id){
+            case 1:
+                return Color.parseColor(String.valueOf(R.color.spectrum_0));
+            case 2:
+                return Color.parseColor(String.valueOf(R.color.spectrum_1));
+            case 3:
+                return Color.parseColor(String.valueOf(R.color.spectrum_2));
+            case 4:
+                return Color.parseColor(String.valueOf(R.color.spectrum_3));
+            case 5:
+                return Color.parseColor(String.valueOf(R.color.spectrum_4));
+            case 6:
+                return Color.parseColor(String.valueOf(R.color.spectrum_5));
+            case 7:
+                return Color.parseColor(String.valueOf(R.color.spectrum_6));
+            case 8:
+                return Color.parseColor(String.valueOf(R.color.spectrum_7));
+            case 9:
+                return Color.parseColor(String.valueOf(R.color.spectrum_8));
+            case 10:
+                return Color.parseColor(String.valueOf(R.color.spectrum_9));
+            case 11:
+                return Color.parseColor(String.valueOf(R.color.spectrum_0));
+        }
+        return Color.parseColor(String.valueOf(R.color.spectrum_0));
 
     }
 
