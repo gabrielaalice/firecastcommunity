@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
+import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,7 +41,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
     private GoogleMap mMap;
     private LatLng actualPosition;
     Occurrence occurrence;
-    TextView cars,location, reference, city, referenceTitle, occurrence_type, description;
+    TextView cars,location, reference, city, referenceTitle, occurrence_type, description, date;
     View underlineReference;
 
     @Override
@@ -61,15 +62,30 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
 
                 cars = (TextView) findViewById(R.id.cardoccurrenceitem__cars);
                 location = (TextView) findViewById(R.id.cardoccurrenceitem__location);
-                location.setText(occurrence.adressStreet + ", " + occurrence.addressNumber);
                 reference = (TextView) findViewById(R.id.cardoccurrenceitem__reference);
-                reference.setText(occurrence.addressReferencePoint);
                 city = (TextView) findViewById(R.id.cardoccurrenceitem__city);
                 city.setText(occurrence.city.name + ", " + occurrence.addressNeighborhood);
                 referenceTitle = (TextView) findViewById(R.id.cardoccurrencetitle__reference);
                 underlineReference = findViewById(R.id.underline__reference);
                 description = (TextView) findViewById(R.id.cardoccurrenceitem__details);
                 description.setText(occurrence.description);
+                date = (TextView) findViewById(R.id.cardoccurrenceitem__date);
+                date.setText(MetodsHelpers.convertDateTimeInString(occurrence.date));
+
+                if(occurrence.addressNumber != null) {
+                    location.setText(occurrence.adressStreet + ", num:" + occurrence.addressNumber);
+                } else {
+                    location.setText(occurrence.adressStreet);
+                }
+
+                if(occurrence.addressReferencePoint != null) {
+                    reference.setText(occurrence.addressReferencePoint);
+                    reference.setVisibility(View.VISIBLE);
+                } else {
+                    reference.setVisibility(View.GONE);
+                    referenceTitle.setVisibility(View.GONE);
+                    underlineReference.setVisibility(View.GONE);
+                }
 
                 actualPosition = MapsFragment.getMyLocation();
 
