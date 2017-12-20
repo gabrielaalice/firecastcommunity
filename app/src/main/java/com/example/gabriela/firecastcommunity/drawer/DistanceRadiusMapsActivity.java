@@ -11,11 +11,11 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-        import android.os.Bundle;
+import android.os.Bundle;
 
 import com.example.gabriela.firecastcommunity.AutoCompleteTextViewAdapter;
 import com.example.gabriela.firecastcommunity.MainActivity;
-        import com.example.gabriela.firecastcommunity.R;
+import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.DataBaseTemp;
 import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.City;
@@ -28,35 +28,35 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
-        import com.google.android.gms.maps.GoogleMap;
-        import com.google.android.gms.maps.GoogleMap.OnCircleClickListener;
-        import com.google.android.gms.maps.OnMapReadyCallback;
-        import com.google.android.gms.maps.SupportMapFragment;
-        import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCircleClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
-        import com.google.android.gms.maps.model.CircleOptions;
-        import com.google.android.gms.maps.model.LatLng;
-        import com.google.android.gms.maps.model.Marker;
-        import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-        import android.view.Menu;
-        import android.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-        import android.widget.Button;
-        import android.widget.SeekBar;
-        import android.widget.SeekBar.OnSeekBarChangeListener;
-        import android.widget.Spinner;
-        import android.widget.TextView;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-        import java.util.List;
+import java.util.List;
 
 import static br.com.zbra.androidlinq.Linq.stream;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -98,7 +98,9 @@ public class DistanceRadiusMapsActivity extends AppCompatActivity
     }
 
     public void SetAutoCompleteCities() {
-        cities = DataBaseTemp.cities();
+        cities = stream(DataBaseTemp.cities()).orderBy(x->x.name).toList();
+        cities.add(0,new City(Constant.ALL_CITIES_ID, Constant.ALL_CITIES_TEXT));
+
         cityAutoComplete = findViewById(R.id.cityAutoComplete);
 
         City city = getCityFromId(user.getId_city_occurrence());
@@ -214,17 +216,25 @@ public class DistanceRadiusMapsActivity extends AppCompatActivity
 
     private boolean SaveChanges() {
         String cityName = cityAutoComplete.getText().toString();
-        City city = getCityFromName(cityName);
+        City city = null;
 
-        if(city == null){
-            Toast.makeText(this,"Cidade inválida", Toast.LENGTH_LONG).show();
-            return false;
+        if(cityName.trim().equalsIgnoreCase("")) {
+            city = new City(0,"");
         }else {
-            user.setId_city_occurrence(city.id);
-            user.setRadiusKilometers(seekbar.getProgress());
-
-            return repository.UpdateUser(user);
+            if (cityName.trim().equalsIgnoreCase(Constant.ALL_CITIES_TEXT)) {
+                city = new City(-1, Constant.ALL_CITIES_TEXT);
+            } else {
+                city = getCityFromName(cityName);
+                if (city == null) {
+                    Toast.makeText(this, "Cidade inválida", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
         }
+        user.setId_city_occurrence(city.id);
+        user.setRadiusKilometers(seekbar.getProgress());
+
+        return repository.UpdateUser(user);
     }
 
     private City getCityFromName(String name) {

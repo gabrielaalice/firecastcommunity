@@ -10,6 +10,9 @@ public class Constant {
 	public static final int ACTIVITY_DISTANCE_RADIUS_MAP = 51;
 	public static final int ACTIVITY_NOTIFICATION = 52;
 	public static final int ACTIVITY_FILTER = 53;
+    public static final int NOTHING_CITY_ID = 0;
+	public static final int ALL_CITIES_ID = -1;
+	public static final String ALL_CITIES_TEXT = "TODAS";
 
 	public static List<Class> TablesDB() {
 		List<Class> classesTabelas = new ArrayList<Class>();

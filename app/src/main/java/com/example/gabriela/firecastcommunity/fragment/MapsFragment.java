@@ -24,6 +24,7 @@ import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.domain.User;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -193,14 +194,16 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
 
             User user = MainActivity.getUser();
 
-            int radius = user.getRadiusKilometers();
+            if(user.getId_city_occurrence()!= Constant.ALL_CITIES_ID) {
+                int radius = user.getRadiusKilometers();
 
-            Circle circle = gMap.addCircle(new CircleOptions()
+                Circle circle = gMap.addCircle(new CircleOptions()
                         .center(actualPosition)
                         .radius(radius * 1000)
                         .strokeColor(Color.RED)
                         .fillColor(0x220000FF)
                         .strokeWidth(5));
+            }
         }
     }
 

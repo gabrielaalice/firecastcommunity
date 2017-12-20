@@ -20,6 +20,7 @@ import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.domain.User;
 import com.example.gabriela.firecastcommunity.helper.DistanceCalculator;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.google.android.gms.maps.model.LatLng;
 import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 
@@ -120,37 +121,37 @@ public class OccurenceFragment extends Fragment {
     }
 
     private static List<Occurrence> ExecuteFilter() {
-        List<Occurrence> list;
         User user = MainActivity.getUser();
 
         List<Integer> typesOccurrences = stream(user.getOccurrenceTypes()).select(y->y.id).toList();
         int radius = user.getRadiusKilometers();
         int id_city = user.getId_city_occurrence();
 
+        List<Occurrence> list = stream(result)
+                .distinct()
+                .orderBy(c -> c.distance == null ? 1000000 : c.distance)
+                .thenBy(x -> x.city.name)
+                .thenBy(x -> x.date)
+                .toList();
+
         if(typesOccurrences.size() > 0){
-            list = stream(result)
-                    .distinct()
-                    .where(x -> typesOccurrences.contains(x.type.id))
-                    .where(x-> ((x.distance !=null ?
-                                    x.distance <= radius
-                                    : x.city.id == id_city)
-                            || x.city.id == id_city))
-                    .orderBy(c -> c.distance == null ? 1000000 : c.distance)
-                    .thenBy(x -> x.city.name)
-                    .thenBy(x -> x.date)
+            list = stream(list).where(x -> typesOccurrences.contains(x.type.id)).toList();
+        }
+
+        if(id_city==Constant.NOTHING_CITY_ID){
+            list = stream(list)
+                    .where(x-> x.distance !=null ? x.distance <= radius : false)
                     .toList();
-        }else{
-            list = stream(result)
-                    .distinct()
-                    .where(x-> ((x.distance !=null ?
+        }
+        else {
+            list = stream(list)
+                    .where(x-> ((x.distance != null ?
                             x.distance <= radius
                             : x.city.id == id_city)
                             || x.city.id == id_city))
-                    .orderBy(c -> c.distance == null ? 1000000 : c.distance)
-                    .thenBy(x -> x.city.name)
-                    .thenBy(x -> x.date)
                     .toList();
         }
+
         return list;
     }
 

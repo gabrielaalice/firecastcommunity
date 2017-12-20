@@ -1,30 +1,24 @@
 package com.example.gabriela.firecastcommunity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
-import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -32,14 +26,24 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
+//import com.google.android.gms.maps.model.PolylineOptions;
+//
+//import java.io.ByteArrayOutputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
+//
+//import cz.msebera.android.httpclient.HttpEntity;
+//import cz.msebera.android.httpclient.HttpResponse;
+//import cz.msebera.android.httpclient.client.HttpClient;
+//import cz.msebera.android.httpclient.client.methods.HttpGet;
+//import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 
 public class OccurrenceDetailsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -70,6 +74,13 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 occurrence_type = findViewById(R.id.occurence_type);
                 occurrence_type.setText(occurrence.type.name);
 
+                date = (TextView) findViewById(R.id.cardoccurrenceitem__date);
+                date.setText(MetodsHelpers.convertDateTimeInString(occurrence.date));
+
+                int colorText = GetColorMarkerOccurrence(occurrence.type.id);
+                occurrence_type.setTextColor(colorText);
+                date.setTextColor(colorText);
+
                 location = (TextView) findViewById(R.id.cardoccurrenceitem__location);
                 reference = (TextView) findViewById(R.id.cardoccurrenceitem__reference);
                 city = (TextView) findViewById(R.id.cardoccurrenceitem__city);
@@ -78,8 +89,6 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 underlineReference = findViewById(R.id.underline__reference);
                 description = (TextView) findViewById(R.id.cardoccurrenceitem__details);
                 description.setText(occurrence.description);
-                date = (TextView) findViewById(R.id.cardoccurrenceitem__date);
-                date.setText(MetodsHelpers.convertDateTimeInString(occurrence.date));
                 distance = (TextView) findViewById(R.id.cardoccurrenceitem__distance);
                 navigateBtn = (ImageButton) findViewById(R.id.cardoccurrenceitem__navigate);
                 if(occurrence.distance!=null) {
@@ -103,25 +112,26 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                     underlineReference.setVisibility(View.GONE);
                 }
 
-                navigateBtn.setOnClickListener(new View.OnClickListener(){
+                if(occurrence.latitude!=null && occurrence.longitude!=null) {
 
-                    @Override
-                    public void onClick(View view) {
-                        if(occurrence.latitude!=null && occurrence.longitude!=null) {
-                            Uri gmmIntentUri = Uri.parse("google.navigation:q="+occurrence.latitude+","+occurrence.longitude);
-                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                            mapIntent.setPackage("com.google.android.apps.maps");
-                            mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(mapIntent);
-                        }
-                    }
-                });
+                    navigateBtn.setOnClickListener(new View.OnClickListener(){
 
-                actualPosition = MapsFragment.getMyLocation();
+                        @Override
+                        public void onClick(View view) {
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q="+occurrence.latitude+","+occurrence.longitude);
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(mapIntent);
+                            }
+                    });
 
-                SupportMapFragment mapFragment =
-                        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                mapFragment.getMapAsync(this);
+                    actualPosition = MapsFragment.getMyLocation();
+
+                    SupportMapFragment mapFragment =
+                            (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                    mapFragment.getMapAsync(this);
+                }
 
             }else{
                 finish();
@@ -152,9 +162,114 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 mMap.addMarker(new MarkerOptions().position(positionOcc)
                         .title(occurrence.city.name + " / " + occurrence.description)
                         .icon(BitmapDescriptorFactory.fromBitmap(GetIconMarkerOccurrence(this, occurrence))));
+
+//                if(actualPosition!=null) {
+//                    GenerateRoute(actualPosition, positionOcc);
+//                }
             }
+
         }
+
     }
+
+//    private void GenerateRoute(LatLng origin, LatLng destine) {
+//        // Origem (latitude, longitude) e destino (latitude, longitude)
+//        HttpGet http = new HttpGet("https://maps.google.com/maps?output=json&saddr="
+//                +origin.latitude+"," + origin.longitude+"&daddr=" +
+//                destine.latitude+"," + destine.longitude);
+//
+//        HttpClient httpclient = new DefaultHttpClient();
+//
+//        HttpResponse response = null;
+//        try {
+//            response = httpclient.execute(http);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        HttpEntity entity = response.getEntity();
+//
+//        if (response.getStatusLine().getStatusCode() == 200) {
+//            if (entity != null) {
+//                InputStream instream = null;
+//                try {
+//                    instream = entity.getContent();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                String resultString = converterStreamEmString(instream);
+//                try {
+//                    instream.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                String regex = "points:\\\"([^\\\"]*)\\\"";
+//                Pattern p = Pattern.compile(regex);
+//                Matcher m = p.matcher(resultString);
+//                if (m.find()) {
+//                    obterPontos(m.group(1));
+//                }
+//            }
+//        }
+//    }
+//
+//    private String converterStreamEmString(InputStream is) {
+//        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//
+//        int a;
+//        try {
+//            while ((a = is.read()) != -1) {
+//                buffer.write(a);
+//            }
+//            buffer.close();
+//
+//            return new String(buffer.toByteArray(), "UTF-8");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+//
+//    private void obterPontos(String str) {
+//        str = str.replace("\\\\", "\\");
+//
+//        int index = 0, len = str.length();
+//        int lat = 0, lng = 0;
+//
+//        List<LatLng> listPositions = new ArrayList<>();
+//        while (index < len) {
+//            int b, shift = 0, result = 0;
+//            do {
+//                b = str.charAt(index++) - 63;
+//                result |= (b & 0x1f) << shift;
+//                shift += 5;
+//            } while (b >= 0x20);
+//            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+//            lat += dlat;
+//
+//            shift = 0;
+//            result = 0;
+//            do {
+//                b = str.charAt(index++) - 63;
+//                result |= (b & 0x1f) << shift;
+//                shift += 5;
+//            } while (b >= 0x20);
+//            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+//            lng += dlng;
+//
+//            // Representação de 1 ponto com a latitude e longitude obtidos no laço acima
+//            listPositions.add(new LatLng((double)lat*1E-5, (double)lng*1E-5));
+//        }
+//
+//        // Após ter todos os pontos da rota
+//        PolylineOptions polylineOptions = new PolylineOptions();
+//        for (LatLng point : listPositions) {
+//            polylineOptions.add(point);
+//        }
+//
+//        mMap.addPolyline(polylineOptions);
+//    }
 
     private static Bitmap GetIconMarkerOccurrence(Context context, Occurrence occurrence) {
 
@@ -211,33 +326,33 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
 
     }
 
-    private static int GetColorMarkerOccurrence(Context context, Occurrence occurrence) {
+    private static int GetColorMarkerOccurrence(int type_id) {
 
-        switch (occurrence.type.id){
+        switch (type_id){
             case 1:
-                return Color.parseColor(String.valueOf(R.color.spectrum_0));
+                return Color.parseColor("#C06158");
             case 2:
-                return Color.parseColor(String.valueOf(R.color.spectrum_1));
+                return Color.parseColor("#E77C71");
             case 3:
-                return Color.parseColor(String.valueOf(R.color.spectrum_2));
+                return Color.parseColor("#E8862F");
             case 4:
-                return Color.parseColor(String.valueOf(R.color.spectrum_3));
+                return Color.parseColor("#FFAA53");
             case 5:
-                return Color.parseColor(String.valueOf(R.color.spectrum_4));
+                return Color.parseColor("#FFD13E");
             case 6:
-                return Color.parseColor(String.valueOf(R.color.spectrum_5));
+                return Color.parseColor("#8EE67D");
             case 7:
-                return Color.parseColor(String.valueOf(R.color.spectrum_6));
+                return Color.parseColor("#49CE42");
             case 8:
-                return Color.parseColor(String.valueOf(R.color.spectrum_7));
+                return Color.parseColor("#2DC4AF");
             case 9:
-                return Color.parseColor(String.valueOf(R.color.spectrum_8));
+                return Color.parseColor("#55E5F2");
             case 10:
-                return Color.parseColor(String.valueOf(R.color.spectrum_9));
+                return Color.parseColor("#22B2E6");
             case 11:
-                return Color.parseColor(String.valueOf(R.color.spectrum_0));
+                return Color.parseColor("#C06158");
         }
-        return Color.parseColor(String.valueOf(R.color.spectrum_0));
+        return Color.parseColor("#C06158");
 
     }
 

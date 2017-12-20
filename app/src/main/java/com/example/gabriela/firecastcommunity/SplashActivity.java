@@ -18,6 +18,7 @@ import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.City;
 import com.example.gabriela.firecastcommunity.domain.User;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
+import com.example.gabriela.firecastcommunity.utility.Constant;
 
 import java.util.List;
 import java.util.Timer;
@@ -69,7 +70,9 @@ public class SplashActivity extends AppCompatActivity{
             dialog.setContentView(R.layout.popup_filter);
             SetSeekBar();
 
-            cities = DataBaseTemp.cities();
+            cities = stream(DataBaseTemp.cities()).orderBy(x->x.name).toList();
+            cities.add(0,new City(Constant.ALL_CITIES_ID,Constant.ALL_CITIES_TEXT));
+
             SetAutoCompleteCities(cities);
 
             //show dialog if app never launch
@@ -112,14 +115,24 @@ public class SplashActivity extends AppCompatActivity{
         });
     }
 
-    public void setInitialPreferences(View v){
+    public boolean setInitialPreferences(View v){
 
         String cityName = cityAutoComplete.getText().toString();
-        City city = getCityFromName(cityName);
+        City city = null;
 
-        if(city == null){
-            Toast.makeText(this,"Cidade inválida", Toast.LENGTH_LONG).show();
+        if(cityName.trim().equalsIgnoreCase("")) {
+            city = new City(Constant.NOTHING_CITY_ID,"");
         }else {
+            if (cityName.trim().equalsIgnoreCase(Constant.ALL_CITIES_TEXT)) {
+                city = new City(Constant.ALL_CITIES_ID, Constant.ALL_CITIES_TEXT);
+            } else {
+                city = getCityFromName(cityName);
+                if (city == null) {
+                    Toast.makeText(this, "Cidade inválida", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        }
 
             user.setId_city_occurrence(city.id);
 
@@ -132,7 +145,8 @@ public class SplashActivity extends AppCompatActivity{
             repository.SaveOrUpdate(user);
 
             FinishSplash();
-        }
+
+            return true;
     }
 
     public SeekBar.OnSeekBarChangeListener ChangeSeekBar() {

@@ -120,7 +120,9 @@ public class FilterOcActivity extends AppCompatActivity {
     }
 
     public void SetAutoCompleteCities() {
-        cities = DataBaseTemp.cities();
+        cities = stream(DataBaseTemp.cities()).orderBy(x->x.name).toList();
+        cities.add(0,new City(Constant.ALL_CITIES_ID, Constant.ALL_CITIES_TEXT));
+
         cityAutoComplete = findViewById(R.id.cityAutoComplete);
 
         City city = getCityFromId(user.getId_city_occurrence());
@@ -201,32 +203,41 @@ public class FilterOcActivity extends AppCompatActivity {
 
     private boolean SaveChanges() {
         String cityName = cityAutoComplete.getText().toString();
-        City city = getCityFromName(cityName);
+        City city = null;
 
-        if(city == null){
-            Toast.makeText(this,"Cidade inválida", Toast.LENGTH_LONG).show();
-            return false;
+        if(cityName.trim().equalsIgnoreCase("")) {
+            city = new City(0,"");
         }else {
-            user.setId_city_occurrence(city.id);
-            user.setRadiusKilometers(seekbar.getProgress());
-
-            List<OccurrenceType> types = DataBaseTemp.typesOccurrences();
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_ACIDENT, oc_accident_car.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_PARAMEDICS, oc_paramedics.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_SUPORT, oc_support.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_CUTTING_TREE, oc_tree_cutting.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_INSECT, oc_insect.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_PREVENTIVE, oc_action_preventive.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_OTHERS, oc_other.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_FIRE, oc_fire.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_NOT_SERVICE, oc_nao_atendida.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_DANGEROUS, oc_dangerous_product.isChecked());
-            types = DeleteTypeOnList(types, DataBaseTemp.ID_RESCUES, oc_search_rescue.isChecked());
-
-            user.setOccurrenceTypes(types);
-
-            return true;
+            if (cityName.trim().equalsIgnoreCase(Constant.ALL_CITIES_TEXT)) {
+                city = new City(-1, Constant.ALL_CITIES_TEXT);
+            } else {
+                city = getCityFromName(cityName);
+                if (city == null) {
+                    Toast.makeText(this, "Cidade inválida", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
         }
+
+        user.setId_city_occurrence(city.id);
+        user.setRadiusKilometers(seekbar.getProgress());
+
+        List<OccurrenceType> types = DataBaseTemp.typesOccurrences();
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_ACIDENT, oc_accident_car.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_PARAMEDICS, oc_paramedics.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_SUPORT, oc_support.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_CUTTING_TREE, oc_tree_cutting.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_INSECT, oc_insect.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_PREVENTIVE, oc_action_preventive.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_OTHERS, oc_other.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_FIRE, oc_fire.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_NOT_SERVICE, oc_nao_atendida.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_DANGEROUS, oc_dangerous_product.isChecked());
+        types = DeleteTypeOnList(types, DataBaseTemp.ID_RESCUES, oc_search_rescue.isChecked());
+
+        user.setOccurrenceTypes(types);
+
+        return true;
     }
 
     private List<OccurrenceType> DeleteTypeOnList(List<OccurrenceType> types, int id_type, boolean condition) {
