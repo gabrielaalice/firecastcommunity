@@ -1,6 +1,7 @@
 package com.example.gabriela.firecastcommunity.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class User implements Serializable{
@@ -22,6 +23,12 @@ public class User implements Serializable{
     private Integer id_city_radio;
 
     private boolean isNotify;
+
+    private boolean isTimeSilence;
+
+    private Date timeStartSilence;
+
+    private Date timeFinishSilence;
 
     private List<OccurrenceType> occurrenceTypes;
 
@@ -95,5 +102,29 @@ public class User implements Serializable{
 
     public void setNotify(boolean notify) {
         isNotify = notify;
+    }
+
+    public boolean isTimeSilence() {
+        return isTimeSilence;
+    }
+
+    public void setTimeSilence(boolean timeSilence) {
+        isTimeSilence = timeSilence;
+    }
+
+    public Date getTimeStartSilence() {
+        return timeStartSilence;
+    }
+
+    public void setTimeStartSilence(Date timeStartSilence) {
+        this.timeStartSilence = timeStartSilence;
+    }
+
+    public Date getTimeFinishSilence() {
+        return timeFinishSilence;
+    }
+
+    public void setTimeFinishSilence(Date timeFinishSilence) {
+        this.timeFinishSilence = timeFinishSilence;
     }
 }

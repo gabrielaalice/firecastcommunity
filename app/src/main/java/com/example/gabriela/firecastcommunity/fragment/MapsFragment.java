@@ -91,61 +91,61 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
         return view;
 
     }
-    
-    private static Bitmap GetColorMarkerOccurrence(Occurrence occurrence) {
-            
-            Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.other_pin);
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
 
-            switch (occurrence.type.id){
-                case 1:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.fire_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 2:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.search_rescue_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 3:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.dangerous_product_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 4:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.fire_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 5:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.paramedics_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 6:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.other_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 7:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.other_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 8:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.car_accident_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 9:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.other_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 10:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.tree_cutting_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-                case 11:
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.insect_control_pin);
-                    resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
-                    return resizedBitmap;
-            }
-            return resizedBitmap;
+    private static Bitmap GetIconMarkerOccurrence(Context context, Occurrence occurrence) {
 
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.other_pin);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+
+        switch (occurrence.type.id){
+            case 1:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.fire_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 2:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.support_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 3:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.dangerous_product_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 4:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.search_rescue_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 5:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.paramedics_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 6:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_orange);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 7:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.other_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 8:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.car_accident_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 9:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_community_orange);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 10:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.tree_cutting_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
+            case 11:
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.insect_control_pin);
+                resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+                return resizedBitmap;
         }
+        return resizedBitmap;
+
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -167,9 +167,9 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
         }
     }
 
-    public static void UpdateMapMarkersRadius() {
+    public static void UpdateMapMarkersRadius(Context context) {
         LatLng actualPosition = arrayMyLocation.get(0);
-        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.user_pin);
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.user_pin);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
 
 
@@ -188,7 +188,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
 
                     gMap.addMarker(new MarkerOptions().position(positionOcc)
                             .title(occ.city.name + " / " + occ.description)
-                            .icon(BitmapDescriptorFactory.fromBitmap(GetColorMarkerOccurrence(occ))));
+                            .icon(BitmapDescriptorFactory.fromBitmap(GetIconMarkerOccurrence(context, occ))));
                 }
             }
 
@@ -305,7 +305,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
-        UpdateMapMarkersRadius();
+        UpdateMapMarkersRadius(getContext());
     }
 
     @Override

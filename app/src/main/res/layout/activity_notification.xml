@@ -44,6 +44,63 @@
                 android:checked="true"
                 android:gravity="left"/>
 
+            <Switch
+                android:id="@+id/silenceSwitch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/horario_nao_notificar"
+                android:checked="true"
+                android:gravity="left"/>
+
+            <LinearLayout
+                android:id="@+id/layoutTimeSilence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start"
+                        android:layout_gravity="center"/>
+
+                    <TimePicker
+                        android:id="@+id/timeStartSilence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:timePickerMode="spinner"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:text="@string/finish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <TimePicker
+                        android:id="@+id/timeFinishSilence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:timePickerMode="spinner"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
         <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
@@ -93,4 +150,7 @@
         <!--android:gravity="left"/>-->
         <!--</LinearLayout>-->
     </LinearLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>

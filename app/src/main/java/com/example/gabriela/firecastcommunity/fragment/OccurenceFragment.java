@@ -115,7 +115,7 @@ public class OccurenceFragment extends Fragment {
         try{
             UpdateRecicleViewList(getActivity().getApplicationContext());
         }finally {
-            MapsFragment.UpdateMapMarkersRadius();
+            MapsFragment.UpdateMapMarkersRadius(getActivity().getApplicationContext());
             swipeRefreshLayout.setRefreshing(false);
         }
     }

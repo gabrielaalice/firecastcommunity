@@ -6,19 +6,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TimePicker;
 
 import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.R;
 import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.User;
 import com.example.gabriela.firecastcommunity.utility.Constant;
+import com.example.gabriela.firecastcommunity.utility.UtilitaryHelper;
+
+import java.util.Date;
 
 public class NotificationActivity extends AppCompatActivity {
 
     private Switch notifyGeral;
     private User user;
     private FirecastDB repository;
+    private Switch silenceSwitch;
+    private TimePicker timeStart;
+    private TimePicker timeFinish;
+    private LinearLayout layoutTimeSilence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +41,36 @@ public class NotificationActivity extends AppCompatActivity {
 
         notifyGeral = findViewById(R.id.geralSwitch);
         notifyGeral.setChecked(user.isNotify());
+
+        silenceSwitch = findViewById(R.id.silenceSwitch);
+
+
+
+        layoutTimeSilence = findViewById(R.id.layoutTimeSilence);
+
+        if(user.isTimeSilence()) {
+            silenceSwitch.setChecked(true);
+            layoutTimeSilence.setVisibility(View.VISIBLE);
+            timeStart = UtilitaryHelper.ConfigurarTimePicker24Horas(this,R.id.timeStartSilence,user.getTimeStartSilence().getHours(),user.getTimeStartSilence().getMinutes());
+            timeFinish = UtilitaryHelper.ConfigurarTimePicker24Horas(this,R.id.timeFinishSilence,user.getTimeFinishSilence().getHours(),user.getTimeFinishSilence().getMinutes());
+        }else{
+            silenceSwitch.setChecked(false);
+            layoutTimeSilence.setVisibility(View.INVISIBLE);
+            timeStart = UtilitaryHelper.ConfigurarTimePicker24Horas(this,R.id.timeStartSilence,0,0);
+            timeFinish = UtilitaryHelper.ConfigurarTimePicker24Horas(this,R.id.timeFinishSilence,0,0);
+        }
+
+        silenceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(silenceSwitch.isChecked()){
+                    layoutTimeSilence.setVisibility(View.VISIBLE);
+                }else{
+                    layoutTimeSilence.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -67,6 +109,10 @@ public class NotificationActivity extends AppCompatActivity {
 
     private boolean SaveChanges() {
         user.setNotify(notifyGeral.isChecked());
+        user.setTimeSilence(silenceSwitch.isChecked());
+        if(silenceSwitch.isChecked()){
+            user.setTimeStartSilence(new Date());
+        }
         return repository.UpdateUser(user);
     }
 }

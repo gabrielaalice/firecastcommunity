@@ -142,7 +142,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(actualPosition,10));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(actualPosition,5));
         Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.user_pin);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
 
@@ -282,7 +282,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 2:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.search_rescue_pin);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.support_pin);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 3:
@@ -290,7 +290,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 4:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.fire_pin);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.search_rescue_pin);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 5:
@@ -298,7 +298,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 6:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.other_pin);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_orange);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 7:
@@ -310,7 +310,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 9:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.other_pin);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_community_orange);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 10:

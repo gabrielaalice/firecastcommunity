@@ -3,15 +3,13 @@ package com.example.gabriela.firecastcommunity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,14 +18,11 @@ import android.widget.Toast;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
 import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
 import com.innodroid.expandablerecycler.ExpandableRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.provider.Settings.Global.getString;
 import static br.com.zbra.androidlinq.Linq.stream;
 
 
@@ -35,7 +30,6 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
     public static final int TYPE_PERSON = 1001;
     Context context;
-    Image iconOcc;
 
     public OccurenceAdapter(Context context, List<Occurrence> orderList) {
         super(context);
@@ -100,7 +94,8 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
 
             // Seta a cor a partir do tipo de ocorrência
-            type.setBackgroundColor(res.getIntArray(R.array.occurence_colors)[occ.type.id- ((occ.type.id>=6)?2:1)]);
+            type.setBackgroundColor(GetColorMarkerOccurrence(occ.type.id));
+
             share = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__share);
             hour.setTextColor(res.getIntArray(R.array.occurence_colors)[occ.type.id- ((occ.type.id>=6)?2:1)]);
             description.setText(occ.description);
@@ -216,6 +211,8 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
                 }
             });
 
+            details.setBackgroundResource(GetIconOccurrence(occ));
+
 
         }
     }
@@ -252,5 +249,65 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
     private Occurrence GetOcurrencceFromId(int id_occurrence) {
         return stream(OccurenceFragment.getListOccurrence()).firstOrNull(x->x.id==id_occurrence);
+    }
+
+    private static int GetIconOccurrence(Occurrence occurrence) {
+
+        switch (occurrence.type.id){
+            case 1:
+                return R.drawable.fire_icon;
+            case 2:
+                return R.drawable.support_icon;
+            case 3:
+                return R.drawable.dangerous_product_icon;
+            case 4:
+                return R.drawable.search_rescue_icon;
+            case 5:
+                return R.drawable.paramedics_icon;
+            case 6:
+                return R.drawable.firecast_orange; // NOT_SERVICE
+            case 7:
+                return R.drawable.other_icon;
+            case 8:
+                return R.drawable.car_accident_icon;
+            case 9:
+                return R.drawable.firecast_community_orange; // PREVENTIVE
+            case 10:
+                return R.drawable.tree_cutting_icon;
+            case 11:
+                return R.drawable.insect_control_icon;
+        }
+        return R.drawable.other_pin;
+
+    }
+
+    private static int GetColorMarkerOccurrence(int type_id) {
+
+        switch (type_id){
+            case 1:
+                return Color.parseColor("#C06158");
+            case 2:
+                return Color.parseColor("#E77C71");
+            case 3:
+                return Color.parseColor("#E8862F");
+            case 4:
+                return Color.parseColor("#FFAA53");
+            case 5:
+                return Color.parseColor("#FFD13E");
+            case 6:
+                return Color.parseColor("#8EE67D");
+            case 7:
+                return Color.parseColor("#49CE42");
+            case 8:
+                return Color.parseColor("#2DC4AF");
+            case 9:
+                return Color.parseColor("#55E5F2");
+            case 10:
+                return Color.parseColor("#22B2E6");
+            case 11:
+                return Color.parseColor("#C06158");
+        }
+        return Color.parseColor("#C06158");
+
     }
 }

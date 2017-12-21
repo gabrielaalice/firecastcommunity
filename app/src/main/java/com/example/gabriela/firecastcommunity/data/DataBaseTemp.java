@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseTemp {
-    public static final int ID_ACIDENT = 8;
-    public static final int ID_PARAMEDICS = 5;
-    public static final int ID_SUPORT = 2;
-    public static final int ID_CUTTING_TREE = 10;
-    public static final int ID_INSECT = 11;
-    public static final int ID_PREVENTIVE = 9;
-    public static final int ID_OTHERS = 7;
     public static final int ID_FIRE = 1;
-    public static final int ID_NOT_SERVICE = 6;
+    public static final int ID_SUPORT = 2;
     public static final int ID_DANGEROUS = 3;
     public static final int ID_RESCUES = 4;
+    public static final int ID_PARAMEDICS = 5;
+    public static final int ID_NOT_SERVICE = 6;
+    public static final int ID_OTHERS = 7;
+    public static final int ID_ACIDENT = 8;
+    public static final int ID_PREVENTIVE = 9;
+    public static final int ID_CUTTING_TREE = 10;
+    public static final int ID_INSECT = 11;
 
     public static List<City> cities(){
         List<City> cities = new ArrayList<>();

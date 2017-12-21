@@ -40,7 +40,6 @@ import com.example.gabriela.firecastcommunity.drawer.RegisterErrorActivity;
 import com.example.gabriela.firecastcommunity.drawer.RegisterUserActivity;
 import com.example.gabriela.firecastcommunity.fragment.MapsFragment;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
-import com.example.gabriela.firecastcommunity.fragment.RadioFragment;
 
 import com.example.gabriela.firecastcommunity.utility.Constant;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -57,9 +56,7 @@ import java.io.InputStream;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -153,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         try {
             OccurenceFragment.callApiGetAllOccurrence();
         } finally {
-            mapFragment.UpdateMapMarkersRadius();
+            mapFragment.UpdateMapMarkersRadius(getApplicationContext());
             OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
 
             if (getUser().isNotify()) {
@@ -407,7 +404,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
-            MapsFragment.UpdateMapMarkersRadius();
+            MapsFragment.UpdateMapMarkersRadius(getApplicationContext());
         }
     }
 

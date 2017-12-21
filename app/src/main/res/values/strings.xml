@@ -109,7 +109,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_maps_fragment">Map</string>
-
+    <string name="horario_nao_notificar">Horário para não notificar</string>
+    <string name="start">Início</string>
+    <string name="finish">Fim</string>
 
 
 </resources>
