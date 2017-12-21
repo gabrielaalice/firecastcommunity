@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
@@ -156,12 +158,15 @@ public class DistanceRadiusMapsActivity extends AppCompatActivity
     }
 
     private void UpdateCircleRadiusKM() {
+        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.user_pin_red);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
+
         if(mMap!=null) {
             mMap.clear();
 
             mMap.addMarker(new MarkerOptions().position(actualPosition)
                     .title("Minha posição atual")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap)));
 
             int radius = seekbar!=null ? seekbar.getProgress() : user.getRadiusKilometers();
 

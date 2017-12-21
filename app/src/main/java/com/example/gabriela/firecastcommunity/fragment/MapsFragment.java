@@ -169,7 +169,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
 
     public static void UpdateMapMarkersRadius(Context context) {
         LatLng actualPosition = arrayMyLocation.get(0);
-        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.user_pin);
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.user_pin_red);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
 
 

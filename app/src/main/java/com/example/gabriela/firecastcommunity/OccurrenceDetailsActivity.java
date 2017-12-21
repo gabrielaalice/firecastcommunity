@@ -143,7 +143,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(actualPosition,5));
-        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.user_pin);
+        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.user_pin_red);
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
 
 
