@@ -298,7 +298,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 6:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_orange);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.no_service_pin);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 7:
@@ -310,7 +310,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 9:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_community_orange);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.preventive_pin);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 10:
@@ -332,25 +332,25 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
             case 1:
                 return Color.parseColor("#C06158");
             case 2:
-                return Color.parseColor("#E77C71");
-            case 3:
-                return Color.parseColor("#E8862F");
-            case 4:
-                return Color.parseColor("#FFAA53");
-            case 5:
-                return Color.parseColor("#FFD13E");
-            case 6:
-                return Color.parseColor("#8EE67D");
-            case 7:
-                return Color.parseColor("#49CE42");
-            case 8:
-                return Color.parseColor("#2DC4AF");
-            case 9:
-                return Color.parseColor("#55E5F2");
-            case 10:
                 return Color.parseColor("#22B2E6");
+            case 3:
+                return Color.parseColor("#8EE67D");
+            case 4:
+                return Color.parseColor("#55E5F2");
+            case 5:
+                return Color.parseColor("#2DC4AF");
+            case 6:
+                return Color.parseColor("#8c55ba");
+            case 7:
+                return Color.parseColor("#FFD13E");
+            case 8:
+                return Color.parseColor("#E77C71");
+            case 9:
+                return Color.parseColor("#b35dac");
+            case 10:
+                return Color.parseColor("#49CE42");
             case 11:
-                return Color.parseColor("#C06158");
+                return Color.parseColor("#FFAA53");
         }
         return Color.parseColor("#C06158");
 

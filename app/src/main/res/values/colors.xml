@@ -7,14 +7,16 @@
 
     <color name="spectrum_0">#C06158</color>
     <color name="spectrum_1">#E77C71</color>
-    <color name="spectrum_2">#E8862F</color>
+    <color name="spectrum_2">#b35dac</color>
     <color name="spectrum_3">#FFAA53</color>
     <color name="spectrum_4">#FFD13E</color>
     <color name="spectrum_5">#8EE67D</color>
-    <color name="spectrum_6">#49CE42</color>
+    <color name="spectrum_6">#8c55ba</color>
     <color name="spectrum_7">#2DC4AF</color>
     <color name="spectrum_8">#55E5F2</color>
     <color name="spectrum_9">#22B2E6</color>
+    <color name="spectrum_10">#49CE42</color>
+    <color name="spectrum_11">#E8862F</color>
 
 
     <color name="white">#FFFFFF</color>
@@ -36,6 +38,8 @@
         <item>@color/spectrum_7</item>
         <item>@color/spectrum_8</item>
         <item>@color/spectrum_9</item>
+        <item>@color/spectrum_10</item>
+        <item>@color/spectrum_11</item>
     </array>
 
 </resources>

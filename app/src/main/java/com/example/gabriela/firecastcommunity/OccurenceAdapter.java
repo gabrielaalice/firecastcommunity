@@ -97,7 +97,9 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             type.setBackgroundColor(GetColorMarkerOccurrence(occ.type.id));
 
             share = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__share);
-            hour.setTextColor(res.getIntArray(R.array.occurence_colors)[occ.type.id- ((occ.type.id>=6)?2:1)]);
+
+            int colorText = GetColorMarkerOccurrence(occ.type.id);
+            hour.setTextColor(colorText);
             description.setText(occ.description);
 
             if(occ.distance!=null) {
@@ -265,13 +267,13 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             case 5:
                 return R.drawable.paramedics_icon;
             case 6:
-                return R.drawable.firecast_orange; // NOT_SERVICE
+                return R.drawable.no_service_icon; // NOT_SERVICE
             case 7:
                 return R.drawable.other_icon;
             case 8:
                 return R.drawable.car_accident_icon;
             case 9:
-                return R.drawable.firecast_community_orange; // PREVENTIVE
+                return R.drawable.preventive_icon; // PREVENTIVE
             case 10:
                 return R.drawable.tree_cutting_icon;
             case 11:
@@ -284,30 +286,30 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
     private static int GetColorMarkerOccurrence(int type_id) {
 
         switch (type_id){
-            case 1:
-                return Color.parseColor("#C06158");
-            case 2:
-                return Color.parseColor("#E77C71");
-            case 3:
-                return Color.parseColor("#E8862F");
-            case 4:
-                return Color.parseColor("#FFAA53");
-            case 5:
-                return Color.parseColor("#FFD13E");
-            case 6:
-                return Color.parseColor("#8EE67D");
-            case 7:
-                return Color.parseColor("#49CE42");
-            case 8:
-                return Color.parseColor("#2DC4AF");
-            case 9:
-                return Color.parseColor("#55E5F2");
-            case 10:
-                return Color.parseColor("#22B2E6");
-            case 11:
-                return Color.parseColor("#C06158");
-        }
-        return Color.parseColor("#C06158");
+                case 1:
+                    return Color.parseColor("#C06158");
+                case 2:
+                    return Color.parseColor("#22B2E6");
+                case 3:
+                    return Color.parseColor("#8EE67D");
+                case 4:
+                    return Color.parseColor("#55E5F2");
+                case 5:
+                    return Color.parseColor("#2DC4AF");
+                case 6:
+                    return Color.parseColor("#8c55ba");
+                case 7:
+                    return Color.parseColor("#FFD13E");
+                case 8:
+                    return Color.parseColor("#E77C71");
+                case 9:
+                    return Color.parseColor("#b35dac");
+                case 10:
+                    return Color.parseColor("#49CE42");
+                case 11:
+                    return Color.parseColor("#FFAA53");
+            }
+            return Color.parseColor("#C06158");
 
-    }
+        }
 }

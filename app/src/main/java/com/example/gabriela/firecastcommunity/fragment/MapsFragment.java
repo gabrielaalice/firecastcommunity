@@ -119,7 +119,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 6:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_orange);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.no_service_pin);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 7:
@@ -131,7 +131,7 @@ public class MapsFragment extends Fragment  implements OnMapReadyCallback,
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 9:
-                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.firecast_community_orange);
+                icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.preventive_pin);
                 resizedBitmap = Bitmap.createScaledBitmap(icon, 70, 100, false);
                 return resizedBitmap;
             case 10:
