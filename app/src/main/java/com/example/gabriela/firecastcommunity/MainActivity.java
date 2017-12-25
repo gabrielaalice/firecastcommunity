@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity
             case 0:
                 newFragment = new MapsFragment();
                 break;
-           // case 1:
-             //   newFragment = new RadioFragment();
-              //  break;
+            // case 1:
+            //   newFragment = new RadioFragment();
+            //  break;
             case 1:
                 newFragment = new OccurenceFragment();
                 break;
@@ -106,9 +106,9 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_home:
                     changeFragment(0);
                     break;
-               // case R.id.navigation_dashboard:
-                 //   changeFragment(1);
-                   // break;
+                // case R.id.navigation_dashboard:
+                //   changeFragment(1);
+                // break;
                 case R.id.navigation_notifications:
                     changeFragment(1);
                     break;
@@ -148,14 +148,11 @@ public class MainActivity extends AppCompatActivity
         MapsFragment mapFragment = (MapsFragment)newFragment;
 
         try {
-            OccurenceFragment.callApiGetAllOccurrence();
+            OccurenceFragment.callApiGetAllOccurrence(getApplicationContext());
         } finally {
             mapFragment.UpdateMapMarkersRadius(getApplicationContext());
             OccurenceFragment.UpdateRecicleViewList(getApplicationContext());
-
-            if (getUser().isNotify()) {
-                new AlarmNotify(getApplicationContext());
-            }
+            new AlarmNotify(getApplicationContext());
         }
 
         final Timer timer = new Timer();
@@ -163,15 +160,13 @@ public class MainActivity extends AppCompatActivity
                         {
                             public void run() {
                                 try {
-                                    OccurenceFragment.callApiGetAllOccurrence();
+                                    OccurenceFragment.callApiGetAllOccurrence(getApplicationContext());
                                 } finally {
-                                    if (getUser().isNotify()) {
-                                        new AlarmNotify(getApplicationContext());
-                                    }
+                                    new AlarmNotify(getApplicationContext());
                                 }
                             }
                         }, 300000, 300000 //Note the second argument for repetition
-                );
+        );
     }
 
     private void CreateViewDrawer(Toolbar toolbar) {
@@ -394,6 +389,11 @@ public class MainActivity extends AppCompatActivity
                                 break;
                             case Constant.ACTIVITY_NOTIFICATION:
                                 user.setNotify(userIntent.isNotify());
+                                user.setSound(userIntent.isSound());
+                                user.setVibrate(userIntent.isVibrate());
+                                user.setTimeSilence(userIntent.isTimeSilence());
+                                user.setTimeStartSilence(userIntent.getTimeStartSilence());
+                                user.setTimeFinishSilence(userIntent.getTimeFinishSilence());
                                 break;
                             case Constant.ACTIVITY_FILTER:
                                 SetUser(userIntent);

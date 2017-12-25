@@ -4,10 +4,6 @@ import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-/**
- * Created by user on 11/06/2017.
- */
-
 public class MetodsHelpers {
 
     public static String normalizeString(String str) {
@@ -18,14 +14,8 @@ public class MetodsHelpers {
         return str;
     }
 
-    public static String convertNumberInText(Locale locale, double number){
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
-        return numberFormat.format(number);
-    }
-
-    public static String convertNumberInText(String language, String country, double number){
-        Locale locale = new Locale(language, country);
-        return convertNumberInText(locale, number);
+    public static String convertNumberInText(double number){
+        return String.format("%.1f", number);
     }
 
     public static String convertDateTimeInString(String dateTime) {

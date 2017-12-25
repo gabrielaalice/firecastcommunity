@@ -103,7 +103,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             description.setText(occ.description);
 
             if(occ.distance!=null) {
-                distance.setText(MetodsHelpers.convertNumberInText("pt","BR", occ.distance) + " km");
+                distance.setText(MetodsHelpers.convertNumberInText(occ.distance) + " km");
             }else{
                 distance.setText("Não foi possível calcular a distância (faltam informações)");
             }

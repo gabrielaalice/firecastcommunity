@@ -26,6 +26,10 @@ public class User implements Serializable{
 
     private boolean isTimeSilence;
 
+    private boolean isSound;
+
+    private boolean isVibrate;
+
     private Date timeStartSilence;
 
     private Date timeFinishSilence;
@@ -126,5 +130,21 @@ public class User implements Serializable{
 
     public void setTimeFinishSilence(Date timeFinishSilence) {
         this.timeFinishSilence = timeFinishSilence;
+    }
+
+    public boolean isSound() {
+        return isSound;
+    }
+
+    public void setSound(boolean sound) {
+        isSound = sound;
+    }
+
+    public boolean isVibrate() {
+        return isVibrate;
+    }
+
+    public void setVibrate(boolean vibrate) {
+        isVibrate = vibrate;
     }
 }

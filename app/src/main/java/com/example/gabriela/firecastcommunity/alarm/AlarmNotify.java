@@ -5,10 +5,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
-import com.example.gabriela.firecastcommunity.MainActivity;
+import com.example.gabriela.firecastcommunity.OccurrenceDetailsActivity;
 import com.example.gabriela.firecastcommunity.R;
+import com.example.gabriela.firecastcommunity.data.FirecastDB;
 import com.example.gabriela.firecastcommunity.domain.Occurrence;
 import com.example.gabriela.firecastcommunity.domain.User;
 import com.example.gabriela.firecastcommunity.fragment.OccurenceFragment;
@@ -17,6 +20,7 @@ import com.example.gabriela.firecastcommunity.helper.MetodsHelpers;
 import static br.com.zbra.androidlinq.Linq.stream;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,36 +29,57 @@ public class AlarmNotify {
     List<Occurrence> listOccurrenceEnabled;
 
     public AlarmNotify(Context context) {
-        User user = MainActivity.getUser();
+        FirecastDB repository = new FirecastDB(context);
+        User user = repository.getUser();
+
         if(user.isNotify()) {
+
+            Calendar now = Calendar.getInstance();
+            Calendar startSilence = Calendar.getInstance();
+            Calendar finishSilence = Calendar.getInstance();
+
             if (user.isTimeSilence()) {
-                Date now = new Date();
 
-                Date startSilence = ReturnDate(user.getTimeStartSilence());
-                Date finishSilence = ReturnDate(user.getTimeFinishSilence());
+                if(user.getTimeFinishSilence()!=null && user.getTimeStartSilence()!=null) {
+                    startSilence.setTime(ReturnDate(user.getTimeStartSilence()));
+                    finishSilence.setTime(ReturnDate(user.getTimeFinishSilence()));
 
-                if (now.after(startSilence) || now.before(finishSilence)) {
-
-
-                    for (Occurrence o : VerifyNotification()) {
-                        Intent intent = new Intent(context, MainActivity.class);
-                        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                        NotificationCompat.Builder b = new NotificationCompat.Builder(context);
-
-                        b.setAutoCancel(true)
-                                .setDefaults(Notification.DEFAULT_ALL)
-                                .setWhen(System.currentTimeMillis())
-                                .setSmallIcon(GetIconOccurrence(o))
-                                .setContentTitle(o.type.name)
-                                .setContentText(ReturnDistance(o.distance) + " | " + o.city.name + " no bairro " + o.addressNeighborhood)
-                                .setContentIntent(contentIntent)
-                                .setPriority(NotificationManager.IMPORTANCE_HIGH);
-
-
-                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        notificationManager.notify(1, b.build());
+                    if (startSilence.after(finishSilence)) {
+                        finishSilence.add(Calendar.DATE, 1);
                     }
+                }
+            }
+
+            if(now.equals(startSilence) || now.equals(finishSilence) ||
+                    now.before(startSilence) || now.after(finishSilence)) {
+
+                for (Occurrence o : VerifyNotification()) {
+                    Intent intent = new Intent(context, OccurrenceDetailsActivity.class);
+                    intent.putExtra("OccurrenceKey", o);
+                    PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    NotificationCompat.Builder b = new NotificationCompat.Builder(context);
+
+                    b.setAutoCancel(true)
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .setWhen(System.currentTimeMillis())
+                            .setSmallIcon(GetIconOccurrence(o))
+                            .setContentTitle(o.type.name)
+                            .setContentText(ReturnDistance(o.distance) + " | " + o.city.name + " no bairro " + o.addressNeighborhood)
+                            .setContentIntent(contentIntent)
+                            .setPriority(NotificationManager.IMPORTANCE_HIGH);
+
+                    if(user.isSound()) {
+                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        b.setSound(alarmSound);
+                    }
+
+                    if(user.isVibrate()) {
+                        b.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+                    }
+
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(1, b.build());
                 }
             }
         }
@@ -101,7 +126,7 @@ public class AlarmNotify {
 
     private String ReturnDistance(Double distance) {
         if(distance!=null) {
-            return MetodsHelpers.convertNumberInText("pt","BR", distance) + " km";
+            return MetodsHelpers.convertNumberInText(distance) + " km";
         }else{
             return "Não foi possível calcular a distância (faltam informações)";
         }
@@ -112,9 +137,9 @@ public class AlarmNotify {
         listOccurrenceEnabled = OccurenceFragment.getListOccurrence();
 
         //if(idsOccurrenceEnabled.size() > 0){
-            occurrenceNotNotify = stream(listOccurrenceEnabled)
-                    .where(x -> !idsOccurrenceEnabled.contains(x.id))
-                    .toList();
+        occurrenceNotNotify = stream(listOccurrenceEnabled)
+                .where(x -> !idsOccurrenceEnabled.contains(x.id))
+                .toList();
         //}
 
         idsOccurrenceEnabled.clear();

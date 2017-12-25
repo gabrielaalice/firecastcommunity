@@ -1,156 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="12dp"
-    tools:context="com.example.gabriela.firecastcommunity.drawer.NotificationActivity">
+    android:layout_height="fill_parent">
 
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="12dp"
+        tools:context="com.example.gabriela.firecastcommunity.drawer.NotificationActivity">
 
-    <LinearLayout
-        android:id="@+id/notification_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="5dp"
-        tools:layout_editor_absoluteX="8dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Notificações"
-            android:gravity="start"
-            />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:background="@color/grey_text" />
 
         <LinearLayout
+            android:id="@+id/notification_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="8dp"
-            tools:layout_editor_absoluteY="19dp"
+            tools:layout_editor_absoluteY="5dp"
             tools:layout_editor_absoluteX="8dp">
 
-            <Switch
-                android:id="@+id/geralSwitch"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Ativar Notificações"
-                android:checked="true"
-                android:gravity="left"/>
-
-            <Switch
-                android:id="@+id/silenceSwitch"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/horario_nao_notificar"
-                android:checked="true"
-                android:gravity="left"/>
-
-            <LinearLayout
-                android:id="@+id/layoutTimeSilence"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:text="Notificações"
+                android:gravity="start"
+                />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@color/grey_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp"
+                tools:layout_editor_absoluteY="19dp"
+                tools:layout_editor_absoluteX="8dp">
+
+                <Switch
+                    android:id="@+id/geralSwitch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ativar Notificações"
+                    android:checked="true"
+                    android:gravity="left"/>
+
+                <Switch
+                    android:id="@+id/soundSwitch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/with_sound"
+                    android:checked="true"
+                    android:gravity="left"/>
+
+                <Switch
+                    android:id="@+id/vibrateSwitch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vibrate"
+                    android:checked="true"
+                    android:gravity="left"/>
+
+                <Switch
+                    android:id="@+id/silenceSwitch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/horario_nao_notificar"
+                    android:checked="true"
+                    android:gravity="left"/>
 
                 <LinearLayout
+                    android:id="@+id/layoutTimeSilence"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/start"
-                        android:layout_gravity="center"/>
+                        android:orientation="vertical"
+                        android:layout_weight="1">
 
-                    <TimePicker
-                        android:id="@+id/timeStartSilence"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/start"
+                            android:layout_gravity="center"/>
+
+                        <TimePicker
+                            android:id="@+id/timeStartSilence"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:timePickerMode="spinner"
+                            android:scaleY="0.70"
+                            android:scaleX="0.70"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:timePickerMode="spinner"/>
+                        android:orientation="vertical"
+                        android:layout_weight="1">
 
-                </LinearLayout>
+                        <TextView
+                            android:text="@string/finish"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                        <TimePicker
+                            android:id="@+id/timeFinishSilence"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:timePickerMode="spinner"
+                            android:scaleY="0.70"
+                            android:scaleX="0.70"/>
 
-                    <TextView
-                        android:text="@string/finish"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-
-                    <TimePicker
-                        android:id="@+id/timeFinishSilence"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:timePickerMode="spinner"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--tools:layout_editor_absoluteY="19dp"-->
+            <!--tools:layout_editor_absoluteX="8dp">-->
+            <!--<Switch-->
+            <!--android:id="@+id/pushSwitch"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Push"-->
+            <!--android:checked="true"-->
+            <!--android:gravity="left"/>-->
+            <!--</LinearLayout>-->
 
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--tools:layout_editor_absoluteY="19dp"-->
+            <!--tools:layout_editor_absoluteX="8dp">-->
+            <!--<Switch-->
+            <!--android:id="@+id/emailSwitch"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/email"-->
+            <!--android:checked="true"-->
+            <!--android:gravity="left"/>-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--tools:layout_editor_absoluteY="19dp"-->
+            <!--tools:layout_editor_absoluteX="8dp">-->
+            <!--<Switch-->
+            <!--android:id="@+id/smsSwitch"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="SMS"-->
+            <!--android:checked="true"-->
+            <!--android:gravity="left"/>-->
+            <!--</LinearLayout>-->
         </LinearLayout>
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--tools:layout_editor_absoluteY="19dp"-->
-        <!--tools:layout_editor_absoluteX="8dp">-->
-        <!--<Switch-->
-        <!--android:id="@+id/pushSwitch"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Push"-->
-        <!--android:checked="true"-->
-        <!--android:gravity="left"/>-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--tools:layout_editor_absoluteY="19dp"-->
-        <!--tools:layout_editor_absoluteX="8dp">-->
-        <!--<Switch-->
-        <!--android:id="@+id/emailSwitch"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/email"-->
-        <!--android:checked="true"-->
-        <!--android:gravity="left"/>-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--tools:layout_editor_absoluteY="19dp"-->
-        <!--tools:layout_editor_absoluteX="8dp">-->
-        <!--<Switch-->
-        <!--android:id="@+id/smsSwitch"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="SMS"-->
-        <!--android:checked="true"-->
-        <!--android:gravity="left"/>-->
-        <!--</LinearLayout>-->
-    </LinearLayout>
 
 
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

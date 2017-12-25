@@ -1,6 +1,7 @@
 package com.example.gabriela.firecastcommunity.fragment;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.gabriela.firecastcommunity.MainActivity;
 import com.example.gabriela.firecastcommunity.OccurenceAdapter;
@@ -111,12 +113,13 @@ public class OccurenceFragment extends Fragment {
 
     private void LoadingOccurrence() {
         swipeRefreshLayout.setRefreshing(true);
-
-        try{
-            UpdateRecicleViewList(getActivity().getApplicationContext());
-        }finally {
-            MapsFragment.UpdateMapMarkersRadius(getActivity().getApplicationContext());
-            swipeRefreshLayout.setRefreshing(false);
+        if(verifyConnectionOnline(getContext())) {
+            try {
+                UpdateRecicleViewList(getActivity().getApplicationContext());
+            } finally {
+                MapsFragment.UpdateMapMarkersRadius(getActivity().getApplicationContext());
+                swipeRefreshLayout.setRefreshing(false);
+            }
         }
     }
 
@@ -138,12 +141,12 @@ public class OccurenceFragment extends Fragment {
             list = stream(list).where(x -> typesOccurrences.contains(x.type.id)).toList();
         }
 
-        if(id_city==Constant.NOTHING_CITY_ID){
+        if(id_city == Constant.NOTHING_CITY_ID){
             list = stream(list)
                     .where(x-> x.distance !=null ? x.distance <= radius : false)
                     .toList();
-        }
-        else {
+
+        } else if(id_city != Constant.ALL_CITIES_ID) {
             list = stream(list)
                     .where(x-> ((x.distance != null ?
                             x.distance <= radius
@@ -164,44 +167,58 @@ public class OccurenceFragment extends Fragment {
         }
     }
 
+    public static boolean verifyConnectionOnline(Context context) {
+        ConnectivityManager conectivtyManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(conectivtyManager.getActiveNetworkInfo() != null
+                && conectivtyManager.getActiveNetworkInfo().isAvailable()
+                && conectivtyManager.getActiveNetworkInfo().isConnected()){
+            return true;
+        }else{
+            Toast.makeText(context, "Sem conexão com Internet", Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
 
 
-    public static void callApiGetAllOccurrence() {
-        result.removeAll(result);
-        FirecastClient fire = new FirecastClient();
-        FirecastApi api = fire.retrofit.create(FirecastApi.class);
-        List<City> listCities = DataBaseTemp.cities();
 
-        for (City cidade : listCities) {
-            api.getOccurrences(cidade.name)
-                    .enqueue(new Callback<List<Occurrence>>() {
+    public static void callApiGetAllOccurrence(Context context) {
+        if(verifyConnectionOnline(context)) {
+            result.removeAll(result);
+            FirecastClient fire = new FirecastClient();
+            FirecastApi api = fire.retrofit.create(FirecastApi.class);
+            List<City> listCities = DataBaseTemp.cities();
 
-                        public void onResponse(Call<List<Occurrence>> call, Response<List<Occurrence>> response) {
+            for (City cidade : listCities) {
+                api.getOccurrences(cidade.name)
+                        .enqueue(new Callback<List<Occurrence>>() {
 
-                            List<Occurrence> list = response.body();
-                            if (list != null) {
-                                List<Integer> listIds = stream(result).select(c -> c.id).toList();
-                                List<Occurrence> listList = stream(list).where(c -> !listIds.contains(c.id)).toList();
+                            public void onResponse(Call<List<Occurrence>> call, Response<List<Occurrence>> response) {
 
-                                for (Occurrence occ : listList) {
-                                    Double distance = new DistanceCalculator()
-                                            .distanceCalculator(MapsFragment.getMyLocation(), getLocation(occ));
-                                    if (distance == 0 || distance < 0) {
-                                        occ.distance = null;
-                                    } else {
-                                        occ.distance = distance / 1000;
+                                List<Occurrence> list = response.body();
+                                if (list != null) {
+                                    List<Integer> listIds = stream(result).select(c -> c.id).toList();
+                                    List<Occurrence> listList = stream(list).where(c -> !listIds.contains(c.id)).toList();
+
+                                    for (Occurrence occ : listList) {
+                                        Double distance = new DistanceCalculator()
+                                                .distanceCalculator(MapsFragment.getMyLocation(), getLocation(occ));
+                                        if (distance == 0 || distance < 0) {
+                                            occ.distance = null;
+                                        } else {
+                                            occ.distance = distance / 1000;
+                                        }
                                     }
+
+                                    result.addAll(listList);
                                 }
-
-                                result.addAll(listList);
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<Occurrence>> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<List<Occurrence>> call, Throwable t) {
 
-                        }
-                    });
+                            }
+                        });
+            }
         }
     }
 

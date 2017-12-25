@@ -92,7 +92,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 distance = (TextView) findViewById(R.id.cardoccurrenceitem__distance);
                 navigateBtn = (ImageButton) findViewById(R.id.cardoccurrenceitem__navigate);
                 if(occurrence.distance!=null) {
-                    distance.setText(MetodsHelpers.convertNumberInText("pt","BR", occurrence.distance) + " km");
+                    distance.setText(MetodsHelpers.convertNumberInText(occurrence.distance) + " km");
                 }else{
                     distance.setText("Não foi possível calcular a distância (faltam informações)");
                 }

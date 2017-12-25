@@ -65,7 +65,6 @@ public class SplashActivity extends AppCompatActivity{
 
         if (firstTime) {
 
-            //Create Dialog
             dialog = new Dialog(this);
             dialog.setContentView(R.layout.popup_filter);
             SetSeekBar();
@@ -75,13 +74,7 @@ public class SplashActivity extends AppCompatActivity{
 
             SetAutoCompleteCities(cities);
 
-            //show dialog if app never launch
             dialog.show();
-
-            //SaveCities(cities);
-
-            //radiosCities = DataBaseTemp.radios();
-            //SaveRadiosCities(radiosCities);
         }
 
         return firstTime;
@@ -136,11 +129,12 @@ public class SplashActivity extends AppCompatActivity{
 
             user.setId_city_occurrence(city.id);
 
-            //user.setRadio_city(getCityFromId(user.getCity_occurrence().getId()));
             user.setRadiusKilometers(seekbar.getProgress());
             user.setOccurrenceTypes(DataBaseTemp.typesOccurrences());
 
             user.setNotify(true);
+            user.setSound(true);
+            user.setVibrate(true);
 
             repository.SaveOrUpdate(user);
 

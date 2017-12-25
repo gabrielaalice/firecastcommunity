@@ -112,6 +112,8 @@
     <string name="horario_nao_notificar">Horário para não notificar</string>
     <string name="start">Início</string>
     <string name="finish">Fim</string>
+    <string name="with_sound">Com Som</string>
+    <string name="vibrate">Vibrar</string>
 
 
 </resources>

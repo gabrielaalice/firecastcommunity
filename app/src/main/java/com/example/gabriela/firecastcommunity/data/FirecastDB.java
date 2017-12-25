@@ -1,6 +1,9 @@
 package com.example.gabriela.firecastcommunity.data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -26,7 +29,7 @@ public class FirecastDB {
 	private static final int DB_ACESS_TYPE = 0;
 
 	private final String TABLE_CREATE_USER = ""
-			+ "CREATE TABLE IF NOT EXISTS "+new User().getClass().getSimpleName()+" ("
+			+ "CREATE TABLE IF NOT EXISTS "+ new User().getClass().getSimpleName()+" ("
 			+ "id integer not null primary key AUTOINCREMENT,"
 			+ "radiusKilometers integer, "
 			+ "id_city_occurrence integer, "
@@ -34,7 +37,12 @@ public class FirecastDB {
 			+ "name varchar(45), "
 			+ "email varchar(50), "
 			+ "password varchar(100), " +
-            "isNotify boolean)";
+            "isNotify boolean, " +
+            "isSoundNotify boolean, " +
+            "isVibrateNotify boolean, " +
+			"isSilenceNotify boolean, " +
+			"silenceStartNotify DateTime, " +
+			"silenceFinishNotify DateTime)";
 
 	private final String TABLE_CREATE_TYPE_OCCURRENCE = ""
 			+ "CREATE TABLE IF NOT EXISTS "
@@ -140,11 +148,33 @@ public class FirecastDB {
 			user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
 			user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
 			user.setNotify(cursor.getInt(cursor.getColumnIndex("isNotify")) == 1);
+            user.setSound(cursor.getInt(cursor.getColumnIndex("isSoundNotify")) == 1);
+            user.setVibrate(cursor.getInt(cursor.getColumnIndex("isVibrateNotify")) == 1);
+			user.setTimeSilence(cursor.getInt(cursor.getColumnIndex("isSilenceNotify")) == 1);
+			user.setTimeStartSilence(ConvertStringInDate(cursor.getString(cursor.getColumnIndex("silenceStartNotify"))));
+			user.setTimeFinishSilence(ConvertStringInDate(cursor.getString(cursor.getColumnIndex("silenceFinishNotify"))));
 			user.setOccurrenceTypes(ListAllUser_TypeOccurrence(user.getId()));
 			list.add(user);
 		}
 		return list;
 	}
+
+    private Date ConvertStringInDate(String value) {
+        if(value == null){
+            return null;
+        }
+
+        String expectedPattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat formatter = new SimpleDateFormat(expectedPattern);
+        try
+        {
+            Date date = formatter.parse(value);
+            return date;
+        }
+        catch (ParseException e) {
+            return null;
+        }
+    }
 
     public ArrayList<OccurrenceType> ListAllOccurrenceType() {
         ArrayList<OccurrenceType> list = new ArrayList<>();
@@ -235,10 +265,24 @@ public class FirecastDB {
 		values.put("email", user.getEmail());
 		values.put("password", user.getPassword());
 		values.put("isNotify",user.isNotify());
+        values.put("isSoundNotify",user.isSound());
+        values.put("isVibrateNotify",user.isVibrate());
+        values.put("isSilenceNotify",user.isTimeSilence());
+        values.put("silenceStartNotify",ConvertDateInString(user.getTimeStartSilence()));
+        values.put("silenceFinishNotify",ConvertDateInString(user.getTimeFinishSilence()));
 		return values;
 	}
 
-	public ContentValues retornarContentValues(User user, OccurrenceType ot) {
+    private String ConvertDateInString(Date value) {
+	    if(value == null){
+	        return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = sdf.format(value);
+        return date;
+    }
+
+    public ContentValues retornarContentValues(User user, OccurrenceType ot) {
 		ContentValues values = new ContentValues();
 		values.put("id_user", user.getId());
 		values.put("id_occurrencetype", ot.id);
