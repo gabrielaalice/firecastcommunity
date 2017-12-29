@@ -184,13 +184,13 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
             location.setText(buildLocationString(occ));
 
-            if(occ.addressReferencePoint != null) {
-                reference.setText(occ.addressReferencePoint);
-                reference.setVisibility(View.VISIBLE);
-            } else {
+            if(occ.addressReferencePoint == ""){
                 reference.setVisibility(View.GONE);
                 referenceTitle.setVisibility(View.GONE);
                 underlineReference.setVisibility(View.GONE);
+            } else {
+                reference.setText(occ.addressReferencePoint);
+                reference.setVisibility(View.VISIBLE);
             }
 
             cars.setText(res.getQuantityString(R.plurals.cars_dispatched, occ.dispatchedCars.size(), occ.dispatchedCars.size()));
@@ -267,13 +267,13 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             case 5:
                 return R.drawable.paramedics_icon;
             case 6:
-                return R.drawable.no_service_icon; // NOT_SERVICE
+                return R.drawable.no_service_icon;
             case 7:
                 return R.drawable.other_icon;
             case 8:
                 return R.drawable.car_accident_icon;
             case 9:
-                return R.drawable.preventive_icon; // PREVENTIVE
+                return R.drawable.preventive_icon;
             case 10:
                 return R.drawable.tree_cutting_icon;
             case 11:

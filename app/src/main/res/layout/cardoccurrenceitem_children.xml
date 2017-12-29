@@ -20,9 +20,9 @@
 
             <TextView
                 android:id="@+id/cardoccurrenceitem__location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
+                style="@style/textDetailsOccurence"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
                 />
 
 			<View
@@ -44,7 +44,7 @@
                 android:id="@+id/cardoccurrenceitem__reference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
+				style="@style/textDetailsOccurence"
                 />
 
 			<View
@@ -68,7 +68,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				tools:text="Florianópolis"
-				android:padding="4dp"
+				style="@style/textDetailsOccurence"
 				/>
 			<View
 				android:layout_width="match_parent"
@@ -89,7 +89,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				tools:text="1 viatura a caminho"
-				android:padding="4dp"
+				style="@style/textDetailsOccurence"
 				/>
 			<View
 				android:layout_width="match_parent"

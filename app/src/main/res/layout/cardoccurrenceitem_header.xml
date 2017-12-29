@@ -28,14 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cardoccurrenceitem__type"
+            style="@style/titleTypeOccurence"
             tools:text="ACIDENTE DE TRÂNSITO"
             tools:background="@color/cardview_light_background"
-            android:padding="8dp"
-            android:textColor="@color/cardview_light_background"
-            android:textStyle="bold"
-            android:height="48dp"
-            android:textSize="16sp"
-            android:gravity="center"
             />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,12 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Lançado há 10 minutos"
-            android:gravity="center"
-            android:padding="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            style="@style/textDecriptionOcc"
             />
 
         <TextView
@@ -96,12 +86,12 @@
                 android:gravity="start">
 
                 <ImageButton
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:id="@+id/cardoccurrenceitem__share"
                     android:src="@mipmap/sharebtn"
-                    android:layout_marginRight="3dp"
-                    android:actionProviderClass="android.widget.ShareActionProvider" />
+                    android:background="@color/grey"
+                    android:layout_marginRight="3dp"/>
 
             </LinearLayout>
 
@@ -116,6 +106,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:layout_marginRight="7dp"
+                    android:textColor="@color/text_occ"
                     tools:text="Em 1.4 km"/>
 
                 <ImageButton

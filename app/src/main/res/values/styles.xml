@@ -41,4 +41,25 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="textDetailsOccurence">
+        <item name="android:textColor">@color/text_occ</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="titleTypeOccurence">
+        <item name="android:textColor">@color/cardview_light_background</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="textDecriptionOcc">
+        <item name="android:textColor">@color/text_occ</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16dp</item>
+    </style>
 </resources>

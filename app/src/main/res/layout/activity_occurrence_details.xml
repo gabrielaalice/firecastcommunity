@@ -14,28 +14,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-            <TableRow
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="8dp">
+                android:layout_height="wrap_content">
+
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/occurence_type"
-                    android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"/>
-            </TableRow>
+                    style="@style/titleTypeOccurence"
+                    />
+
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cardoccurrenceitem__date"
                 android:layout_gravity="center_horizontal"
+                android:paddingTop="10dp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/cardoccurrenceitem__location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
+                style="@style/textDetailsOccurence"
                 />
 
             <View
@@ -57,7 +61,7 @@
                 android:id="@+id/cardoccurrenceitem__reference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
+                style="@style/textDetailsOccurence"
                 />
 
             <View
@@ -80,7 +84,7 @@
                 android:id="@+id/cardoccurrenceitem__city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
+                style="@style/textDetailsOccurence"
                 />
             <View
                 android:layout_width="match_parent"
@@ -110,7 +114,7 @@
                 android:layout_gravity="center"
                 android:text="Descrição"
                 android:textStyle="bold"
-                android:padding="4dp"
+                style="@style/textDetailsOccurence"
                 />
             <TextView
                 android:id="@+id/cardoccurrenceitem__details"

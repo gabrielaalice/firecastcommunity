@@ -78,7 +78,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 date.setText(MetodsHelpers.convertDateTimeInString(occurrence.date));
 
                 int colorText = GetColorMarkerOccurrence(occurrence.type.id);
-                occurrence_type.setTextColor(colorText);
+                occurrence_type.setBackgroundColor(GetColorMarkerOccurrence(occurrence.type.id));
                 date.setTextColor(colorText);
 
                 location = (TextView) findViewById(R.id.cardoccurrenceitem__location);
@@ -103,13 +103,13 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                     location.setText(occurrence.adressStreet);
                 }
 
-                if(occurrence.addressReferencePoint != null) {
-                    reference.setText(occurrence.addressReferencePoint);
-                    reference.setVisibility(View.VISIBLE);
-                } else {
+                if(occurrence.addressReferencePoint == ""){
                     reference.setVisibility(View.GONE);
                     referenceTitle.setVisibility(View.GONE);
                     underlineReference.setVisibility(View.GONE);
+                } else {
+                    reference.setText(occurrence.addressReferencePoint);
+                    reference.setVisibility(View.VISIBLE);
                 }
 
                 if(occurrence.latitude!=null && occurrence.longitude!=null) {
