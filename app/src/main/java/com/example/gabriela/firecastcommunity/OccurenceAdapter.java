@@ -184,7 +184,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
 
             location.setText(buildLocationString(occ));
 
-            if(occ.addressReferencePoint == ""){
+            if(occ.addressReferencePoint == "" || occ.addressReferencePoint == null){
                 reference.setVisibility(View.GONE);
                 referenceTitle.setVisibility(View.GONE);
                 underlineReference.setVisibility(View.GONE);

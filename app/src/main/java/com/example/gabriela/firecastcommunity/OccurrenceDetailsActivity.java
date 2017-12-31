@@ -98,7 +98,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 }
 
                 if(occurrence.addressNumber != null) {
-                    location.setText(occurrence.adressStreet + ", num:" + occurrence.addressNumber);
+                    location.setText(occurrence.adressStreet + ", num:" + MetodsHelpers.convertDoubleInText(occurrence.addressNumber));
                 } else {
                     location.setText(occurrence.adressStreet);
                 }

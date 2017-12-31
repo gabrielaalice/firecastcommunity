@@ -18,6 +18,10 @@ public class MetodsHelpers {
         return String.format("%.1f", number);
     }
 
+    public static String convertDoubleInText(double number){
+        return String.format("%d", number);
+    }
+
     public static String convertDateTimeInString(String dateTime) {
         if (dateTime == null) {
             return "";
