@@ -1,5 +1,6 @@
 package com.example.gabriela.firecastcommunity.helper;
 
+import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -19,7 +20,10 @@ public class MetodsHelpers {
     }
 
     public static String convertDoubleInText(double number){
-        return String.format("%d", number);
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        String str = nf.format(number);
+        return str;
     }
 
     public static String convertDateTimeInString(String dateTime) {

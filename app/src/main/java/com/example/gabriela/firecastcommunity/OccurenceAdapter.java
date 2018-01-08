@@ -177,6 +177,7 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             underlineReference = itemView.findViewById(R.id.underline__reference);
             details  = (ImageButton) itemView.findViewById(R.id.cardoccurrenceitem__details);
 
+
         }
 
         public void bind(int position) {
@@ -191,6 +192,12 @@ public class OccurenceAdapter extends ExpandableRecyclerAdapter<OccurenceAdapter
             } else {
                 reference.setText(occ.addressReferencePoint);
                 reference.setVisibility(View.VISIBLE);
+            }
+
+            if(occ.addressNumber != null) {
+                location.setText(occ.adressStreet + ", nº: " + MetodsHelpers.convertDoubleInText(occ.addressNumber));
+            } else {
+                location.setText(occ.adressStreet);
             }
 
             cars.setText(res.getQuantityString(R.plurals.cars_dispatched, occ.dispatchedCars.size(), occ.dispatchedCars.size()));

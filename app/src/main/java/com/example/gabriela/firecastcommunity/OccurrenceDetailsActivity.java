@@ -91,6 +91,7 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 description.setText(occurrence.description);
                 distance = (TextView) findViewById(R.id.cardoccurrenceitem__distance);
                 navigateBtn = (ImageButton) findViewById(R.id.cardoccurrenceitem__navigate);
+
                 if(occurrence.distance!=null) {
                     distance.setText(MetodsHelpers.convertNumberInText(occurrence.distance) + " km");
                 }else{
@@ -98,12 +99,12 @@ public class OccurrenceDetailsActivity extends AppCompatActivity
                 }
 
                 if(occurrence.addressNumber != null) {
-                    location.setText(occurrence.adressStreet + ", num:" + MetodsHelpers.convertDoubleInText(occurrence.addressNumber));
+                    location.setText(occurrence.adressStreet + ", nº: " + MetodsHelpers.convertDoubleInText(occurrence.addressNumber));
                 } else {
                     location.setText(occurrence.adressStreet);
                 }
 
-                if(occurrence.addressReferencePoint == ""){
+                if(occurrence.addressReferencePoint == "" || occurrence.addressReferencePoint == null){
                     reference.setVisibility(View.GONE);
                     referenceTitle.setVisibility(View.GONE);
                     underlineReference.setVisibility(View.GONE);
